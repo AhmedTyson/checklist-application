@@ -43,6 +43,19 @@
   letter-spacing: 0.1em;
 }
 
+.brand-back {
+  font-size: 10px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+  letter-spacing: 0;
+}
+
+.brand-back:hover {
+  color: var(--accent);
+}
+
 .section-label {
   padding: 24px 16px 8px 16px;
   font-size: 11px;

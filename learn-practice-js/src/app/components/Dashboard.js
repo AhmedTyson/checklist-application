@@ -1,5 +1,4 @@
 import { dom } from "../../shared/dom.js";
-import { contentData } from "../../data/content.js";
 
 export class Dashboard {
   constructor(store) {
@@ -13,43 +12,155 @@ export class Dashboard {
     dom.detailContent.classList.add("hidden");
     dom.detailEmpty.classList.remove("hidden");
 
-    this.renderStats();
+    const stats = this.calcStats();
+    this.renderStatCards(stats);
+    this.renderHero(stats);
+    this.renderStageTable(stats.stages, onLoadStage);
+    this.renderHeatmap();
+    this.updateGlobalProgress(stats);
+  }
 
-    // Grid
-    dom.dashGrid.innerHTML = "";
-    contentData.forEach((stage, index) => {
-      const total = stage.items.length;
-      let completed = 0;
+  // --- Stats Calculation ---
+
+  calcStats() {
+    let total = 0;
+    let completed = 0;
+    const stages = this.contentData.map((stage, index) => {
+      const stageTotal = stage.items.length;
+      let stageDone = 0;
       stage.items.forEach((_, i) => {
-        if (this.store.isCompleted(`${index}-${i}`)) completed++;
+        if (this.store.isCompleted(`${index}-${i}`)) stageDone++;
       });
-      const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
+      total += stageTotal;
+      completed += stageDone;
+      return {
+        title: stage.title,
+        description: stage.description,
+        total: stageTotal,
+        completed: stageDone,
+        percent:
+          stageTotal === 0 ? 0 : Math.round((stageDone / stageTotal) * 100),
+        index,
+      };
+    });
 
-      const card = document.createElement("div");
-      card.className = "dash-card";
-      card.onclick = () => onLoadStage(index);
+    return {
+      total,
+      completed,
+      remaining: total - completed,
+      percent: total === 0 ? 0 : Math.round((completed / total) * 100),
+      streak: this.store.getStreak(),
+      stages,
+    };
+  }
 
-      card.innerHTML = `
-                <h3>${stage.title}</h3>
-                <div class="dash-mini-bar">
-                    <div class="dash-mini-fill" style="width: ${percent}%"></div>
-                </div>
-                <div class="dash-meta">
-                    <span>${completed}/${total} Items</span> • <span>${percent}%</span>
-                </div>
-            `;
-      dom.dashGrid.appendChild(card);
+  // --- Stat Cards ---
+
+  renderStatCards(stats) {
+    if (dom.statTotal) dom.statTotal.textContent = stats.total;
+    if (dom.statCompleted) dom.statCompleted.textContent = stats.completed;
+    if (dom.statStreak) dom.statStreak.textContent = stats.streak;
+    if (dom.statRemaining) dom.statRemaining.textContent = stats.remaining;
+  }
+
+  // --- Hero ---
+
+  renderHero(stats) {
+    if (dom.heroPercentage)
+      dom.heroPercentage.textContent = `${stats.percent}%`;
+
+    // Find first incomplete stage
+    const currentStage = stats.stages.find((s) => s.percent < 100);
+    if (currentStage && dom.heroTitle) {
+      dom.heroTitle.textContent = currentStage.title;
+      dom.heroDesc.textContent = `${currentStage.completed}/${currentStage.total} items mastered — ${currentStage.description}`;
+    } else if (stats.completed === stats.total && dom.heroTitle) {
+      dom.heroTitle.textContent = "🏆 Course Complete!";
+      dom.heroDesc.textContent =
+        "You have mastered all 123 JavaScript concepts. Incredible work!";
+    }
+  }
+
+  // --- Stage Table ---
+
+  renderStageTable(stages, onLoadStage) {
+    if (!dom.stageTable) return;
+    dom.stageTable.innerHTML = "";
+
+    stages.forEach((stage) => {
+      const row = document.createElement("div");
+      row.className = "stage-row";
+      row.onclick = () => onLoadStage(stage.index);
+
+      // Status badge
+      let badge = "not-started";
+      let badgeText = "Not Started";
+      if (stage.percent === 100) {
+        badge = "complete";
+        badgeText = "Complete";
+      } else if (stage.completed > 0) {
+        badge = "in-progress";
+        badgeText = "In Progress";
+      }
+
+      // SVG ring
+      const radius = 16;
+      const circumference = 2 * Math.PI * radius;
+      const dashoffset = circumference - (stage.percent / 100) * circumference;
+
+      row.innerHTML = `
+        <div class="stage-row__ring">
+          <svg width="40" height="40" viewBox="0 0 40 40">
+            <circle cx="20" cy="20" r="${radius}" fill="none" stroke="var(--border)" stroke-width="3"/>
+            <circle cx="20" cy="20" r="${radius}" fill="none" stroke="var(--accent)" stroke-width="3"
+              stroke-dasharray="${circumference}" stroke-dashoffset="${dashoffset}"
+              stroke-linecap="round" transform="rotate(-90 20 20)"
+              style="transition: stroke-dashoffset 0.6s ease"/>
+          </svg>
+          <span class="ring-text">${stage.percent}%</span>
+        </div>
+        <div class="stage-row__info">
+          <span class="stage-row__title">${stage.title}</span>
+          <div class="stage-row__bar-container">
+            <div class="stage-row__bar">
+              <div class="stage-row__bar-fill" style="width: ${stage.percent}%"></div>
+            </div>
+            <span class="stage-row__count">${stage.completed}/${stage.total}</span>
+          </div>
+        </div>
+        <span class="stage-badge stage-badge--${badge}">${badgeText}</span>
+      `;
+      dom.stageTable.appendChild(row);
     });
   }
 
-  renderStats() {
-    let total = 0;
-    contentData.forEach((s) => (total += s.items.length));
-    const completed = this.store.state.progress.length;
-    const percent = Math.round((completed / total) * 100) || 0;
+  // --- Heatmap ---
 
-    if (dom.progressBar) dom.progressBar.style.width = `${percent}%`;
-    if (dom.percentage) dom.percentage.innerText = `${percent}%`;
-    if (dom.heroPercentage) dom.heroPercentage.innerText = `${percent}%`;
+  renderHeatmap() {
+    if (!dom.activityHeatmap) return;
+    dom.activityHeatmap.innerHTML = "";
+
+    const history = this.store.getActivityHistory(30);
+    history.forEach((entry) => {
+      const dot = document.createElement("div");
+      dot.className = `heatmap-dot ${entry.active ? "heatmap-dot--active" : ""}`;
+      dot.title = `${entry.date} ${entry.active ? "✓ Studied" : "—"}`;
+      dom.activityHeatmap.appendChild(dot);
+    });
+  }
+
+  // --- Global Progress Bar (sidebar) ---
+
+  updateGlobalProgress(stats) {
+    if (dom.progressBar) dom.progressBar.style.width = `${stats.percent}%`;
+    if (dom.percentage) dom.percentage.textContent = `${stats.percent}%`;
+  }
+
+  renderStats() {
+    const stats = this.calcStats();
+    this.renderStatCards(stats);
+    this.updateGlobalProgress(stats);
+    if (dom.heroPercentage)
+      dom.heroPercentage.textContent = `${stats.percent}%`;
   }
 }

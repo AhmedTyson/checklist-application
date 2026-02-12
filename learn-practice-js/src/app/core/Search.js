@@ -1,7 +1,5 @@
-import { contentData } from "../../data/content.js";
-
 export const search = {
-  run: (query) => {
+  run: (query, contentData) => {
     const q = query.toLowerCase();
     const results = [];
     contentData.forEach((stage, sIdx) => {

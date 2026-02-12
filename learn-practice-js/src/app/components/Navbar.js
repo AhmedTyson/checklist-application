@@ -1,12 +1,11 @@
 import { dom } from "../../shared/dom.js";
-import { contentData } from "../../data/content.js";
 
 export class Navbar {
   constructor(store) {
     this.store = store;
   }
 
-  render(onLoadDashboard, onLoadStage) {
+  render(onLoadDashboard, onLoadStage, contentData) {
     dom.nav.innerHTML = "";
     const currentIdx = this.store.state.currentStageIdx;
 

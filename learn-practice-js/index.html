@@ -50,7 +50,10 @@
             </svg>
           </div>
           <div class="brand-text">
-            <span class="brand-title">JS Master</span>
+            <a href="courses.html" class="brand-back" title="Back to Courses"
+              >← Courses</a
+            >
+            <span id="sidebar-course-title" class="brand-title">JS Master</span>
             <span class="brand-subtitle">Curriculum</span>
           </div>
         </div>
@@ -131,11 +134,87 @@
       <main class="main-view">
         <!-- DASHBOARD VIEW -->
         <div id="dashboard-container" class="dashboard-container hidden">
-          <div class="dash-header">
-            <h1>Overview</h1>
-            <p class="dash-date">February 12, 2026</p>
+          <!-- Stats Row -->
+          <div id="stats-row" class="stats-row">
+            <div class="stat-card">
+              <div class="stat-icon stat-icon--total">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                  <path
+                    d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"
+                  />
+                </svg>
+              </div>
+              <div class="stat-data">
+                <span id="stat-total" class="stat-value">0</span>
+                <span class="stat-label">Total Items</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon stat-icon--done">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </div>
+              <div class="stat-data">
+                <span id="stat-completed" class="stat-value">0</span>
+                <span class="stat-label">Completed</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon stat-icon--streak">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                </svg>
+              </div>
+              <div class="stat-data">
+                <span id="stat-streak" class="stat-value">0</span>
+                <span class="stat-label">Day Streak</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon stat-icon--remaining">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg>
+              </div>
+              <div class="stat-data">
+                <span id="stat-remaining" class="stat-value">0</span>
+                <span class="stat-label">Remaining</span>
+              </div>
+            </div>
           </div>
 
+          <!-- Hero Section -->
           <div class="dash-hero">
             <div class="hero-content">
               <span class="badg-hero">Current Focus</span>
@@ -154,9 +233,21 @@
             </div>
           </div>
 
-          <div class="dash-grid-label">MODULES SNAPSHOT</div>
-          <div id="dash-grid" class="dash-grid">
-            <!-- Cards injected here -->
+          <!-- Stage Progress Table -->
+          <div class="dash-section-label">STAGE PROGRESS</div>
+          <div id="stage-table" class="stage-table">
+            <!-- Stage rows injected here -->
+          </div>
+
+          <!-- Activity Heatmap -->
+          <div class="dash-section-label" style="margin-top: 32px">
+            STUDY ACTIVITY
+            <span id="heatmap-subtitle" class="heatmap-subtitle"
+              >Last 30 days</span
+            >
+          </div>
+          <div id="activity-heatmap" class="activity-heatmap">
+            <!-- Dots injected here -->
           </div>
         </div>
 

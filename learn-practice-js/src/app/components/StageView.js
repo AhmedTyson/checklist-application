@@ -1,5 +1,4 @@
 import { dom } from "../../shared/dom.js";
-import { contentData } from "../../data/content.js";
 
 export class StageView {
   constructor(store) {
@@ -13,7 +12,7 @@ export class StageView {
     dom.detailContent.classList.add("hidden");
     dom.detailEmpty.classList.remove("hidden");
 
-    const stage = contentData[index];
+    const stage = this.contentData[index];
     dom.currentStageName.innerText = stage.title;
 
     // Show Progress
@@ -65,7 +64,7 @@ export class StageView {
       .map((res) => {
         const id = `${res.sIdx}-${res.iIdx}`;
         const isCompleted = this.store.isCompleted(id);
-        const stageTitle = contentData[res.sIdx].title;
+        const stageTitle = this.contentData[res.sIdx].title;
 
         return `
                 <div class="list-item ${isCompleted ? "completed" : ""}" 
@@ -94,7 +93,7 @@ export class StageView {
 
   updateProgress(idx) {
     if (idx === -1) return;
-    const items = contentData[idx].items;
+    const items = this.contentData[idx].items;
     const total = items.length;
     let completed = 0;
     items.forEach((_, i) => {

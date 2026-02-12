@@ -1,7 +1,7 @@
 import { dom } from "../../shared/dom.js";
 import { Store } from "./Store.js";
 import { toast } from "../../shared/toast.js";
-import { search } from "./Search.js"; // Importing the object from Search.js
+import { search } from "./Search.js";
 
 // Components
 import { Navbar } from "../components/Navbar.js";
@@ -9,17 +9,34 @@ import { Dashboard } from "../components/Dashboard.js";
 import { StageView } from "../components/StageView.js";
 import { DetailView } from "../components/DetailView.js";
 
-import { contentData } from "../../data/content.js";
+// Data
+import { contentData as builtinContent } from "../../data/content.js";
+import { getCourseContent, getCourse } from "../../data/CourseStore.js";
 
 class App {
   constructor() {
     this.store = new Store();
 
-    // Initialize Components
+    // Load correct content based on courseId
+    this.courseId = this.store.courseId;
+    if (this.courseId === "javascript") {
+      this.contentData = builtinContent;
+    } else {
+      this.contentData = getCourseContent(this.courseId) || [];
+    }
+
+    // Initialize Components (pass contentData)
     this.navbar = new Navbar(this.store);
     this.dashboard = new Dashboard(this.store);
     this.stageView = new StageView(this.store);
     this.detailView = new DetailView(this.store);
+
+    // Inject contentData into components that need it
+    this.dashboard.contentData = this.contentData;
+    this.stageView.contentData = this.contentData;
+
+    // Update course title in sidebar if it's a custom course
+    this.updateCourseBranding();
 
     this.init();
   }
@@ -42,6 +59,24 @@ class App {
     window.app = this;
   }
 
+  updateCourseBranding() {
+    const header = document.getElementById("sidebar-course-title");
+    if (!header) return;
+
+    if (this.courseId === "javascript") {
+      header.textContent = "JavaScript";
+    } else {
+      const course = getCourse(this.courseId);
+      if (course) {
+        header.textContent = course.title;
+        // Apply custom accent color
+        if (course.color) {
+          document.documentElement.style.setProperty("--accent", course.color);
+        }
+      }
+    }
+  }
+
   // --- Navigation ---
 
   loadDashboard() {
@@ -56,6 +91,7 @@ class App {
     this.navbar.render(
       () => this.loadDashboard(),
       (idx) => this.loadStage(idx),
+      this.contentData,
     );
     this.dashboard.render((idx) => this.loadStage(idx));
   }
@@ -72,6 +108,7 @@ class App {
     this.navbar.render(
       () => this.loadDashboard(),
       (idx) => this.loadStage(idx),
+      this.contentData,
     );
     this.stageView.render(index, (iIdx) => this.selectItem(iIdx));
   }
@@ -80,7 +117,7 @@ class App {
     const sIdx = this.store.state.currentStageIdx;
     this.store.setState({ selectedItemIdx: itemIdx });
 
-    const item = contentData[sIdx].items[itemIdx];
+    const item = this.contentData[sIdx].items[itemIdx];
     this.detailView.render(item, sIdx, itemIdx);
   }
 
@@ -122,7 +159,7 @@ class App {
       return;
     }
 
-    const results = search.run(query);
+    const results = search.run(query, this.contentData);
     this.stageView.renderSearchResults(results, (s, i) =>
       this.selectSearchItem(s, i),
     );
@@ -133,7 +170,7 @@ class App {
       tempSearchContext: { sIdx, iIdx },
       selectedItemIdx: iIdx,
     });
-    const item = contentData[sIdx].items[iIdx];
+    const item = this.contentData[sIdx].items[iIdx];
     this.detailView.render(item, sIdx, iIdx);
   }
 
@@ -145,8 +182,17 @@ class App {
   }
 
   continueJourney() {
-    // Simple heuristic: find first uncompleted item
-    // For now just load stage 0
+    // Find first uncompleted item across all stages
+    for (let s = 0; s < this.contentData.length; s++) {
+      for (let i = 0; i < this.contentData[s].items.length; i++) {
+        if (!this.store.isCompleted(`${s}-${i}`)) {
+          this.loadStage(s);
+          setTimeout(() => this.selectItem(i), 50);
+          return;
+        }
+      }
+    }
+    // All complete
     this.loadStage(0);
   }
 }

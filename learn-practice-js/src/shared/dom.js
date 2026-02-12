@@ -16,7 +16,14 @@ export const dom = {
   dashContainer: document.getElementById("dashboard-container"),
   stageViewWrapper: document.getElementById("stage-view-wrapper"),
   heroPercentage: document.getElementById("hero-percentage"),
-  dashGrid: document.getElementById("dash-grid"),
+  heroTitle: document.getElementById("hero-title"),
+  heroDesc: document.getElementById("hero-desc"),
+  stageTable: document.getElementById("stage-table"),
+  activityHeatmap: document.getElementById("activity-heatmap"),
+  statTotal: document.getElementById("stat-total"),
+  statCompleted: document.getElementById("stat-completed"),
+  statStreak: document.getElementById("stat-streak"),
+  statRemaining: document.getElementById("stat-remaining"),
 
   // Search
   searchInput: document.getElementById("search-input"),

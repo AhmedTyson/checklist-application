@@ -14,14 +14,15 @@ function createWindow() {
     icon: path.join(__dirname, "assets/icon.png"),
   });
 
-  // Load the index.html of the app.
-  mainWindow.loadFile("index.html");
+  // Load the courses hub as the default page.
+  mainWindow.loadFile("courses.html");
 
   // Create Custom Menu
   const menuTemplate = [
     {
       label: "File",
       submenu: [
+        { label: "Courses", click: () => mainWindow.loadFile("courses.html") },
         { label: "Home", click: () => mainWindow.loadFile("index.html") },
         {
           label: "Admin Panel",

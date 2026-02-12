@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Courses</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="src/shared/loader/loader.css" />
+    <link rel="stylesheet" href="src/app/styles/css/variables.css" />
+    <link rel="stylesheet" href="src/app/styles/css/base.css" />
+    <link rel="stylesheet" href="src/app/styles/css/components/ui.css" />
+    <link rel="stylesheet" href="src/app/styles/css/components/courses.css" />
+  </head>
+  <body>
+    <!-- Global Loader -->
+    <div id="global-loader">
+      <div class="loader-spinner"></div>
+    </div>
+    <script src="src/shared/loader/loader.js"></script>
+
+    <div class="courses-page">
+      <!-- Header -->
+      <header class="courses-header">
+        <div class="courses-brand">
+          <svg
+            width="28"
+            height="28"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="var(--accent)" />
+            <path
+              d="M2 17L12 22L22 17"
+              stroke="var(--accent)"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M2 12L12 17L22 12"
+              stroke="var(--text-muted)"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <div>
+            <h1>My Courses</h1>
+            <span class="courses-subtitle"
+              >Select a course to start learning</span
+            >
+          </div>
+        </div>
+      </header>
+
+      <!-- Courses Grid -->
+      <div id="courses-grid" class="courses-grid">
+        <!-- Course cards injected here -->
+      </div>
+    </div>
+
+    <!-- Create Course Modal -->
+    <div id="modal-overlay" class="modal-overlay hidden">
+      <div class="modal-card">
+        <h2>Create New Course</h2>
+        <p class="modal-desc">
+          Set up a new learning track to organize your study material.
+        </p>
+
+        <label class="form-label">Course Name</label>
+        <input
+          type="text"
+          id="inp-course-name"
+          class="modal-input"
+          placeholder="e.g. Python, React, SQL..."
+          autocomplete="off"
+        />
+
+        <label class="form-label">Icon (emoji)</label>
+        <input
+          type="text"
+          id="inp-course-icon"
+          class="modal-input modal-input--small"
+          placeholder="🐍"
+          maxlength="4"
+        />
+
+        <label class="form-label">Accent Color</label>
+        <div class="color-picker-row">
+          <div
+            class="color-swatch selected"
+            data-color="#a855f7"
+            style="background: #a855f7"
+          ></div>
+          <div
+            class="color-swatch"
+            data-color="#3b82f6"
+            style="background: #3b82f6"
+          ></div>
+          <div
+            class="color-swatch"
+            data-color="#22c55e"
+            style="background: #22c55e"
+          ></div>
+          <div
+            class="color-swatch"
+            data-color="#f59e0b"
+            style="background: #f59e0b"
+          ></div>
+          <div
+            class="color-swatch"
+            data-color="#ef4444"
+            style="background: #ef4444"
+          ></div>
+          <div
+            class="color-swatch"
+            data-color="#06b6d4"
+            style="background: #06b6d4"
+          ></div>
+          <div
+            class="color-swatch"
+            data-color="#ec4899"
+            style="background: #ec4899"
+          ></div>
+          <div
+            class="color-swatch"
+            data-color="#8b5cf6"
+            style="background: #8b5cf6"
+          ></div>
+        </div>
+
+        <label class="form-label"
+          >Description
+          <span style="color: var(--text-dim)">(optional)</span></label
+        >
+        <input
+          type="text"
+          id="inp-course-desc"
+          class="modal-input"
+          placeholder="Brief description..."
+          autocomplete="off"
+        />
+
+        <div class="modal-actions">
+          <button id="btn-cancel" class="btn-secondary">Cancel</button>
+          <button id="btn-create" class="btn-primary">Create Course</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module">
+      import {
+        getCourses,
+        saveCourse,
+        deleteCourse,
+        getCourseContent,
+        saveCourseContent,
+        getProgress,
+        generateId,
+      } from "./src/data/CourseStore.js";
+      import { contentData } from "./src/data/content.js";
+
+      const grid = document.getElementById("courses-grid");
+      const overlay = document.getElementById("modal-overlay");
+
+      let selectedColor = "#a855f7";
+
+      function renderCourses() {
+        grid.innerHTML = "";
+        const courses = getCourses();
+
+        courses.forEach((course) => {
+          // Calculate progress
+          let total = 0,
+            completed = 0;
+          if (course.builtin) {
+            contentData.forEach((stage, sIdx) => {
+              total += stage.items.length;
+              stage.items.forEach((_, iIdx) => {
+                const progress = getProgress(course.id);
+                if (progress.includes(`${sIdx}-${iIdx}`)) completed++;
+              });
+            });
+          } else {
+            const content = getCourseContent(course.id);
+            if (content) {
+              content.forEach((stage, sIdx) => {
+                total += stage.items.length;
+                stage.items.forEach((_, iIdx) => {
+                  const progress = getProgress(course.id);
+                  if (progress.includes(`${sIdx}-${iIdx}`)) completed++;
+                });
+              });
+            }
+          }
+          const percent =
+            total === 0 ? 0 : Math.round((completed / total) * 100);
+
+          // SVG ring
+          const radius = 22;
+          const circumference = 2 * Math.PI * radius;
+          const dashoffset = circumference - (percent / 100) * circumference;
+
+          const card = document.createElement("div");
+          card.className = "course-card";
+          card.style.setProperty("--card-accent", course.color || "#a855f7");
+
+          card.innerHTML = `
+            <div class="course-card__header">
+              <span class="course-card__icon">${course.icon || "📚"}</span>
+              ${course.builtin ? '<span class="course-card__badge">Built-in</span>' : `<button class="course-card__delete" title="Delete Course">✕</button>`}
+            </div>
+            <h3 class="course-card__title">${course.title}</h3>
+            <p class="course-card__desc">${course.description || "No description"}</p>
+            <div class="course-card__footer">
+              <div class="course-card__ring">
+                <svg width="52" height="52" viewBox="0 0 52 52">
+                  <circle cx="26" cy="26" r="${radius}" fill="none" stroke="var(--border)" stroke-width="3"/>
+                  <circle cx="26" cy="26" r="${radius}" fill="none" stroke="var(--card-accent)" stroke-width="3"
+                    stroke-dasharray="${circumference}" stroke-dashoffset="${dashoffset}"
+                    stroke-linecap="round" transform="rotate(-90 26 26)"/>
+                </svg>
+                <span class="course-card__ring-text">${percent}%</span>
+              </div>
+              <div class="course-card__stats">
+                <span>${completed}/${total} items</span>
+                <span class="course-card__status">${percent === 100 ? "Complete" : completed > 0 ? "In Progress" : "Not Started"}</span>
+              </div>
+            </div>
+          `;
+
+          // Open course on click (but not on delete)
+          card.addEventListener("click", (e) => {
+            if (e.target.closest(".course-card__delete")) return;
+            window.location.href = `index.html?courseId=${course.id}`;
+          });
+
+          // Delete handler
+          const delBtn = card.querySelector(".course-card__delete");
+          if (delBtn) {
+            delBtn.addEventListener("click", (e) => {
+              e.stopPropagation();
+              if (
+                confirm(
+                  `Delete "${course.title}"? This will remove all progress and content.`,
+                )
+              ) {
+                deleteCourse(course.id);
+                renderCourses();
+              }
+            });
+          }
+
+          grid.appendChild(card);
+        });
+
+        // "+ New Course" card
+        const addCard = document.createElement("div");
+        addCard.className = "course-card course-card--add";
+        addCard.innerHTML = `
+          <div class="course-card__add-icon">+</div>
+          <span>New Course</span>
+        `;
+        addCard.addEventListener("click", () => openModal());
+        grid.appendChild(addCard);
+      }
+
+      // --- Modal ---
+
+      function openModal() {
+        overlay.classList.remove("hidden");
+        document.getElementById("inp-course-name").value = "";
+        document.getElementById("inp-course-icon").value = "";
+        document.getElementById("inp-course-desc").value = "";
+        selectedColor = "#a855f7";
+        document.querySelectorAll(".color-swatch").forEach((s) => {
+          s.classList.toggle("selected", s.dataset.color === selectedColor);
+        });
+        setTimeout(
+          () => document.getElementById("inp-course-name").focus(),
+          100,
+        );
+      }
+
+      function closeModal() {
+        overlay.classList.add("hidden");
+      }
+
+      function createCourse() {
+        const name = document.getElementById("inp-course-name").value.trim();
+        if (!name) return;
+
+        const course = {
+          id: generateId(),
+          title: name,
+          icon: document.getElementById("inp-course-icon").value.trim() || "📚",
+          color: selectedColor,
+          description: document.getElementById("inp-course-desc").value.trim(),
+          builtin: false,
+          createdAt: new Date().toISOString().split("T")[0],
+        };
+
+        saveCourse(course);
+        // Initialize empty content
+        saveCourseContent(course.id, [
+          {
+            title: "Stage 1: Getting Started",
+            description: "Begin your learning journey.",
+            items: [],
+          },
+        ]);
+        closeModal();
+        renderCourses();
+      }
+
+      // --- Events ---
+
+      document
+        .getElementById("btn-cancel")
+        .addEventListener("click", closeModal);
+      document
+        .getElementById("btn-create")
+        .addEventListener("click", createCourse);
+      overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) closeModal();
+      });
+
+      // Color picker
+      document.querySelectorAll(".color-swatch").forEach((swatch) => {
+        swatch.addEventListener("click", () => {
+          selectedColor = swatch.dataset.color;
+          document
+            .querySelectorAll(".color-swatch")
+            .forEach((s) => s.classList.remove("selected"));
+          swatch.classList.add("selected");
+        });
+      });
+
+      // Enter key to submit
+      document
+        .getElementById("inp-course-name")
+        .addEventListener("keydown", (e) => {
+          if (e.key === "Enter") createCourse();
+        });
+
+      // Init
+      renderCourses();
+    </script>
+  </body>
+</html>
