@@ -1,4 +1,4 @@
-import { contentData } from "../content.js";
+import { contentData } from "../../data/content.js";
 
 export const search = {
   run: (query) => {

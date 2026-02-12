@@ -113,20 +113,7 @@
   align-items: center;
 }
 
-.icon-btn {
-  background: none;
-  border: none;
-  color: var(--text-dim);
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
-  transition: color 0.2s;
-}
-
-.icon-btn:hover {
-  color: var(--text-main);
-  background: var(--bg-hover);
-}
+/* .icon-btn moved to ui.css */
 
 @media (max-width: 768px) {
   /* Sidebar - Overlay Mode */
