@@ -61,8 +61,10 @@ export class Editor {
 
   populate(item) {
     if (this.inputs.title) this.inputs.title.value = item.title;
-    if (this.inputs.desc) this.inputs.desc.value = item.description || "";
-    if (this.inputs.expl) this.inputs.expl.value = item.explanation || "";
+    if (this.inputs.desc)
+      this.inputs.desc.value = item.description || item.desc || "";
+    if (this.inputs.expl)
+      this.inputs.expl.value = item.explanation || item.expl || "";
     if (this.inputs.code) this.inputs.code.value = item.code || "";
     if (this.inputs.prompt) this.inputs.prompt.value = item.prompt || "";
 
