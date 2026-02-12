@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Curriculum</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="app-root">
+      <!-- Sidebar: Navigation -->
+      <nav class="sidebar">
+        <div class="sidebar-header">
+          <div class="brand-icon">JS</div>
+          <div class="brand-name">Curriculum</div>
+        </div>
+
+        <div class="section-label">PROGRESS</div>
+        <div class="progress-container">
+          <div class="progress-bar">
+            <div id="global-progress-bar" class="progress-fill"></div>
+          </div>
+          <span id="global-percentage" class="progress-text">0%</span>
+        </div>
+
+        <div class="search-container">
+          <input
+            type="text"
+            id="search-input"
+            class="search-input"
+            placeholder="Search topics..."
+            autocomplete="off"
+          />
+          <span class="search-icon">🔍</span>
+        </div>
+
+        <div class="section-label">MODULES</div>
+        <div id="stage-nav" class="nav-list">
+          <!-- Nav items injected here -->
+        </div>
+
+        <div class="sidebar-footer">
+          <button
+            class="icon-btn"
+            onclick="app.resetData()"
+            title="Reset Progress"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+              <path d="M3 3v5h5" />
+            </svg>
+          </button>
+        </div>
+      </nav>
+
+      <!-- Main View: The List -->
+      <main class="main-view">
+        <!-- DASHBOARD VIEW -->
+        <div id="dashboard-container" class="dashboard-container hidden">
+          <div class="dash-header">
+            <h1>Overview</h1>
+            <p class="dash-date">February 12, 2026</p>
+          </div>
+
+          <div class="dash-hero">
+            <div class="hero-content">
+              <span class="badg-hero">Current Focus</span>
+              <h2 id="hero-title">Welcome Back</h2>
+              <p id="hero-desc">
+                Select a module to begin your journey or pick up where you left
+                off.
+              </p>
+              <button class="btn-primary" onclick="app.continueJourney()">
+                Continue Journey →
+              </button>
+            </div>
+            <div class="hero-stat">
+              <span id="hero-percentage">0%</span>
+              <label>Mastery</label>
+            </div>
+          </div>
+
+          <div class="dash-grid-label">MODULES SNAPSHOT</div>
+          <div id="dash-grid" class="dash-grid">
+            <!-- Cards injected here -->
+          </div>
+        </div>
+
+        <!-- STAGE VIEW (Header + List) -->
+        <div id="stage-view-wrapper">
+          <header class="view-header">
+            <div style="display: flex; align-items: center; gap: 12px">
+              <button
+                id="menu-btn"
+                class="icon-btn mobile-only"
+                style="display: none"
+              >
+                ☰
+              </button>
+              <h1 id="current-stage-name">Select Module</h1>
+            </div>
+            <div class="stage-progress-container">
+              <div class="stage-progress-bar">
+                <div id="stage-progress-fill" class="stage-progress-fill"></div>
+              </div>
+              <span id="stage-percentage" class="stage-progress-text">0%</span>
+            </div>
+            <div class="header-actions">
+              <span class="status-badge">Track</span>
+            </div>
+          </header>
+
+          <div id="content-area" class="item-list">
+            <!-- Checklist items injected here -->
+          </div>
+        </div>
+      </main>
+
+      <!-- Detail View: The Inspector -->
+      <aside id="detail-panel" class="detail-panel">
+        <div class="detail-empty-state" id="detail-empty">
+          <p>Select an item to view details</p>
+        </div>
+
+        <div class="detail-content hidden" id="detail-content">
+          <header class="detail-header">
+            <div class="meta-row">
+              <div style="display: flex; align-items: center; gap: 8px">
+                <button
+                  id="back-btn"
+                  class="icon-btn mobile-only"
+                  style="display: none"
+                >
+                  ←
+                </button>
+                <span id="detail-id" class="mono-id">ID-01</span>
+              </div>
+              <div class="actions">
+                <label class="toggle-switch">
+                  <input type="checkbox" id="mark-complete-toggle" />
+                  <span class="slider"></span>
+                </label>
+                <span class="label-text">Mastered</span>
+              </div>
+            </div>
+            <h2 id="detail-title">Variable Scope</h2>
+          </header>
+
+          <div class="scroll-body">
+            <div
+              id="detail-resources"
+              class="info-block"
+              style="display: none"
+            ></div>
+
+            <section class="info-block">
+              <h3>Concept</h3>
+              <p id="detail-explanation">Explanation goes here...</p>
+            </section>
+
+            <section class="info-block">
+              <h3>Implementation</h3>
+              <div class="code-block">
+                <pre><code id="detail-code">...</code></pre>
+              </div>
+            </section>
+
+            <section class="info-block prompt-block">
+              <h3>Discovery Prompt</h3>
+              <p id="detail-prompt">...</p>
+            </section>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Module Entry Point -->
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>
