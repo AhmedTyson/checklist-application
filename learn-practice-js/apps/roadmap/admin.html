@@ -10,14 +10,16 @@
     />
     <link rel="stylesheet" href="style.css" />
     <style>
-      /* Admin Layout Overrides */
+      /* --- Admin-Specific Styles --- */
       body {
         overflow: hidden;
         display: flex;
         flex-direction: column;
         background: var(--bg-app);
+        height: 100vh;
       }
 
+      /* Header */
       .admin-header {
         height: 60px;
         border-bottom: 1px solid var(--border);
@@ -28,7 +30,6 @@
         background: var(--bg-sidebar);
         flex-shrink: 0;
       }
-
       .admin-title h1 {
         margin: 0;
         font-size: 16px;
@@ -41,13 +42,14 @@
         font-family: var(--font-mono);
       }
 
+      /* Main Body */
       .admin-body {
         flex: 1;
         display: flex;
         overflow: hidden;
       }
 
-      /* --- Editor (Left) --- */
+      /* Editor Pane (Left) */
       .editor-pane {
         width: 450px;
         overflow-y: auto;
@@ -57,6 +59,7 @@
         display: flex;
         flex-direction: column;
         gap: 24px;
+        flex-shrink: 0;
       }
 
       .section-group {
@@ -116,6 +119,7 @@
         resize: vertical;
         line-height: 1.5;
       }
+
       .code-area {
         font-family: var(--font-mono);
         font-size: 12px;
@@ -124,23 +128,44 @@
         min-height: 120px;
       }
 
-      .btn-add {
-        width: 100%;
-        padding: 12px;
-        background: var(--accent);
-        color: #fff;
-        border: none;
+      .btn-primary,
+      .btn-secondary,
+      .btn-danger {
+        padding: 8px 16px;
         border-radius: 6px;
         font-weight: 600;
         cursor: pointer;
-        margin-top: auto;
+        border: none;
+        font-size: 12px;
         transition: opacity 0.2s;
       }
-      .btn-add:hover {
+      .btn-primary {
+        background: var(--accent);
+        color: white;
+      }
+      .btn-secondary {
+        background: var(--bg-panel);
+        border: 1px solid var(--border);
+        color: var(--text-main);
+      }
+      .btn-danger {
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--danger);
+      }
+
+      .btn-block {
+        width: 100%;
+        display: block;
+        margin-top: 8px;
+      }
+      .btn-primary:hover,
+      .btn-secondary:hover,
+      .btn-danger:hover {
         opacity: 0.9;
       }
 
-      /* --- Preview (Center/Right) --- */
+      /* Preview Pane (Right) */
       .preview-container {
         flex: 1;
         background: #000;
@@ -178,7 +203,6 @@
         cursor: pointer;
         border-radius: 4px;
       }
-
       .toggle-btn.active {
         background: var(--bg-active);
         color: var(--text-main);
@@ -195,9 +219,8 @@
         background-size: 20px 20px;
       }
 
-      /* The Device/Card Mockup */
       .device-mockup {
-        width: 400px; /* Same as sidebar width */
+        width: 400px;
         height: 100%;
         max-height: 800px;
         background: var(--bg-panel);
@@ -209,187 +232,398 @@
         overflow: hidden;
       }
 
-      /* Source Code View */
-      .source-view {
-        display: none;
-        flex: 1;
-        padding: 24px;
-        overflow-y: auto;
-        color: var(--text-muted);
-        font-family: var(--font-mono);
-        font-size: 12px;
-        white-space: pre-wrap;
-      }
-      .source-view.visible {
-        display: block;
-      }
-
-      /* Reusing App Styles for preview content */
       .preview-header-mock {
         padding: 24px;
         border-bottom: 1px solid var(--border);
         background: var(--bg-sidebar);
       }
+
+      .source-view {
+        display: none;
+        flex: 1;
+        position: relative;
+      }
+      .source-view.visible {
+        display: block;
+      }
+
+      #code-output {
+        width: 100%;
+        height: 100%;
+        border: none;
+        padding: 24px;
+        resize: none;
+        background: #0d0d0d;
+        color: #a9b7c6;
+        font-family: var(--font-mono);
+        font-size: 13px;
+      }
+
+      /* Tree View Styles */
+      .tree-root {
+        margin-bottom: 24px;
+      }
+      .tree-stage {
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        margin-bottom: 8px;
+        overflow: hidden;
+      }
+      .tree-stage-header {
+        padding: 10px;
+        background: var(--bg-sidebar);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 12px;
+        border-bottom: 1px solid var(--border);
+      }
+      .tree-items {
+        display: none;
+        background: var(--bg-app);
+      }
+      .tree-items.expanded {
+        display: block;
+      }
+      .tree-item {
+        padding: 8px 12px;
+        border-bottom: 1px solid var(--border);
+        font-size: 12px;
+        display: flex;
+        justify-content: space-between;
+        cursor: pointer;
+        padding-left: 24px;
+      }
+      .tree-item:last-child {
+        border-bottom: none;
+      }
+      .tree-item:hover {
+        background: var(--bg-active);
+      }
+      .tree-item.active {
+        background: var(--bg-active);
+        color: var(--accent);
+      }
+
+      .icon-action {
+        background: transparent;
+        border: none;
+        color: var(--text-dim);
+        cursor: pointer;
+        padding: 2px 4px;
+        border-radius: 4px;
+      }
+      .icon-action:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--text-main);
+      }
+      .icon-danger:hover {
+        color: var(--danger);
+      }
+
+      .hidden {
+        display: none !important;
+      }
     </style>
   </head>
   <body>
-    <div class="admin-header">
+    <!-- Header -->
+    <header class="admin-header">
       <div class="admin-title">
         <h1>Roadmap Content Studio</h1>
-        <span>v2.0</span>
+        <span>v3.0 (Rebuilt)</span>
       </div>
       <div class="actions">
-        <button class="btn-primary" onclick="admin.copyJson()">
-          Copy All JSON
-        </button>
+        <button id="btn-copy-json" class="btn-primary">Copy All JSON</button>
       </div>
-    </div>
+    </header>
 
     <div class="admin-body">
-      <!-- EDITOR -->
-      <div class="editor-pane">
+      <!-- Left: Editor & Tree -->
+      <aside class="editor-pane">
+        <!-- Tree View -->
         <div class="section-group">
-          <div class="section-title">Stage Selection</div>
-          <select id="stage-select" class="input-text">
-            <option value="new">+ Create New Stage</option>
-          </select>
-
-          <div id="new-stage-inputs" style="display: none; margin-top: 12px">
-            <label class="form-label">New Stage Title</label>
-            <input
-              type="text"
-              id="stage-title-input"
-              class="input-text"
-              placeholder="Stage Name"
-            />
+          <div class="section-title">
+            Content Structure
+            <button id="btn-new-stage" class="icon-action" title="Add Stage">
+              +
+            </button>
+          </div>
+          <input
+            type="text"
+            id="inp-search-tree"
+            class="input-text"
+            placeholder="Search items..."
+            style="margin-bottom: 12px; font-size: 12px; padding: 6px 8px"
+          />
+          <div id="tree-root" class="tree-root">
+            <!-- Dynamic Tree Content -->
           </div>
         </div>
 
-        <div class="section-group">
-          <div class="section-title">Content Details</div>
+        <!-- Item Editor -->
+        <div id="item-editor" class="section-group hidden">
+          <div class="section-title">Edit Item</div>
 
-          <label class="form-label">Item Title</label>
+          <label class="form-label">Title</label>
           <input
             type="text"
             id="inp-title"
             class="input-text"
-            placeholder="Concept Name"
+            placeholder="Item Title"
           />
-
           <br /><br />
-          <label class="form-label">Short Description</label>
+
+          <label class="form-label">Description</label>
           <input
             type="text"
             id="inp-desc"
             class="input-text"
-            placeholder="Brief summary"
+            placeholder="Short description"
           />
-
           <br /><br />
-          <label class="form-label">Detailed Explanation</label>
+
+          <label class="form-label">Explanation</label>
           <textarea
             id="inp-expl"
             class="input-area"
-            placeholder="Explain the concept deeply..."
+            placeholder="Detailed explanation markdown..."
           ></textarea>
-        </div>
-
-        <div class="section-group">
-          <div class="section-title">Code & Practice</div>
+          <br /><br />
 
           <label class="form-label">Code Snippet</label>
           <textarea
             id="inp-code"
             class="input-area code-area"
-            placeholder="// Code example"
+            placeholder="// Code example..."
           ></textarea>
-
           <br /><br />
+
           <label class="form-label">Challenge Prompt</label>
           <textarea
             id="inp-prompt"
             class="input-area"
-            placeholder="Task for the user..."
+            placeholder="Challenge for the user..."
           ></textarea>
-
           <br /><br />
-          <label class="form-label">External Resources (URL | Label)</label>
-          <textarea
-            id="inp-resources"
-            class="input-area"
-            placeholder="https://mdn.com | MDN Docs
-https://youtube.com | Video Tutorial"
-          ></textarea>
+
+          <label class="form-label">Resources</label>
+          <div
+            id="resources-list"
+            style="
+              display: flex;
+              flex-direction: column;
+              gap: 8px;
+              margin-bottom: 8px;
+            "
+          >
+            <!-- Dynamic Rows -->
+          </div>
+          <button
+            id="btn-add-resource"
+            class="btn-secondary"
+            style="width: 100%; font-size: 11px"
+          >
+            + Add Resource
+          </button>
+
+          <div style="margin-top: 16px; display: flex; gap: 8px">
+            <button id="btn-save-item" class="btn-primary" style="flex: 1">
+              Save Changes
+            </button>
+            <button id="btn-delete-item" class="btn-danger">Delete</button>
+          </div>
         </div>
 
-        <button class="btn-add" onclick="admin.commitItem()">
-          Add Item to Stage
-        </button>
-      </div>
+        <!-- Empty State Message -->
+        <div id="editor-empty" class="section-group">
+          <p
+            style="text-align: center; color: var(--text-dim); font-size: 12px"
+          >
+            Select an item to edit or create a new stage.
+          </p>
+        </div>
+      </aside>
 
-      <!-- PREVIEW -->
-      <div class="preview-container">
+      <!-- Right: Preview -->
+      <main class="preview-container">
         <div class="preview-toolbar">
           <div class="toggle-group">
-            <button class="toggle-btn active" onclick="admin.setView('visual')">
-              Visual Preview
+            <button
+              id="btn-view-visual"
+              class="toggle-btn active"
+              data-view="visual"
+            >
+              Visual
             </button>
-            <button class="toggle-btn" onclick="admin.setView('code')">
-              Source Code
+            <button id="btn-view-edit" class="toggle-btn" data-view="edit">
+              Edit
+            </button>
+            <button id="btn-view-source" class="toggle-btn" data-view="source">
+              JSON
             </button>
           </div>
-          <!-- <span style="font-size: 11px; color: var(--text-dim);">Changes auto-update</span> -->
         </div>
 
-        <!-- VISUAL VIEW -->
+        <!-- Visual View -->
         <div id="view-visual" class="preview-content-wrapper">
           <div class="device-mockup">
-            <!-- Detail Header -->
             <div class="preview-header-mock">
-              <div class="meta-row">
-                <span class="mono-id">ID: PREVIEW</span>
-                <div class="actions">
-                  <label class="toggle-switch">
-                    <input type="checkbox" checked disabled />
-                    <span class="slider"></span>
-                  </label>
-                  <span class="label-text">Mastered</span>
-                </div>
-              </div>
-              <h2 id="prev-title">New Item</h2>
+              <h2 id="prev-title">Item Title</h2>
             </div>
-
-            <!-- Scroll Body -->
-            <div class="scroll-body">
-              <section class="info-block">
-                <h3>Concept</h3>
-                <p id="prev-expl">Start typing to see preview...</p>
-              </section>
-
-              <section class="info-block">
-                <h3>Implementation</h3>
-                <div class="code-block">
-                  <pre><code id="prev-code">// Code will appear here</code></pre>
-                </div>
-              </section>
-
-              <section class="info-block prompt-block">
-                <h3>Discovery Prompt</h3>
-                <p id="prev-prompt">Challenge will appear here...</p>
-              </section>
+            <div class="scroll-body" style="padding: 24px">
+              <p
+                id="prev-desc"
+                style="
+                  color: var(--text-dim);
+                  font-size: 14px;
+                  margin-bottom: 16px;
+                "
+              >
+                Description...
+              </p>
+              <div
+                id="prev-content"
+                style="
+                  font-size: 13px;
+                  line-height: 1.6;
+                  color: var(--text-muted);
+                "
+              >
+                <!-- Dynamic Preview -->
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- SOURCE CODE VIEW -->
-        <div id="view-code" class="source-view">
-          <pre id="code-output">// content.js output will appear here</pre>
+        <!-- Edit View -->
+        <div
+          id="view-edit"
+          class="source-view"
+          style="padding: 40px; overflow-y: auto; background: var(--bg-app)"
+        >
+          <div
+            id="item-editor"
+            class="hidden"
+            style="max-width: 600px; margin: 0 auto"
+          >
+            <div class="section-title">Edit Item Content</div>
+
+            <label class="form-label">Title</label>
+            <input
+              type="text"
+              id="inp-title"
+              class="input-text"
+              placeholder="Item Title"
+            />
+            <br /><br />
+
+            <label class="form-label">Description</label>
+            <input
+              type="text"
+              id="inp-desc"
+              class="input-text"
+              placeholder="Short description"
+            />
+            <br /><br />
+
+            <label class="form-label">Explanation</label>
+            <textarea
+              id="inp-expl"
+              class="input-area"
+              placeholder="Detailed explanation markdown..."
+            ></textarea>
+            <br /><br />
+
+            <label class="form-label">Code Snippet</label>
+            <textarea
+              id="inp-code"
+              class="input-area code-area"
+              placeholder="// Code example..."
+            ></textarea>
+            <br /><br />
+
+            <label class="form-label">Challenge Prompt</label>
+            <textarea
+              id="inp-prompt"
+              class="input-area"
+              placeholder="Challenge for the user..."
+            ></textarea>
+            <br /><br />
+
+            <label class="form-label">Resources</label>
+            <div
+              id="resources-list"
+              style="
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                margin-bottom: 8px;
+              "
+            >
+              <!-- Dynamic Rows -->
+            </div>
+            <button
+              id="btn-add-resource"
+              class="btn-secondary"
+              style="width: 100%; font-size: 11px"
+            >
+              + Add Resource
+            </button>
+
+            <div
+              style="
+                margin-top: 32px;
+                display: flex;
+                gap: 12px;
+                border-top: 1px solid var(--border);
+                padding-top: 24px;
+              "
+            >
+              <button
+                id="btn-save-item"
+                class="btn-primary"
+                style="flex: 1; padding: 12px"
+              >
+                Save Changes
+              </button>
+              <button
+                id="btn-delete-item"
+                class="btn-danger"
+                style="padding: 12px"
+              >
+                Delete Item
+              </button>
+            </div>
+          </div>
+
+          <div
+            id="editor-empty"
+            class="section-group"
+            style="text-align: center; padding: 40px"
+          >
+            <p style="color: var(--text-dim)">
+              Select an item from the sidebar to edit.
+            </p>
+          </div>
         </div>
-      </div>
+
+        <!-- Source View -->
+        <div id="view-source" class="source-view">
+          <textarea id="code-output" spellcheck="false"></textarea>
+          <button
+            id="btn-apply-source"
+            class="btn-primary"
+            style="position: absolute; bottom: 24px; right: 24px"
+          >
+            Apply & Save
+          </button>
+        </div>
+      </main>
     </div>
 
-    <!-- Scripts -->
-    <script src="content.js"></script>
-    <script src="admin.js"></script>
+    <script type="module" src="admin.js"></script>
   </body>
 </html>
