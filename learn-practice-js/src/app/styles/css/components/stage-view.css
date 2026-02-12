@@ -147,6 +147,32 @@
 }
 
 @media (max-width: 768px) {
+  .view-header {
+    height: 42px;
+    padding: 0 16px;
+  }
+
+  .view-header h1 {
+    font-size: 13px;
+  }
+
+  .list-item {
+    padding: 10px 16px;
+  }
+
+  .item-title {
+    font-size: 12px;
+  }
+
+  .item-desc {
+    font-size: 11px;
+  }
+
+  .stage-progress-container {
+    margin-left: 12px;
+    max-width: 140px;
+  }
+
   .stage-progress-text {
     font-size: 9px;
   }
