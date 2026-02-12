@@ -1,0 +1,32 @@
+:root {
+  /* Balanced Dark Theme with Purple Accents */
+  --bg-app: #0a0a0a; /* Pitch Black (Neutral) */
+  --bg-sidebar: #0a0a0a; /* Unified Neutral */
+  --bg-panel: #0a0a0a; /* Unified Neutral */
+  --bg-hover: #171717; /* Neutral Dark Gray */
+  --bg-active: #262626; /* Neutral Active Gray */
+
+  --border: #262626; /* Subtle Gray Border */
+  --border-highlight: #404040;
+
+  --text-main: #ededed; /* Pure White Text */
+  --text-muted: #a1a1aa; /* Neutral Gray Text */
+  --text-dim: #52525b; /* Dark Gray Text */
+
+  /* The Purple Pop */
+  --accent: #a855f7; /* Electric Purple */
+  --accent-dim: #7e22ce; /* Deep Purple */
+  --accent-bg: rgba(168, 85, 247, 0.1); /* Subtle Purple Tint */
+
+  --font-ui: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --sidebar-width: 260px;
+  --detail-width: 400px;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --sidebar-width: 280px; /* Slightly wider for touch */
+  }
+}

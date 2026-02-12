@@ -1,0 +1,155 @@
+/* --- DASHBOARD --- */
+.dashboard-container {
+  padding: 32px 48px;
+  flex: 1;
+  overflow-y: auto;
+  background: var(--bg-app);
+}
+
+.dashboard-container.hidden {
+  display: none;
+}
+
+.dash-header {
+  margin-bottom: 32px;
+}
+
+.dash-header h1 {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+  color: var(--text-main);
+}
+
+.dash-date {
+  font-family: var(--font-mono);
+  color: var(--text-dim);
+  font-size: 11px;
+}
+
+/* Hero Card */
+.dash-hero {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 48px;
+  position: relative;
+  overflow: hidden;
+}
+
+.dash-hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--accent);
+}
+
+.hero-content {
+  max-width: 600px;
+}
+
+.badg-hero {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.dash-hero h2 {
+  font-size: 20px;
+  margin: 0 0 12px 0;
+  font-weight: 600;
+}
+
+.dash-hero p {
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0 0 24px 0;
+}
+
+.hero-stat {
+  text-align: right;
+}
+
+#hero-percentage {
+  display: block;
+  font-size: 48px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  letter-spacing: -2px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.hero-stat label {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+}
+
+/* Grid */
+.dash-grid-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dash-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.dash-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  position: relative;
+}
+
+.dash-card:hover {
+  border-color: var(--text-muted);
+}
+
+.dash-card h3 {
+  font-size: 13px;
+  margin: 0 0 8px 0;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.dash-mini-bar {
+  height: 2px;
+  background: var(--bg-hover);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.dash-mini-fill {
+  height: 100%;
+  background: var(--accent);
+}
+
+.dash-meta {
+  font-size: 10px;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+}

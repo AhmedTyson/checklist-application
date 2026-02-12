@@ -1,0 +1,38 @@
+/* --- SYNTAX HIGHLIGHTING (Vibrant) --- */
+.token.comment {
+  color: #6a9955;
+  font-style: italic;
+} /* Green */
+.token.string {
+  color: #ce9178;
+} /* Orange */
+.token.keyword {
+  color: #569cd6;
+  font-weight: bold;
+} /* Blue */
+.token.boolean {
+  color: #569cd6;
+} /* Blue */
+.token.number {
+  color: #b5cea8;
+} /* Light Green */
+.token.builtin {
+  color: #4ec9b0;
+} /* Teal */
+.token.function {
+  color: #dcdcaa;
+} /* Yellow */
+.token.operator {
+  color: #d4d4d4;
+} /* White/Grey */
+.token.punctuation {
+  color: #ffd700;
+} /* Gold */
+
+.code-block pre {
+  margin: 0;
+  white-space: pre-wrap;
+  line-height: 1.5;
+  font-family: "JetBrains Mono", monospace;
+  color: #9cdcfe; /* Default Logic Color (Light Blue) */
+}
