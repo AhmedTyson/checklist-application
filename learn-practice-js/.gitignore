@@ -1,5 +1,9 @@
 node_modules/
+Roadmap-App-Windows/
 Roadmap-Windows/
+release-builds/
 dist/
+*.exe
+*.zip
 .DS_Store
 Thumbs.db
