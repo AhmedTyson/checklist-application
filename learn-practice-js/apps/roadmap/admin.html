@@ -10,15 +10,42 @@
     />
     <link rel="stylesheet" href="src/app/styles/main.css" />
     <link rel="stylesheet" href="src/admin/styles/admin.css" />
+    <link rel="stylesheet" href="src/shared/loader/loader.css" />
   </head>
   <body>
+    <!-- Global Loader -->
+    <div id="global-loader">
+      <div class="loader-spinner"></div>
+    </div>
+    <script src="src/shared/loader/loader.js"></script>
+
     <!-- Header -->
     <header class="admin-header">
       <div class="admin-title">
         <h1>Roadmap Content Studio</h1>
         <span>v3.0 (Rebuilt)</span>
       </div>
-      <div class="actions">
+      <div class="actions" style="display: flex; gap: 8px">
+        <a
+          href="index.html"
+          class="icon-btn"
+          title="Back to App"
+          style="text-decoration: none; border: 1px solid var(--border)"
+        >
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+        </a>
         <button id="btn-copy-json" class="icon-btn" title="Copy Key">
           <svg
             width="20"

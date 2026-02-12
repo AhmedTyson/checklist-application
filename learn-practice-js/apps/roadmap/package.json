@@ -1,0 +1,23 @@
+{
+  "name": "roadmap-app",
+  "version": "1.0.0",
+  "description": "A standalone roadmap and curriculum manager.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "package-win": "electron-packager . --overwrite --platform=win32 --arch=x64 --prune=true --out=release-builds",
+    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --prune=true --out=release-builds",
+    "package-linux": "electron-packager . --overwrite --platform=linux --arch=x64 --prune=true --out=release-builds"
+  },
+  "keywords": [
+    "roadmap",
+    "education",
+    "electron"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-packager": "^17.1.2"
+  }
+}

@@ -18,9 +18,9 @@ You don't need to write code to add content. We have an **Admin Panel**.
 
 1. Open `admin.html` in your browser.
 2. Use the UI to:
-    - Add Stages (Categories).
-    - Add Items (Lessons).
-    - Write explanations and code snippets.
+   - Add Stages (Categories).
+   - Add Items (Lessons).
+   - Write explanations and code snippets.
 3. Click **"Export Data"** (Floppy Disk Icon).
 4. Open the **Console** (F12 -> Console tab).
 5. Copy the text that appears (It starts with `[`).
@@ -57,3 +57,30 @@ To change the name (e.g., from "JS Curriculum" to "My Course"):
 - **🔍 Search**: I added a search bar to the sidebar. You can now filter lessons by name.
 - **🎨 UX**: Replaced annoying alerts with smooth "Toast" notifications (e.g., "Item Saved", "Stage Deleted").
 - **Modules**: The code is now modular and robust.
+
+## 6. Building a Desktop App (.exe)
+
+You can turn this web app into a real Windows `.exe` file!
+
+### Setup
+
+1.  Open your terminal in `apps/roadmap/`.
+2.  Run `npm install` (This installs Electron).
+
+### Running Locally as Desktop App
+
+To test it like a desktop app:
+
+```bash
+npm start
+```
+
+### Creating the .exe File
+
+To build the actual `.exe` file that you can send to people:
+
+```bash
+npm run package-win
+```
+
+This will create a `release-builds` folder containing your `roadmap-app.exe`.
