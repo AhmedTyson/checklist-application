@@ -160,24 +160,90 @@
           <!-- Stats Row -->
           <div id="stats-row" class="stats-row">
             <div class="stat-card">
-              <span class="stat-dot stat-dot--total"></span>
-              <span id="stat-total" class="stat-value">0</span>
-              <span class="stat-label">Total Items</span>
+              <div class="stat-icon stat-icon--total">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                  <polyline points="2 17 12 22 22 17"></polyline>
+                  <polyline points="2 12 12 17 22 12"></polyline>
+                </svg>
+              </div>
+              <div class="stat-data">
+                <span id="stat-total" class="stat-value">0</span>
+                <span class="stat-label">Total Items</span>
+              </div>
             </div>
             <div class="stat-card">
-              <span class="stat-dot stat-dot--done"></span>
-              <span id="stat-completed" class="stat-value">0</span>
-              <span class="stat-label">Completed</span>
+              <div class="stat-icon stat-icon--done">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+              </div>
+              <div class="stat-data">
+                <span id="stat-completed" class="stat-value">0</span>
+                <span class="stat-label">Completed</span>
+              </div>
             </div>
             <div class="stat-card">
-              <span class="stat-dot stat-dot--streak"></span>
-              <span id="stat-streak" class="stat-value">0</span>
-              <span class="stat-label">Day Streak</span>
+              <div class="stat-icon stat-icon--streak">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polygon
+                    points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"
+                  ></polygon>
+                </svg>
+              </div>
+              <div class="stat-data">
+                <span id="stat-streak" class="stat-value">0</span>
+                <span class="stat-label">Day Streak</span>
+              </div>
             </div>
             <div class="stat-card">
-              <span class="stat-dot stat-dot--remaining"></span>
-              <span id="stat-remaining" class="stat-value">0</span>
-              <span class="stat-label">Remaining</span>
+              <div class="stat-icon stat-icon--remaining">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+              </div>
+              <div class="stat-data">
+                <span id="stat-remaining" class="stat-value">0</span>
+                <span class="stat-label">Remaining</span>
+              </div>
             </div>
           </div>
 
