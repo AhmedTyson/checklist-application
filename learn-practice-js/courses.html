@@ -65,11 +65,11 @@
       </div>
     </div>
 
-    <!-- Create Course Modal -->
+    <!-- Create / Edit Course Modal -->
     <div id="modal-overlay" class="modal-overlay hidden">
       <div class="modal-card">
-        <h2>Create New Course</h2>
-        <p class="modal-desc">
+        <h2 id="modal-title">Create New Course</h2>
+        <p class="modal-desc" id="modal-desc">
           Set up a new learning track to organize your study material.
         </p>
 
@@ -286,6 +286,7 @@
     <script type="module">
       import {
         getCourses,
+        getCourse,
         saveCourse,
         deleteCourse,
         getCourseContent,
@@ -363,23 +364,38 @@
               <span class="course-card__icon">${iconMarkup}</span>
               ${
                 course.builtin
-                  ? `<span class="course-card__badge" style="display: flex; align-items: center; gap: 4px;">
-                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                        <polyline points="9 12 11 14 15 10"></polyline>
-                      </svg>
-                      Built-in
-                    </span>`
-                  : `<button class="course-card__delete" title="Delete Course">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="3 6 5 6 21 6"></polyline>
-                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                      </svg>
-                    </button>`
+                  ? `<div class="course-card__actions">
+                      <span class="course-card__badge" style="display: flex; align-items: center; gap: 4px;">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                          <polyline points="9 12 11 14 15 10"></polyline>
+                        </svg>
+                        Built-in
+                      </span>
+                      <button class="course-card__edit" title="Edit Course">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                      </button>
+                    </div>`
+                  : `<div class="course-card__actions">
+                      <button class="course-card__edit" title="Edit Course">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                      </button>
+                      <button class="course-card__delete" title="Delete Course">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="3 6 5 6 21 6"></polyline>
+                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                      </button>
+                    </div>`
               }
             </div>
             <h3 class="course-card__title">${course.title}</h3>
-            // ... truncated (already modified above)
             <p class="course-card__desc">${course.description || "No description"}</p>
             <div class="course-card__footer">
               <div class="course-card__ring">
@@ -398,11 +414,21 @@
             </div>
           `;
 
-          // Open course on click (but not on delete)
+          // Open course on click (but not on edit/delete)
           card.addEventListener("click", (e) => {
             if (e.target.closest(".course-card__delete")) return;
+            if (e.target.closest(".course-card__edit")) return;
             window.location.href = `index.html?courseId=${course.id}`;
           });
+
+          // Edit handler
+          const editBtn = card.querySelector(".course-card__edit");
+          if (editBtn) {
+            editBtn.addEventListener("click", (e) => {
+              e.stopPropagation();
+              openEditModal(course);
+            });
+          }
 
           // Delete handler
           const delBtn = card.querySelector(".course-card__delete");
@@ -441,56 +467,99 @@
 
       // --- Modal ---
 
+      let editingCourseId = null;
+
       function openModal() {
-        overlay.classList.remove("hidden");
+        editingCourseId = null;
+        document.getElementById("modal-title").textContent =
+          "Create New Course";
+        document.getElementById("modal-desc").textContent =
+          "Set up a new learning track to organize your study material.";
+        document.getElementById("btn-create").textContent = "Create Course";
         document.getElementById("inp-course-name").value = "";
         document.getElementById("inp-course-desc").value = "";
         selectedColor = "#a855f7";
         selectedIcon = "code";
-
-        // Reset swatches
-        document.querySelectorAll(".color-swatch").forEach((s) => {
-          s.classList.toggle("selected", s.dataset.color === selectedColor);
-        });
-
-        // Reset icons
-        document.querySelectorAll(".icon-option").forEach((opt) => {
-          opt.classList.toggle("selected", opt.dataset.icon === selectedIcon);
-        });
-
+        syncPickerUI();
+        overlay.classList.remove("hidden");
         setTimeout(
           () => document.getElementById("inp-course-name").focus(),
           100,
         );
       }
 
-      function closeModal() {
-        overlay.classList.add("hidden");
+      function openEditModal(course) {
+        editingCourseId = course.id;
+        document.getElementById("modal-title").textContent = "Edit Course";
+        document.getElementById("modal-desc").textContent =
+          "Update your course details below.";
+        document.getElementById("btn-create").textContent = "Save Changes";
+        document.getElementById("inp-course-name").value = course.title;
+        document.getElementById("inp-course-desc").value =
+          course.description || "";
+        selectedColor = course.color || "#a855f7";
+        selectedIcon = course.icon || "code";
+        syncPickerUI();
+        overlay.classList.remove("hidden");
+        setTimeout(
+          () => document.getElementById("inp-course-name").focus(),
+          100,
+        );
       }
 
-      function createCourse() {
+      function syncPickerUI() {
+        document.querySelectorAll(".color-swatch").forEach((s) => {
+          s.classList.toggle("selected", s.dataset.color === selectedColor);
+        });
+        document.querySelectorAll(".icon-option").forEach((opt) => {
+          opt.classList.toggle("selected", opt.dataset.icon === selectedIcon);
+        });
+      }
+
+      function closeModal() {
+        overlay.classList.add("hidden");
+        editingCourseId = null;
+      }
+
+      function submitModal() {
         const name = document.getElementById("inp-course-name").value.trim();
         if (!name) return;
 
-        const course = {
-          id: generateId(),
-          title: name,
-          icon: selectedIcon,
-          color: selectedColor,
-          description: document.getElementById("inp-course-desc").value.trim(),
-          builtin: false,
-          createdAt: new Date().toISOString().split("T")[0],
-        };
-
-        saveCourse(course);
-        // Initialize empty content
-        saveCourseContent(course.id, [
-          {
-            title: "Stage 1: Getting Started",
-            description: "Begin your learning journey.",
-            items: [],
-          },
-        ]);
+        if (editingCourseId) {
+          // Edit existing course
+          const existing = getCourse(editingCourseId);
+          if (!existing) return;
+          saveCourse({
+            ...existing,
+            title: name,
+            icon: selectedIcon,
+            color: selectedColor,
+            description: document
+              .getElementById("inp-course-desc")
+              .value.trim(),
+          });
+        } else {
+          // Create new course
+          const course = {
+            id: generateId(),
+            title: name,
+            icon: selectedIcon,
+            color: selectedColor,
+            description: document
+              .getElementById("inp-course-desc")
+              .value.trim(),
+            builtin: false,
+            createdAt: new Date().toISOString().split("T")[0],
+          };
+          saveCourse(course);
+          saveCourseContent(course.id, [
+            {
+              title: "Stage 1: Getting Started",
+              description: "Begin your learning journey.",
+              items: [],
+            },
+          ]);
+        }
         closeModal();
         renderCourses();
       }
@@ -502,7 +571,7 @@
         .addEventListener("click", closeModal);
       document
         .getElementById("btn-create")
-        .addEventListener("click", createCourse);
+        .addEventListener("click", submitModal);
       overlay.addEventListener("click", (e) => {
         if (e.target === overlay) closeModal();
       });
@@ -533,7 +602,7 @@
       document
         .getElementById("inp-course-name")
         .addEventListener("keydown", (e) => {
-          if (e.key === "Enter") createCourse();
+          if (e.key === "Enter") submitModal();
         });
 
       // Init

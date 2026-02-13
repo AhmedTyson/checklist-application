@@ -6,6 +6,7 @@
 
 const COURSES_KEY = "roadmapCourses";
 const BUILTIN_JS_ID = "javascript";
+const BUILTIN_OVERRIDES_KEY = "builtinOverrides";
 
 // --- Built-in JS Course Metadata ---
 function getBuiltinJSMeta() {
@@ -23,19 +24,35 @@ function getBuiltinJSMeta() {
 
 // --- Course CRUD ---
 
+function getBuiltinWithOverrides() {
+  const base = getBuiltinJSMeta();
+  try {
+    const overrides =
+      JSON.parse(localStorage.getItem(BUILTIN_OVERRIDES_KEY)) || {};
+    return { ...base, ...overrides, id: BUILTIN_JS_ID, builtin: true };
+  } catch {
+    return base;
+  }
+}
+
 export function getCourses() {
   const custom = loadCustomCourses();
-  // Built-in JS is always first
-  return [getBuiltinJSMeta(), ...custom];
+  return [getBuiltinWithOverrides(), ...custom];
 }
 
 export function getCourse(id) {
-  if (id === BUILTIN_JS_ID) return getBuiltinJSMeta();
+  if (id === BUILTIN_JS_ID) return getBuiltinWithOverrides();
   const courses = loadCustomCourses();
   return courses.find((c) => c.id === id) || null;
 }
 
 export function saveCourse(course) {
+  if (course.id === BUILTIN_JS_ID) {
+    // Save overrides for built-in course
+    const { id, builtin, createdAt, ...overrides } = course;
+    localStorage.setItem(BUILTIN_OVERRIDES_KEY, JSON.stringify(overrides));
+    return;
+  }
   const courses = loadCustomCourses();
   const idx = courses.findIndex((c) => c.id === course.id);
   if (idx >= 0) {

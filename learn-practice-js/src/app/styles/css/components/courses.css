@@ -104,6 +104,12 @@
   color: var(--accent);
 }
 
+.course-card__actions {
+  display: flex;
+  gap: 4px;
+}
+
+.course-card__edit,
 .course-card__delete {
   background: transparent;
   border: 1px solid transparent;
@@ -119,8 +125,15 @@
   opacity: 0;
 }
 
+.course-card:hover .course-card__edit,
 .course-card:hover .course-card__delete {
   opacity: 1;
+}
+
+.course-card__edit:hover {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+  border-color: rgba(59, 130, 246, 0.2);
 }
 
 .course-card__delete:hover {
