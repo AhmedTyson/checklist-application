@@ -9,8 +9,8 @@ import { toast } from "../shared/toast.js";
 import { contentData } from "../data/content.js";
 
 const appConfig = {
-  brandTitle: "JS Master",
-  brandSubtitle: "Curriculum",
+  brandTitle: "Synapse",
+  brandSubtitle: "Knowledge Pathway",
   accentColor: "#a855f7",
 };
 

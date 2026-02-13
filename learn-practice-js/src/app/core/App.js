@@ -64,7 +64,7 @@ class App {
     if (!header) return;
 
     if (this.courseId === "javascript") {
-      header.textContent = "JavaScript";
+      header.textContent = "Synapse";
     } else {
       const course = getCourse(this.courseId);
       if (course) {
