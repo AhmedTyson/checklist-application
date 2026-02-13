@@ -1,7 +1,8 @@
 {
-  "name": "roadmap-app",
+  "name": "synapse",
+  "productName": "Synapse",
   "version": "1.0.0",
-  "description": "A standalone roadmap and curriculum manager.",
+  "description": "A personal learning command center for tracking progress and mastering new technologies.",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -12,9 +13,11 @@
   "keywords": [
     "roadmap",
     "education",
-    "electron"
+    "electron",
+    "learning-tracker",
+    "curriculum"
   ],
-  "author": "Your Name",
+  "author": "Ahmed Tyson",
   "license": "MIT",
   "devDependencies": {
     "electron": "^33.0.0",

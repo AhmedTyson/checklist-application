@@ -62,66 +62,6 @@ class App {
     window.app = this;
   }
 
-  updateCourseBranding() {
-    const header = document.getElementById("sidebar-course-title");
-    const logoContainer = document.querySelector(".brand-logo");
-
-    // Helper to get icon (simplified version of courses.html)
-    const getIcon = (iconId, color) => {
-      if (!iconId) return null;
-      // Font Awesome
-      if (iconId.includes("fa-")) {
-        return `<i class="${iconId}" style="font-size: 24px; color: ${color};"></i>`;
-      }
-      // Custom SVG
-      if (iconId.trim().startsWith("<svg")) {
-        return iconId
-          .replace(/width="\d+"/, 'width="24"')
-          .replace(/height="\d+"/, 'height="24"');
-      }
-      // We don't have the full icon map here easily without importing,
-      // but for built-in JS we know it's fine.
-      // If it's a simple ID like 'code', we might need the map.
-      // For now, let's assume custom/FA or fallback to default logo if valid ID not found.
-      return null;
-    };
-
-    if (this.courseId === "javascript") {
-      header.textContent = "Synapse";
-      // JavaScript course now has a custom SVG icon (from store), so let's try to load it.
-      // But 'javascript' is built-in. Let's explicitly check store.
-      const builtin = builtinContent; // This is content, not metadata.
-      // Actually, we can get builtin metadata from CourseStore if we import it,
-      // but App.js already imports getCourse.
-      const course = getCourse("javascript");
-      if (course && course.icon && logoContainer) {
-        const iconMarkup = getIcon(course.icon, "#a855f7");
-        if (iconMarkup) logoContainer.innerHTML = iconMarkup;
-      }
-    } else {
-      const course = getCourse(this.courseId);
-      if (course) {
-        if (header) header.textContent = course.title;
-        // Apply custom accent color
-        if (course.color) {
-          document.documentElement.style.setProperty("--accent", course.color);
-        }
-        // Update Icon
-        if (logoContainer && course.icon) {
-          // Check if standard icon key (not starting with <svg or fa-)
-          // We need the standard map if we want to support 'code', 'cpu' etc.
-          // For this quick fix, I will only support FA and Custom SVG here,
-          // or revert to default if simple ID.
-          // Better: copy the map or import it?
-          // Importing from courses.html is messy.
-          // Let's just handle FA and Custom SVG for now as requested.
-          const icon = getIcon(course.icon, course.color);
-          if (icon) logoContainer.innerHTML = icon;
-        }
-      }
-    }
-  }
-
   // --- Navigation ---
 
   loadDashboard() {
@@ -221,21 +161,71 @@ class App {
 
   updateCourseBranding() {
     const titleEl = document.getElementById("sidebar-course-title");
+    const logoContainer = document.querySelector(".brand-logo"); // Target the logo container
     const subtitleEl = document.querySelector(".brand-subtitle");
 
     if (!titleEl || !subtitleEl) return;
 
-    // Get current course details
-    let courseTitle = "JavaScript"; // Default fallback
+    // Helper to get icon HTML
+    const getIconHTML = (iconId, color) => {
+      if (!iconId) return null;
+      // Font Awesome
+      if (iconId.includes("fa-")) {
+        return `<i class="${iconId}" style="font-size: 24px; color: ${color};"></i>`;
+      }
+      // Custom SVG
+      if (iconId.trim().startsWith("<svg")) {
+        return iconId
+          .replace(/width="\d+"/, 'width="24"')
+          .replace(/height="\d+"/, 'height="24"');
+      }
+      return null; // Fallback to default if not custom/FA
+    };
 
-    // Always use getCourse to handle both custom and built-in overrides
+    // Get current course details
+    let courseTitle = "Synapse";
+    let courseIcon = null; // Default null (keeps existing if any or logic to set default)
+    let courseColor = "#a855f7";
+
     const course = getCourse(this.courseId);
+
     if (course) {
       courseTitle = course.title;
+      courseIcon = course.icon;
+      courseColor = course.color || "#a855f7";
+
+      // Apply accent color
+      document.documentElement.style.setProperty("--accent", courseColor);
+    } else if (this.courseId === "javascript") {
+      // Fallback for initial JS course if not found in store for some reason
+      courseTitle = "JavaScript";
+      courseIcon = "javascript"; // Assume exists or handled
     }
 
+    // Update Title
     titleEl.textContent = courseTitle;
     subtitleEl.textContent = "Course Dashboard";
+
+    // Update Icon if possible
+    if (logoContainer && courseIcon) {
+      const iconHTML = getIconHTML(courseIcon, courseColor);
+      if (iconHTML) {
+        logoContainer.innerHTML = iconHTML;
+      } else {
+        // Revert to default Synapse logo if needed, or keep as is?
+        // If it's a simple ID ("code"), we might not be able to render it here easily
+        // without the full SVG map.
+        // Ideally we'd move the SVG map to a shared utility.
+        // For now, if getIconHTML returns null, we do nothing (keep default)
+        // OR we could strictly enforce the new brand logo.
+        // But the user asked for "Course Icon".
+        // If it's a built-in course like 'javascript' with a simple ID, we might miss it.
+        // Let's simple-check for 'javascript' simple ID.
+        if (courseIcon === "javascript") {
+          logoContainer.innerHTML = `<i class="fa-brands fa-js" style="font-size: 24px; color: ${courseColor};"></i>`;
+        }
+      }
+    }
   }
 
   resetData() {
