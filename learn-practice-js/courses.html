@@ -15,6 +15,13 @@
     <link rel="stylesheet" href="src/app/styles/css/base.css" />
     <link rel="stylesheet" href="src/app/styles/css/components/ui.css" />
     <link rel="stylesheet" href="src/app/styles/css/components/courses.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
   </head>
   <body>
     <!-- Global Loader -->
@@ -51,10 +58,13 @@
             />
           </svg>
           <div>
-            <h1>My Courses</h1>
-            <span class="courses-subtitle"
-              >Select a course to start learning</span
-            >
+            <h1>Synapse</h1>
+            <span class="courses-subtitle">Knowledge Pathway</span>
+            <p class="courses-desc">
+              Your personal learning command center. Create custom curriculums,
+              track your progress across multiple skills, and master new
+              technologies with a structured, game-like approach.
+            </p>
           </div>
         </div>
       </header>
@@ -69,21 +79,28 @@
     <div id="modal-overlay" class="modal-overlay hidden">
       <div class="modal-card">
         <h2 id="modal-title">Create New Course</h2>
-        <p class="modal-desc" id="modal-desc">
+        <p id="modal-desc" class="modal-desc">
           Set up a new learning track to organize your study material.
         </p>
 
-        <label class="form-label">Course Name</label>
+        <label class="form-label" for="inp-course-name">Course Name</label>
         <input
           type="text"
           id="inp-course-name"
           class="modal-input"
-          placeholder="e.g. Python, React, SQL..."
-          autocomplete="off"
+          placeholder="e.g. Advanced React Patterns"
         />
 
-        <label class="form-label">Course Icon</label>
-        <div id="icon-picker" class="icon-picker-grid">
+        <label class="form-label" for="inp-course-desc">Description</label>
+        <textarea
+          id="inp-course-desc"
+          class="modal-input"
+          placeholder="Short description of your course..."
+          rows="3"
+        ></textarea>
+
+        <label class="form-label">Icon</label>
+        <div class="icon-picker-grid">
           <div class="icon-option selected" data-icon="code" title="Code">
             <svg
               width="20"
@@ -145,6 +162,22 @@
               <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
               <line x1="8" y1="21" x2="16" y2="21"></line>
               <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+          </div>
+          <div class="icon-option" data-icon="javascript" title="JavaScript">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 50 50"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M 43.335938 4 L 6.667969 4 C 5.195313 4 4 5.195313 4 6.667969 L 4 43.332031 C 4 44.804688 5.195313 46 6.667969 46 L 43.332031 46 C 44.804688 46 46 44.804688 46 43.335938 L 46 6.667969 C 46 5.195313 44.804688 4 43.335938 4 Z M 27 36.183594 C 27 40.179688 24.65625 42 21.234375 42 C 18.140625 42 15.910156 39.925781 15 38 L 18.144531 36.097656 C 18.75 37.171875 19.671875 38 21 38 C 22.269531 38 23 37.503906 23 35.574219 L 23 23 L 27 23 Z M 35.675781 42 C 32.132813 42 30.121094 40.214844 29 38 L 32 36 C 32.816406 37.335938 33.707031 38.613281 35.589844 38.613281 C 37.171875 38.613281 38 37.824219 38 36.730469 C 38 35.425781 37.140625 34.960938 35.402344 34.199219 L 34.449219 33.789063 C 31.695313 32.617188 29.863281 31.148438 29.863281 28.039063 C 29.863281 25.179688 32.046875 23 35.453125 23 C 37.878906 23 39.621094 23.84375 40.878906 26.054688 L 37.910156 27.964844 C 37.253906 26.789063 36.550781 26.328125 35.453125 26.328125 C 34.335938 26.328125 33.628906 27.039063 33.628906 27.964844 C 33.628906 29.109375 34.335938 29.570313 35.972656 30.28125 L 36.925781 30.691406 C 40.171875 32.078125 42 33.496094 42 36.683594 C 42 40.117188 39.300781 42 35.675781 42 Z"
+              ></path>
             </svg>
           </div>
           <div class="icon-option" data-icon="database" title="Database">
@@ -220,65 +253,40 @@
           </div>
         </div>
 
-        <label class="form-label">Accent Color</label>
-        <div class="color-picker-row">
-          <div
-            class="color-swatch selected"
-            data-color="#a855f7"
-            style="background: #a855f7"
-          ></div>
-          <div
-            class="color-swatch"
-            data-color="#3b82f6"
-            style="background: #3b82f6"
-          ></div>
-          <div
-            class="color-swatch"
-            data-color="#22c55e"
-            style="background: #22c55e"
-          ></div>
-          <div
-            class="color-swatch"
-            data-color="#f59e0b"
-            style="background: #f59e0b"
-          ></div>
-          <div
-            class="color-swatch"
-            data-color="#ef4444"
-            style="background: #ef4444"
-          ></div>
-          <div
-            class="color-swatch"
-            data-color="#06b6d4"
-            style="background: #06b6d4"
-          ></div>
-          <div
-            class="color-swatch"
-            data-color="#ec4899"
-            style="background: #ec4899"
-          ></div>
-          <div
-            class="color-swatch"
-            data-color="#8b5cf6"
-            style="background: #8b5cf6"
-          ></div>
+        <div class="svg-section">
+          <button id="toggle-svg-input" class="btn-toggle-svg">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="16 18 22 12 16 6"></polyline>
+              <polyline points="8 6 2 12 8 18"></polyline>
+            </svg>
+            <span>Use Custom SVG Code</span>
+          </button>
+          <div id="svg-input-container" style="display: none">
+            <label class="form-label" style="font-size: 11px; margin-top: 8px"
+              >Paste SVG code:</label
+            >
+            <textarea
+              id="inp-course-svg"
+              class="modal-input modal-input--code"
+              placeholder="<svg ...>...</svg> OR fa-brands fa-js"
+            ></textarea>
+          </div>
         </div>
-
-        <label class="form-label"
-          >Description
-          <span style="color: var(--text-dim)">(optional)</span></label
-        >
-        <input
-          type="text"
-          id="inp-course-desc"
-          class="modal-input"
-          placeholder="Brief description..."
-          autocomplete="off"
-        />
 
         <div class="modal-actions">
           <button id="btn-cancel" class="btn-secondary">Cancel</button>
-          <button id="btn-create" class="btn-primary">Create Course</button>
+          <button id="btn-create" class="btn-primary" onclick="submitModal()">
+            Create Course
+          </button>
         </div>
       </div>
     </div>
@@ -312,7 +320,20 @@
           cpu: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="15" x2="23" y2="15"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="15" x2="4" y2="15"></line></svg>`,
           zap: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>`,
           layers: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>`,
+          javascript: `<svg width="${size}" height="${size}" viewBox="0 0 50 50" fill="none" stroke="${color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M 43.335938 4 L 6.667969 4 C 5.195313 4 4 5.195313 4 6.667969 L 4 43.332031 C 4 44.804688 5.195313 46 6.667969 46 L 43.332031 46 C 44.804688 46 46 44.804688 46 43.335938 L 46 6.667969 C 46 5.195313 44.804688 4 43.335938 4 Z M 27 36.183594 C 27 40.179688 24.65625 42 21.234375 42 C 18.140625 42 15.910156 39.925781 15 38 L 18.144531 36.097656 C 18.75 37.171875 19.671875 38 21 38 C 22.269531 38 23 37.503906 23 35.574219 L 23 23 L 27 23 Z M 35.675781 42 C 32.132813 42 30.121094 40.214844 29 38 L 32 36 C 32.816406 37.335938 33.707031 38.613281 35.589844 38.613281 C 37.171875 38.613281 38 37.824219 38 36.730469 C 38 35.425781 37.140625 34.960938 35.402344 34.199219 L 34.449219 33.789063 C 31.695313 32.617188 29.863281 31.148438 29.863281 28.039063 C 29.863281 25.179688 32.046875 23 35.453125 23 C 37.878906 23 39.621094 23.84375 40.878906 26.054688 L 37.910156 27.964844 C 37.253906 26.789063 36.550781 26.328125 35.453125 26.328125 C 34.335938 26.328125 33.628906 27.039063 33.628906 27.964844 C 33.628906 29.109375 34.335938 29.570313 35.972656 30.28125 L 36.925781 30.691406 C 40.171875 32.078125 42 33.496094 42 36.683594 C 42 40.117188 39.300781 42 35.675781 42 Z"></path></svg>`,
         };
+        // Check if iconId is raw SVG
+        if (iconId && iconId.trim().startsWith("<svg")) {
+          return iconId
+            .replace(/width="\d+"/, `width="${size}"`)
+            .replace(/height="\d+"/, `height="${size}"`);
+        }
+
+        // Check if iconId is Font Awesome class (e.g., "fa-brands fa-js")
+        if (iconId && iconId.includes("fa-")) {
+          return `<i class="${iconId}" style="font-size: ${size}px; color: ${color};"></i>`;
+        }
+
         return icons[iconId] || icons.book;
       }
 
@@ -478,6 +499,13 @@
         document.getElementById("btn-create").textContent = "Create Course";
         document.getElementById("inp-course-name").value = "";
         document.getElementById("inp-course-desc").value = "";
+        document.getElementById("inp-course-svg").value = "";
+        document.getElementById("svg-input-container").style.display = "none";
+        document.getElementById("toggle-svg-input").innerHTML = `
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+          <span>Use Custom SVG Code</span>
+        `;
+        document.getElementById("toggle-svg-input").classList.remove("active");
         selectedColor = "#a855f7";
         selectedIcon = "code";
         syncPickerUI();
@@ -497,8 +525,31 @@
         document.getElementById("inp-course-name").value = course.title;
         document.getElementById("inp-course-desc").value =
           course.description || "";
+
+        // Check if icon is raw SVG
+        const isRawSvg = course.icon && course.icon.trim().startsWith("<svg");
+        if (isRawSvg) {
+          document.getElementById("inp-course-svg").value = course.icon;
+          document.getElementById("svg-input-container").style.display =
+            "block";
+          document.getElementById("toggle-svg-input").innerHTML =
+            `<span>Hide Custom SVG</span>`;
+          document.getElementById("toggle-svg-input").classList.add("active");
+          selectedIcon = null; // No grid selection
+        } else {
+          document.getElementById("inp-course-svg").value = "";
+          document.getElementById("svg-input-container").style.display = "none";
+          document.getElementById("toggle-svg-input").innerHTML = `
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+            <span>Use Custom SVG Code</span>
+          `;
+          document
+            .getElementById("toggle-svg-input")
+            .classList.remove("active");
+          selectedIcon = course.icon || "code";
+        }
+
         selectedColor = course.color || "#a855f7";
-        selectedIcon = course.icon || "code";
         syncPickerUI();
         overlay.classList.remove("hidden");
         setTimeout(
@@ -525,6 +576,9 @@
         const name = document.getElementById("inp-course-name").value.trim();
         if (!name) return;
 
+        const rawSvg = document.getElementById("inp-course-svg").value.trim();
+        const finalIcon = rawSvg || selectedIcon || "code";
+
         if (editingCourseId) {
           // Edit existing course
           const existing = getCourse(editingCourseId);
@@ -532,7 +586,7 @@
           saveCourse({
             ...existing,
             title: name,
-            icon: selectedIcon,
+            icon: finalIcon,
             color: selectedColor,
             description: document
               .getElementById("inp-course-desc")
@@ -543,7 +597,7 @@
           const course = {
             id: generateId(),
             title: name,
-            icon: selectedIcon,
+            icon: finalIcon,
             color: selectedColor,
             description: document
               .getElementById("inp-course-desc")
@@ -576,16 +630,51 @@
         if (e.target === overlay) closeModal();
       });
 
+      // SVG Toggle
+      const toggleBtn = document.getElementById("toggle-svg-input");
+      const svgContainer = document.getElementById("svg-input-container");
+
+      toggleBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const isHidden = svgContainer.style.display === "none";
+        svgContainer.style.display = isHidden ? "block" : "none";
+
+        if (isHidden) {
+          toggleBtn.innerHTML = `<span>Hide Custom SVG</span>`;
+          toggleBtn.classList.add("active");
+        } else {
+          toggleBtn.innerHTML = `
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+            <span>Use Custom SVG Code</span>
+           `;
+          toggleBtn.classList.remove("active");
+        }
+      });
+
       // Icon picker
       document.querySelectorAll(".icon-option").forEach((opt) => {
         opt.addEventListener("click", () => {
           selectedIcon = opt.dataset.icon;
+          // Don't clear custom SVG value automatically, just let user know
+          // or we can hide the container? Let's just update selected state.
           document
             .querySelectorAll(".icon-option")
             .forEach((o) => o.classList.remove("selected"));
           opt.classList.add("selected");
         });
       });
+
+      // SVG Input clear picker
+      document
+        .getElementById("inp-course-svg")
+        .addEventListener("input", (e) => {
+          if (e.target.value.trim().length > 0) {
+            selectedIcon = null;
+            document
+              .querySelectorAll(".icon-option")
+              .forEach((o) => o.classList.remove("selected"));
+          }
+        });
 
       // Color picker
       document.querySelectorAll(".color-swatch").forEach((swatch) => {

@@ -18,6 +18,32 @@ export class TreeView {
     if (searchInput) {
       searchInput.addEventListener("input", (e) => this.filter(e.target.value));
     }
+
+    // Bind New Stage
+    const newStageBtn = document.getElementById("btn-new-stage");
+    if (newStageBtn) {
+      newStageBtn.onclick = () => this.handleNewStage();
+    }
+  }
+
+  handleNewStage() {
+    const title = prompt("New Stage Title:");
+    if (!title) return;
+
+    const state = this.store.getState();
+    const newData = [...state.data];
+    newData.push({
+      title,
+      items: [],
+    });
+
+    this.store.setState({
+      data: newData,
+      activeStage: newData.length - 1,
+      activeItem: null,
+    });
+
+    toast.show("Stage added", "success");
   }
 
   render(state) {

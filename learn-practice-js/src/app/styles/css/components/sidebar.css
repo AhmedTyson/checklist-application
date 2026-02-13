@@ -25,18 +25,21 @@
 .brand-text {
   display: flex;
   flex-direction: column;
-  line-height: 1.1;
+  line-height: normal;
+  gap: 8px;
 }
 
 .brand-title {
   font-weight: 700;
   color: var(--text-main);
   font-size: 14px;
+  line-height: 1.4;
   letter-spacing: -0.02em;
 }
 
 .brand-subtitle {
   font-size: 10px;
+  line-height: normal;
   color: var(--text-dim);
   font-weight: 500;
   text-transform: uppercase;

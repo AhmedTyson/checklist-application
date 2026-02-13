@@ -13,7 +13,7 @@ function getBuiltinJSMeta() {
   return {
     id: BUILTIN_JS_ID,
     title: "JavaScript",
-    icon: "zap",
+    icon: "javascript",
     color: "#a855f7",
     description:
       "Complete JavaScript mastery — from basics to senior-level patterns.",
