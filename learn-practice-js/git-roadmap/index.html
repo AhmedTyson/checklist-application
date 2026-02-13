@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git & GitHub Roadmap | Made by Tyson</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-app: #0a0a0a;
+            --bg-panel: #111111;
+            --bg-hover: #171717;
+            --border: #262626;
+            --border-highlight: #404040;
+            --text-main: #ededed;
+            --text-muted: #a1a1aa;
+            --text-dim: #52525b;
+            --accent: #a855f7;
+            --accent-bg: rgba(168, 85, 247, 0.1);
+            --font-ui: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: "JetBrains Mono", monospace;
+        }
+
+        /* Technical Terms Style */
+        .tech-term {
+            direction: ltr;
+            display: inline-block;
+            font-family: var(--font-mono);
+            color: var(--accent);
+            font-weight: 600;
+            background: var(--bg-hover);
+            padding: 0 6px;
+            border-radius: 4px;
+            margin: 0 4px;
+        }
+
+        * { box-sizing: border-box; }
+        
+        body {
+            background: var(--bg-app);
+            color: var(--text-main);
+            font-family: var(--font-ui);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        /* Header & Branding */
+        header {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 40px;
+            margin-bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 24px;
+        }
+
+        .brand {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            color: var(--accent);
+            font-size: 28px;
+            filter: drop-shadow(0 0 10px var(--accent-bg));
+        }
+
+        .brand-info h1 {
+            font-size: 22px;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-info span {
+            font-size: 12px;
+            color: var(--accent);
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+        }
+
+        .print-btn {
+            background: var(--bg-hover);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .print-btn:hover {
+            background: var(--bg-active);
+            border-color: var(--accent);
+            color: var(--text-main);
+        }
+
+        /* Content Sections */
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-top: 48px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-top: 32px;
+            margin-bottom: 16px;
+        }
+
+        h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--text-muted);
+        }
+
+        ul {
+            padding-left: 20px;
+            margin-bottom: 24px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            color: var(--text-muted);
+        }
+
+        li strong {
+            color: var(--text-main);
+        }
+
+        code, pre {
+            font-family: var(--font-mono);
+            background: var(--bg-hover);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: var(--accent);
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid var(--border);
+            margin: 40px 0;
+        }
+
+        /* Links */
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        a:hover {
+            border-bottom-color: var(--accent);
+        }
+
+        /* Cards/Boxes */
+        .highlight-box {
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .highlight-box::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--accent);
+        }
+
+        /* Timeline/Timestamps */
+        .timestamp {
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--accent);
+            margin-right: 8px;
+        }
+
+        /* Phase Styling */
+        .phase {
+            margin-bottom: 30px;
+        }
+
+        .phase-title {
+            font-weight: 700;
+            color: var(--text-main);
+            background: var(--accent-bg);
+            padding: 4px 12px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 13px;
+        }
+
+        /* Accessibility/Print */
+        @media print {
+            @page { 
+                margin: 0; 
+                size: 210mm 1350mm; 
+            }
+            body { 
+                background: var(--bg-app) !important; 
+                padding: 0; 
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .container { 
+                box-shadow: none; 
+                border-radius: 0; 
+                width: 100%; 
+                border: none; 
+                max-width: 100%;
+                padding: 40px;
+            }
+            .highlight-box, .phase, section, h2, h3 {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+            .print-btn, .lang-toggle, #loader {
+                display: none !important;
+            }
+        }
+
+        /* Language Toggle */
+        .lang-toggle {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            padding: 4px;
+            border-radius: 10px;
+            display: flex;
+            gap: 2px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .lang-btn {
+            padding: 6px 12px;
+            border-radius: 7px;
+            font-size: 11px;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+
+        .lang-btn.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        .lang-btn:hover:not(.active) {
+            background: var(--bg-hover);
+            color: var(--text-main);
+        }
+
+        /* Loading Overlay */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-app);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader-icon {
+            font-size: 48px;
+            color: var(--accent);
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 1; filter: drop-shadow(0 0 15px var(--accent)); }
+            100% { transform: scale(1); opacity: 0.5; }
+        }
+
+        .fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 20px;
+            }
+            header {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div id="loader">
+    <div class="loader-icon">
+        <i class="fa-solid fa-code-branch"></i>
+    </div>
+</div>
+
+<div class="lang-toggle">
+    <a href="index.html" class="lang-btn active" onclick="switchLang(event, 'index.html')">English</a>
+    <a href="arabic.html" class="lang-btn" onclick="switchLang(event, 'arabic.html')">العربية</a>
+</div>
+
+<div class="container">
+    <header>
+        <div class="brand">
+            <div class="brand-logo">
+                <i class="fa-solid fa-code-branch"></i>
+            </div>
+            <div class="brand-info">
+                <h1>Git & GitHub Roadmap</h1>
+                <span>Made by Tyson • For Beginners</span>
+            </div>
+        </div>
+        <button class="print-btn" onclick="window.print()">
+            <i class="fa-solid fa-print"></i> Print to PDF
+        </button>
+    </header>
+
+    <main>
+        <p>Here is your complete, expanded roadmap. It covers everything from the foundational video tutorial and visual committing, all the way to deploying your live projects and claiming your student benefits.</p>
+
+        <h2><i class="fa-solid fa-video"></i> 1. Start Here: Video Tutorial Breakdown</h2>
+        <p><strong><a href="https://www.youtube.com/watch?v=Q6G-J54vgKc" target="_blank">Git and GitHub | شخبط وانت متطمن</a></strong> by <em>بالعربي Big Data</em></p>
+        <p>This is a comprehensive, deep-dive video (nearly 6 hours long) that explains not just <em>how</em> to use Git, but <em>how Git thinks</em> under the hood.</p>
+
+        <div class="highlight-box">
+            <h4>Key Video Highlights & Timestamps:</h4>
+            <ul>
+                <li><span class="timestamp">[00:00:00]</span> <strong>Introduction to Version Control:</strong> Why we need it and the problems it solves.</li>
+                <li><span class="timestamp">[00:24:07]</span> <strong>How Git Works (Snapshots vs. Deltas):</strong> Understanding how Git saves incremental changes differently than older systems.</li>
+                <li><span class="timestamp">[00:54:00]</span> <strong>Git's Internal Architecture:</strong> How Git uses SHA-1 hashing to track files and history securely.</li>
+                <li><span class="timestamp">[01:13:22]</span> <strong>Practical Setup:</strong> Starting to use the terminal, setting up user config, and initializing your first repo.</li>
+                <li><span class="timestamp">[02:08:00]</span> <strong>Understanding Commits:</strong> What a commit actually is and how the timeline works.</li>
+                <li><span class="timestamp">[03:10:04]</span> <strong>Branching in Git:</strong> How to create branches, switch between them, and merge them safely.</li>
+                <li><span class="timestamp">[03:41:01]</span> <strong>Remote Repositories:</strong> Connecting your local work to remote servers.</li>
+                <li><span class="timestamp">[04:38:31]</span> <strong>GitHub Integration:</strong> Transitioning from local Git to collaborating on GitHub.</li>
+                <li><span class="timestamp">[05:45:46]</span> <strong>Open Source Workflows:</strong> How to fork repositories and submit Pull Requests (PRs).</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <h2><i class="fa-solid fa-route"></i> 2. The Git & GitHub Learning Roadmap</h2>
+        <p>Once you finish the video, follow this roadmap to solidify your skills step-by-step:</p>
+
+        <div class="phase">
+            <div class="phase-title">Phase 1: The Local Fundamentals</div>
+            <ul>
+                <li><strong>Concepts:</strong> Working Directory vs. Staging Area vs. Repository.</li>
+                <li><strong>Actions:</strong> Initializing a repository, checking status, staging files, and making your first commits.</li>
+                <li><strong>Goal:</strong> Be able to track your own solo project locally.</li>
+            </ul>
+        </div>
+
+        <div class="phase">
+            <div class="phase-title">Phase 2: Time Travel (Undoing Mistakes)</div>
+            <ul>
+                <li><strong>Concepts:</strong> The <code>HEAD</code> pointer and commit hashes.</li>
+                <li><strong>Actions:</strong> Viewing history, discarding uncommitted changes, and reverting to older versions.</li>
+                <li><strong>Goal:</strong> Feel confident that you can't "break" your code permanently.</li>
+            </ul>
+        </div>
+
+        <div class="phase">
+            <div class="phase-title">Phase 3: Branching & Merging</div>
+            <ul>
+                <li><strong>Concepts:</strong> Parallel development.</li>
+                <li><strong>Actions:</strong> Creating branches for new features, switching branches, merging features back into the main codebase, and handling merge conflicts.</li>
+                <li><strong>Goal:</strong> Develop features safely without breaking the main working code.</li>
+            </ul>
+        </div>
+
+        <div class="phase">
+            <div class="phase-title">Phase 4: Remote Repositories (GitHub)</div>
+            <ul>
+                <li><strong>Concepts:</strong> Local vs. Remote, Authentication (SSH/Tokens).</li>
+                <li><strong>Actions:</strong> Pushing local code to GitHub, cloning existing repositories, and pulling updates from colleagues.</li>
+                <li><strong>Goal:</strong> Back up your code to the cloud and prepare for collaboration.</li>
+            </ul>
+        </div>
+
+        <div class="phase">
+            <div class="phase-title">Phase 5: Collaboration & Open Source</div>
+            <ul>
+                <li><strong>Concepts:</strong> GitHub Flow, Forks, and Pull Requests.</li>
+                <li><strong>Actions:</strong> Forking someone else's repo, pushing changes to your fork, and opening a Pull Request for review.</li>
+                <li><strong>Goal:</strong> Contribute to open-source projects or work smoothly on a corporate team.</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <h2><i class="fa-solid fa-book-open"></i> 3. PDF Documentations to Study</h2>
+        <p>To deepen your understanding, here are the absolute best free PDF resources to study alongside your practice:</p>
+
+        <ol>
+            <li>
+                <p><strong><a href="https://education.github.com/git-cheat-sheet-education.pdf" target="_blank">GitHub Education Git Cheat Sheet (PDF)</a></strong></p>
+                <p><em>Why read it:</em> A highly visual, 2-page PDF reference guide that you can print out and keep next to your keyboard. It covers all the daily commands you will need at a glance.</p>
+            </li>
+        </ol>
+
+        <hr>
+
+        <h2><i class="fa-solid fa-laptop-code"></i> 4. How to Commit Using Graphical Interfaces (No CMD)</h2>
+        <p>You do not have to use the terminal to be great at Git! Modern IDEs have excellent built-in Git tools.</p>
+
+        <h3>How to Commit in Visual Studio Code (VS Code)</h3>
+        <ol>
+            <li><strong>Open the Source Control Tab:</strong> On the far left sidebar, click the icon that looks like a tree branch with nodes (or press <code>Ctrl+Shift+G</code>).</li>
+            <li><strong>Stage Your Changes:</strong> Hover over the files you changed under the "Changes" list. Click the <strong><code>+</code> (plus icon)</strong> next to the file to move it to "Staged Changes" (this is the equivalent of <code>git add</code>).</li>
+            <li><strong>Write a Commit Message:</strong> In the text box at the top of the Source Control panel, type a short, descriptive message about what you changed (e.g., "Fix login button color").</li>
+            <li><strong>Commit:</strong> Click the big blue <strong>Commit</strong> button (or the checkmark <code>✓</code> icon at the top).</li>
+            <li><em>Optional (Push to GitHub):</em> If you want to send this to GitHub, click the <strong>Sync Changes</strong> button that appears, or click the <code>...</code> menu and select <strong>Pull, Push -> Push</strong>.</li>
+        </ol>
+
+        <h3>How to Commit in Visual Studio Community (2022 / 2026)</h3>
+        <p>Microsoft has highly integrated Git into the core Visual Studio Community experience.</p>
+        <ol>
+            <li><strong>Open the Git Changes Window:</strong> Go to the top menu and click <strong>View</strong> -> <strong>Git Changes</strong> (or press <code>Ctrl+0, Ctrl+G</code>).</li>
+            <li><strong>Stage Your Changes:</strong> In the Git Changes window, you will see your modified files under "Changes". Hover over a file and click the <strong><code>+</code> (plus icon)</strong> to stage it.
+                <p><em>Note: If you just want to commit everything, you can skip staging and let VS do it automatically in the next step.</em></p>
+            </li>
+            <li><strong>Write a Commit Message:</strong> Type your description in the text box provided in the Git Changes window.</li>
+            <li><strong>Commit:</strong> Click the dropdown button that says <strong>Commit All</strong> or <strong>Commit Staged</strong> (depending on if you staged specific files).</li>
+            <li><em>Optional (Push to GitHub):</em> After committing, you will see an upward arrow icon (Push). Click it to push your changes to your remote GitHub repository.</li>
+        </ol>
+
+        <hr>
+
+        <h2><i class="fa-solid fa-rocket"></i> 5. How to Deploy a Website using GitHub Pages</h2>
+        <p>Deploying a front-end project like PETOPIA or Cera takes only a few clicks and gives you a live, shareable URL for free. This is perfect for static sites (HTML, CSS, JavaScript) or built frameworks like React.</p>
+
+        <div class="highlight-box">
+            <h4>Step-by-Step Deployment:</h4>
+            <ol>
+                <li><strong>Prepare Your Repository:</strong> Ensure your project is pushed to a GitHub repository. Your main entry file must be named <code>index.html</code> and placed in the root folder.</li>
+                <li><strong>Go to Settings:</strong> Open your repository on GitHub and click on the <strong>Settings</strong> tab.</li>
+                <li><strong>Navigate to Pages:</strong> Scroll down the left sidebar and click on <strong>Pages</strong> (under the "Code and automation" section).</li>
+                <li><strong>Choose the Source:</strong> Under "Build and deployment," look for the "Source" dropdown and select <strong>Deploy from a branch</strong>.</li>
+                <li><strong>Select the Branch:</strong> In the Branch dropdown, select your main branch (usually <code>main</code> or <code>master</code>) and keep the root folder selected. Click <strong>Save</strong>.</li>
+                <li><strong>Wait for the Build:</strong> GitHub will automatically start building your site. After a few minutes, refresh the page, and you will see your live link at the top (usually formatted as <code>https://[your-username].github.io/[repo-name]/</code>).</li>
+            </ol>
+        </div>
+
+        <hr>
+
+        <h2><i class="fa-solid fa-graduation-cap"></i> 6. How to Get and Use the GitHub Student Developer Pack</h2>
+        <p>Applying with a Capital University email address unlocks the GitHub Student Developer Pack, which provides free access to premium developer tools, cloud hosting, and software licenses that usually cost hundreds of dollars.</p>
+
+        <h4>How to Apply:</h4>
+        <ol>
+            <li><strong>Go to GitHub Education:</strong> Visit <a href="https://education.github.com/pack" target="_blank">education.github.com/pack</a>.</li>
+            <li><strong>Log In & Verify:</strong> Sign in with your GitHub account and click "Get your Pack."</li>
+            <li><strong>Submit Proof:</strong> Add your university email address. If prompted, you may need to upload a clear photo of your student ID, a current class schedule, or an enrollment verification letter.</li>
+            <li><strong>Wait for Approval:</strong> Applications are usually processed within a few days.</li>
+        </ol>
+
+        <div class="highlight-box">
+            <h4>Top Benefits to Use:</h4>
+            <ul>
+                <li><strong>GitHub Copilot Pro:</strong> Free access to the AI pair programmer directly inside your IDE.</li>
+                <li><strong>Free Domains & Hosting:</strong> Use Namecheap (1-year free domain) and DigitalOcean ($200 credit) to host full-stack projects, databases, or APIs that GitHub Pages cannot support.</li>
+                <li><strong>Pro IDEs:</strong> Free access to the entire JetBrains suite, which is excellent for heavy backend development.</li>
+            </ul>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2026 Made by Tyson • Git & GitHub Roadmap for Beginners
+    </footer>
+</div>
+
+</body>
+
+<script>
+    // Handle Page Load
+    window.addEventListener('load', () => {
+        hideLoader();
+    });
+
+    // Handle History Navigation (Back/Forward)
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted) {
+            hideLoader();
+        }
+    });
+
+    function hideLoader() {
+        const loader = document.getElementById('loader');
+        setTimeout(() => {
+            loader.classList.add('fade-out');
+        }, 200);
+    }
+
+    // Handle Language Switch
+    function switchLang(e, url) {
+        const currentPath = window.location.pathname;
+        if (currentPath.endsWith(url)) return;
+        
+        e.preventDefault();
+        const loader = document.getElementById('loader');
+        loader.classList.remove('fade-out');
+        
+        setTimeout(() => {
+            window.location.href = url;
+        }, 300);
+    }
+</script>
+</html>

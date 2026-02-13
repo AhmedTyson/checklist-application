@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خارطة طريق الـ Git و GitHub | By Tyson</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-app: #0a0a0a;
+            --bg-panel: #111111;
+            --bg-hover: #171717;
+            --border: #262626;
+            --border-highlight: #404040;
+            --text-main: #ededed;
+            --text-muted: #a1a1aa;
+            --text-dim: #52525b;
+            --accent: #a855f7;
+            --accent-bg: rgba(168, 85, 247, 0.1);
+            --font-ui: "Noto Sans Arabic", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: "JetBrains Mono", monospace;
+        }
+
+        * { box-sizing: border-box; }
+        
+        body {
+            background: var(--bg-app);
+            color: var(--text-main);
+            font-family: var(--font-ui);
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        /* Technical Terms in English */
+        .tech-term {
+            direction: ltr;
+            display: inline-block;
+            font-family: var(--font-mono);
+            color: var(--accent);
+            font-weight: 600;
+            background: var(--bg-hover);
+            padding: 0 6px;
+            border-radius: 4px;
+            margin: 0 4px;
+        }
+
+        /* Header & Branding */
+        header {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 40px;
+            margin-bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 24px;
+        }
+
+        .brand {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            color: var(--accent);
+            font-size: 28px;
+            filter: drop-shadow(0 0 10px var(--accent-bg));
+        }
+
+        .brand-info h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: -0.01em;
+        }
+
+        .brand-info span {
+            font-size: 13px;
+            color: var(--accent);
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .print-btn {
+            background: var(--bg-hover);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            font-family: var(--font-ui);
+        }
+
+        .print-btn:hover {
+            background: var(--bg-active);
+            border-color: var(--accent);
+            color: var(--text-main);
+        }
+
+        /* Content Sections */
+        h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-top: 48px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-top: 32px;
+            margin-bottom: 16px;
+        }
+
+        h4 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: var(--text-muted);
+        }
+
+        ul {
+            padding-right: 25px;
+            margin-bottom: 24px;
+            list-style-type: disc;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: var(--text-muted);
+        }
+
+        li strong {
+            color: var(--text-main);
+        }
+
+        code, pre {
+            direction: ltr;
+            display: inline-block;
+            font-family: var(--font-mono);
+            background: var(--bg-hover);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: var(--accent);
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid var(--border);
+            margin: 40px 0;
+        }
+
+        /* Links */
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        a:hover {
+            border-bottom-color: var(--accent);
+        }
+
+        /* Cards/Boxes */
+        .highlight-box {
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .highlight-box::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--accent);
+        }
+
+        /* Timeline/Timestamps */
+        .timestamp {
+            direction: ltr;
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--accent);
+            margin-left: 10px;
+        }
+
+        /* Phase Styling */
+        .phase {
+            margin-bottom: 35px;
+        }
+
+        .phase-title {
+            font-weight: 700;
+            color: var(--text-main);
+            background: var(--accent-bg);
+            padding: 4px 16px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .explanation {
+            font-size: 14px;
+            color: var(--text-dim);
+            margin-top: 4px;
+            display: block;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 14px;
+        }
+
+        /* Accessibility/Print */
+        @media print {
+            @page { 
+                margin: 0; 
+                size: 210mm 1370mm; 
+            }
+            body { 
+                background: var(--bg-app) !important; 
+                padding: 0; 
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                color: #ededed !important;
+            }
+            .container { 
+                box-shadow: none; 
+                border-radius: 0; 
+                width: 100%; 
+                border: none; 
+                max-width: 100%;
+                padding: 40px;
+            }
+            .highlight-box, .phase, section, h2, h3 {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+            .print-btn, .lang-toggle, #loader {
+                display: none !important;
+            }
+        }
+
+        /* Language Toggle */
+        .lang-toggle {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            padding: 4px;
+            border-radius: 10px;
+            display: flex;
+            gap: 2px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 1000;
+            direction: ltr; /* Keep toggle buttons LTR for consistency */
+        }
+
+        .lang-btn {
+            padding: 6px 12px;
+            border-radius: 7px;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--text-muted);
+            transition: all 0.2s;
+            font-family: var(--font-ui);
+        }
+
+        .lang-btn.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        .lang-btn:hover:not(.active) {
+            background: var(--bg-hover);
+            color: var(--text-main);
+        }
+
+        /* Loading Overlay */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-app);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader-icon {
+            font-size: 48px;
+            color: var(--accent);
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 1; filter: drop-shadow(0 0 15px var(--accent)); }
+            100% { transform: scale(1); opacity: 0.5; }
+        }
+
+        .fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 20px;
+            }
+            header {
+                flex-direction: column;
+                gap: 20px;
+                align-items: center;
+                text-align: center;
+            }
+            .brand {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div id="loader">
+    <div class="loader-icon">
+        <i class="fa-solid fa-code-branch"></i>
+    </div>
+</div>
+
+<div class="lang-toggle">
+    <a href="index.html" class="lang-btn" onclick="switchLang(event, 'index.html')">English</a>
+    <a href="arabic.html" class="lang-btn active" onclick="switchLang(event, 'arabic.html')">العربية</a>
+</div>
+
+<div class="container">
+    <header>
+        <div class="brand">
+            <div class="brand-logo">
+                <i class="fa-solid fa-code-branch"></i>
+            </div>
+            <div class="brand-info">
+                <h1>خارطة طريق الـ Git و GitHub</h1>
+                <span>By Tyson • للمبتدئين</span>
+            </div>
+        </div>
+        <button class="print-btn" onclick="window.print()">
+            <i class="fa-solid fa-print"></i> اطبع لـ PDF
+        </button>
+    </header>
+
+    <main>
+        <p>دي خارطة الطريق الكاملة بتاعتك. هنمشي فيها مع بعض من أول الأساسيات وفيديوهات الشرح، لحد ما ترفع مشاريعك لايف وتاخد مميزات الطلبة من GitHub.</p>
+
+        <h2><i class="fa-solid fa-video"></i> 1. ابدأ من هنا: شرح الفيديو (Tutorial)</h2>
+        <p>فيديو <strong><a href="https://www.youtube.com/watch?v=Q6G-J54vgKc" target="_blank">Git and GitHub | شخبط وانت متطمن</a></strong> بتاع قناة <em>بالعربي Big Data</em></p>
+        <p>الفيديو ده مرجع قوي جداً (حوالي 6 ساعات)، مش بس بيعلمك إزاي تستخدم Git، ده بيفهمك الـ Git بيفكر إزاي أصلاً من جواه.</p>
+
+        <div class="highlight-box">
+            <h4>أهم لقطات الفيديو والوقت بتاعها:</h4>
+            <ul>
+                <li><span class="timestamp">[00:00:00]</span> <strong>مقدمة عن الـ Version Control:</strong> ليه بنحتاجه وإيه المشاكل اللي بيحلها.</li>
+                <li><span class="timestamp">[00:24:07]</span> <strong>إزاي Git بيشتغل (Snapshots vs. Deltas):</strong> فهم إزاي Git بيحفظ التغييرات اللي بتعملها.</li>
+                <li><span class="timestamp">[00:54:00]</span> <strong>بنية Git الداخلية (Internal Architecture):</strong> إزاي بيستخدم الـ SHA-1 hashing عشان يتابع الملفات بأمان.</li>
+                <li><span class="timestamp">[01:13:22]</span> <strong>التطبيق العملي (Practical Setup):</strong> بداية استخدام الـ Terminal، وإعداد الـ User Config، وعمل أول <span class="tech-term">Repo</span> ليك.</li>
+                <li><span class="timestamp">[02:08:00]</span> <strong>فهم الـ Commits:</strong> يعني إيه <span class="tech-term">Commit</span> أصلاً والدنيا بتمشي إزاي في الـ Timeline.</li>
+                <li><span class="timestamp">[03:10:04]</span> <strong>الـ Branching في Git:</strong> إزاي تعمل <span class="tech-term">Branches</span> وتتنقل بينهم وتعملهم <span class="tech-term">Merge</span> بأمان.</li>
+                <li><span class="timestamp">[03:41:01]</span> <strong>الـ Remote Repositories:</strong> إزاي تربط شغلك المحلي (Local) بسيرفرات بعيدة (Remote).</li>
+                <li><span class="timestamp">[04:38:31]</span> <strong>التعامل مع GitHub:</strong> الانتقال من الـ Git العادي للتعاون مع الناس على GitHub.</li>
+                <li><span class="timestamp">[05:45:46]</span> <strong>طريقة شغل الـ Open Source:</strong> إزاي تعمل <span class="tech-term">Fork</span> وتطلب <span class="tech-term">Pull Requests (PRs)</span>.</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <h2><i class="fa-solid fa-route"></i> 2. خارطة طريق تعلم الـ Git و GitHub</h2>
+        <p>بعد ما تخلص الفيديو، امشي على الخطوات دي عشان تثبت المعلومة بالتطبيق العملي:</p>
+
+        <div class="phase">
+            <div class="phase-title">المرحلة الأولى: أساسيات الـ Local</div>
+            <ul>
+                <li><strong>المفاهيم:</strong> الفرق بين الـ <span class="tech-term">Working Directory</span> والـ <span class="tech-term">Staging Area</span> والـ <span class="tech-term">Repository</span>.</li>
+                <li><strong>الأفعال:</strong> تعمل <span class="tech-term">Init</span> للحاجة، وتشوف الـ <span class="tech-term">Status</span>، وتعمل <span class="tech-term">Stage</span> للملفات، وتعمل أول <span class="tech-term">Commits</span> ليك.</li>
+                <li><strong>الهدف:</strong> تبقى عارف تتابع مشروعك الشخصي على جهازك لوحدك.</li>
+            </ul>
+        </div>
+
+        <div class="phase">
+            <div class="phase-title">المرحلة التانية: السفر عبر الزمن (تصليح الأخطاء)</div>
+            <ul>
+                <li><strong>المفاهيم:</strong> الـ <span class="tech-term">HEAD</span> والـ <span class="tech-term">Commit Hashes</span>.</li>
+                <li><strong>الأفعال:</strong> تشوف الـ <span class="tech-term">History</span>، وتمسح التغييرات اللي لسه معملتلهاش <span class="tech-term">Commit</span>، وترجع لنسخة قديمة.</li>
+                <li><strong>الهدف:</strong> تبقى واثق إنك مستحيل "تبوظ" الكود بتاعك نهائياً، دايماً فيه رجعة.</li>
+            </ul>
+        </div>
+
+        <div class="phase">
+            <div class="phase-title">المرحلة التالتة: الـ Branching والـ Merging</div>
+            <ul>
+                <li><strong>المفاهيم:</strong> التطوير بالتوازي (Parallel Development).</li>
+                <li><strong>الأفعال:</strong> تعمل <span class="tech-term">Branch</span> جديد لميزة معينة، وتنقل بين الفروع، وتدمج الميزات دي في الكود الأساسي، وتحل الـ <span class="tech-term">Merge Conflicts</span>.</li>
+                <li><strong>الهدف:</strong> تطور ميزات جديدة بأمان من غير ما تبوظ النسخة "الشغالة" من الكود.</li>
+            </ul>
+        </div>
+
+        <div class="phase">
+            <div class="phase-title">المرحلة الرابعة: الـ Remote (GitHub)</div>
+            <ul>
+                <li><strong>المفاهيم:</strong> الـ <span class="tech-term">Local</span> ضد الـ <span class="tech-term">Remote</span>، وطرق الـ <span class="tech-term">Authentication</span> (زي الـ SSH والتـوكنز).</li>
+                <li><strong>الأفعال:</strong> تعمل <span class="tech-term">Push</span> للكود على GitHub، وتعمل <span class="tech-term">Clone</span> لمشاريع موجودة، وتسحب التحديثات (<span class="tech-term">Pull</span>).</li>
+                <li><strong>الهدف:</strong> تحفظ نسخة من الكود بتاعك في الـ Cloud وتجهز نفسك للتعاون مع غيرك.</li>
+            </ul>
+        </div>
+
+        <div class="phase">
+            <div class="phase-title">المرحلة الخامسة: التعاون والـ Open Source</div>
+            <ul>
+                <li><strong>المفاهيم:</strong> الـ <span class="tech-term">GitHub Flow</span>، والـ <span class="tech-term">Forks</span>، والـ <span class="tech-term">Pull Requests</span>.</li>
+                <li><strong>الأفعال:</strong> تعمل <span class="tech-term">Fork</span> لمشروع حد تاني، وترفع تعديلاتك، وتطلب <span class="tech-term">Pull Request</span> عشان تتراجع وتتدمج.</li>
+                <li><strong>الهدف:</strong> تساهم في مشاريع مفتوحة المصدر أو تشتغل مع فريق في شركة بكل سلاسة.</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <h2><i class="fa-solid fa-book-open"></i> 3. ملفات PDF ومصادر للمذاكرة</h2>
+        <p>عشان تعمق فهمك، دي أحسن مصادر PDF مجانية تذاكر منها وأنت بتطبق:</p>
+
+        <ol>
+            <li>
+                <p><strong><a href="https://education.github.com/git-cheat-sheet-education.pdf" target="_blank">ورقة غش GitHub (Cheat Sheet)</a></strong></p>
+                <p><em>ليه تذاكرها:</em> دي ورقة PDF من صفحتين، فيها كل الأوامر اللي هتحتاجها يومياً بشكل بصري سهل. اطبعها وخليها جنبك وأنت شغال.</p>
+            </li>
+        </ol>
+
+        <hr>
+
+        <h2><i class="fa-solid fa-laptop-code"></i> 4. إزاي تعمل Commit بالواجهة الرسومية (من غير CMD)</h2>
+        <p>مش لازم تستخدم الـ Terminal عشان تبقى شاطر في Git! الـ IDEs الحديثة فيها أدوات ممتازة.</p>
+
+        <h3>طريقة الـ Commit في VS Code</h3>
+        <ol>
+            <li><strong>افتح الـ Source Control:</strong> من القائمة اللي على الشمال، دوس على الأيقونة اللي شبه الشجرة (أو اختصار <code>Ctrl+Shift+G</code>).</li>
+            <li><strong>اعمل Stage للتغييرات:</strong> اقف بالماوس على الملفات اللي غيرتها، ودوس على علامة الزائد <strong><code>+</code></strong>. ده معناه إنك بتعمل <code>git add</code>.</li>
+            <li><strong>اكتب رسالة الـ Commit:</strong> في الصندوق اللي فوق، اكتب رسالة قصيرة بتوصف أنت غيرت إيه (مثلاً: "صلحت لون زرار الدخول").</li>
+            <li><strong>اعمل Commit:</strong> دوس على الزرار الأزرق الكبير اللي مكتوب عليه <strong>Commit</strong>.</li>
+            <li><em>خطوة زيادة (Push لـ GitHub):</em> لو عايز تبعت التغييرات لـ GitHub، دوس على <strong>Sync Changes</strong> اللي هتظهر.</li>
+        </ol>
+
+        <h3>طريقة الـ Commit في Visual Studio Community</h3>
+        <ol>
+            <li><strong>افتح نافذة Git Changes:</strong> من المنيو اللي فوق اختار <strong>View</strong> وبعدين <strong>Git Changes</strong> (أو <code>Ctrl+0, Ctrl+G</code>).</li>
+            <li><strong>اعمل Stage:</strong> هتلاقي الملفات المتغيرة تحت كلمة "Changes"، دوس على علامة الـ <strong><code>+</code></strong> عشان تعملها Stage.</li>
+            <li><strong>اكتب الرسالة:</strong> اكتب الوصف بتاعك في مكان الكتابة المخصص.</li>
+            <li><strong>دوس Commit:</strong> اختار <strong>Commit All</strong> أو <strong>Commit Staged</strong>.</li>
+            <li><em>خطوة زيادة (Push لـ GitHub):</em> بعد الـ Commit هتلاقي سهم طالع لفوق (Push)، دوس عليه عشان ترفع شغلك.</li>
+        </ol>
+
+        <hr>
+
+        <h2><i class="fa-solid fa-rocket"></i> 5. إزاي ترفع موقعك على GitHub Pages</h2>
+        <p>رفع مشاريع الـ Front-end زي PETOPIA أو Cera بياخد كذا ضغطة بس، وبيديك لينك شغال مجاناً.</p>
+
+        <div class="highlight-box">
+            <h4>خطوات الـ Deployment:</h4>
+            <ol>
+                <li><strong>جهز الـ Repo:</strong> اتأكد إن مشروعك مرفوع على GitHub، وإن الملف الأساسي اسمه <code>index.html</code> وفي الفولدر الرئيسي (Root).</li>
+                <li><strong>روح للـ Settings:</strong> افتح الـ Repo بتاعك على GitHub ودوس على <strong>Settings</strong>.</li>
+                <li><strong>ادخل على Pages:</strong> من المنيو اللي على الشمال، اختار <strong>Pages</strong>.</li>
+                <li><strong>اختار الـ Source:</strong> من تحت "Build and deployment"، اختار <strong>Deploy from a branch</strong>.</li>
+                <li><strong>حدد الـ Branch:</strong> اختار الـ branch الأساسي (غالباً <code>main</code>) ودوس <strong>Save</strong>.</li>
+                <li><strong>استنى شوية:</strong> GitHub هيبدأ يبني الموقع، بعد دقايق اعمل ريفريش وهتلاقي اللينك ظهرلك فوق.</li>
+            </ol>
+        </div>
+
+        <hr>
+
+        <h2><i class="fa-solid fa-graduation-cap"></i> 6. إزاي تاخد الـ GitHub Student Developer Pack</h2>
+        <p>لو قدمت بإيميل الجامعة، GitHub بيديك باقة فيها أدوات برمجة وسيرفرات بفلوس كتير جداً مجاناً ليك كطالب.</p>
+
+        <h4>إزاي تقدم:</h4>
+        <ol>
+            <li><strong>افتح GitHub Education:</strong> زور الموقع <a href="https://education.github.com/pack" target="_blank">education.github.com/pack</a>.</li>
+            <li><strong>سجل دخول:</strong> ادخل بحسابك ودوس "Get your Pack".</li>
+            <li><strong>ارفع الإثبات:</strong> ضيف إيميل الجامعة، وممكن يطلبوا صورة للكارنيه أو جدول المحاضرات.</li>
+            <li><strong>استنى الموافقة:</strong> الموضوع بياخد كام يوم مراجعة.</li>
+        </ol>
+
+        <div class="highlight-box">
+            <h4>أهم المميزات اللي هتاخدها:</h4>
+            <ul>
+                <li><strong>GitHub Copilot Pro:</strong> مساعد الذكاء الاصطناعي مجاناً ليك جوه الـ IDE.</li>
+                <li><strong>دومين واستضافة مجانية:</strong> من مواقع زي Namecheap و DigitalOcean عشان ترفع مشاريعك الكبيرة.</li>
+                <li><strong>الـ IDEs الاحترافية:</strong> اشتراكات مجانية في برامج JetBrains القوية جداً.</li>
+            </ul>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2026 Made by Tyson • خارطة طريق الـ Git و GitHub للمبتدئين
+    </footer>
+</div>
+
+</body>
+
+<script>
+    // Handle Page Load
+    window.addEventListener('load', () => {
+        hideLoader();
+    });
+
+    // Handle History Navigation (Back/Forward)
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted) {
+            hideLoader();
+        }
+    });
+
+    function hideLoader() {
+        const loader = document.getElementById('loader');
+        setTimeout(() => {
+            loader.classList.add('fade-out');
+        }, 200);
+    }
+
+    // Handle Language Switch
+    function switchLang(e, url) {
+        const currentPath = window.location.pathname;
+        if (currentPath.endsWith(url)) return;
+        
+        e.preventDefault();
+        const loader = document.getElementById('loader');
+        loader.classList.remove('fade-out');
+        
+        setTimeout(() => {
+            window.location.href = url;
+        }, 300);
+    }
+</script>
+</html>
