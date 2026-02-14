@@ -30,12 +30,13 @@ body {
     font-family: var(--font-ui);
     line-height: 1.6;
     font-size: 15px;
-    padding: 40px 0; /* Breathing room for the 'sheet' */
+    margin: 0;
+    padding: 0;
 }
 
 .container {
     width: 1200px;
-    margin: 0 auto;
+    margin: 40px auto; /* Margin ensures breathing room without expanding body background */
     padding: 60px 40px;
     background: var(--bg-app);
     border: 1px solid var(--border);
@@ -543,6 +544,7 @@ tbody tr:hover {
 .fade-out {
     opacity: 0;
     pointer-events: none;
+    display: none !important; /* Ensure it takes 0px height */
 }
 
 /* Subject Highlights */
