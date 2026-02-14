@@ -46,11 +46,11 @@ body {
     box-shadow: 0 0 100px rgba(0,0,0,0.5);
     height: auto !important;
     min-height: 0 !important;
-    padding-bottom: 40px; /* Minimal breathing room at the very end */
+    padding-bottom: 20px; /* Reduced from 40px */
 }
 
 .container {
-    padding: 40px;
+    padding: 20px 40px; /* Reduced from 40px */
     display: flex;
     flex-direction: column;
     position: relative;
@@ -60,8 +60,8 @@ body {
 /* Header & Branding */
 header {
     border-bottom: 1px solid var(--border);
-    padding-bottom: 30px;
-    margin-bottom: 40px;
+    padding-bottom: 20px; /* Reduced from 30px */
+    margin-bottom: 24px; /* Reduced from 40px */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -123,8 +123,8 @@ header {
     backdrop-filter: blur(10px);
     border: 1px solid var(--border);
     border-radius: 16px;
-    padding: 30px;
-    margin-bottom: 32px;
+    padding: 20px; /* Reduced from 30px */
+    margin-bottom: 24px; /* Reduced from 32px */
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -400,7 +400,7 @@ header {
     overflow-x: auto;
     position: relative;
     z-index: 1; /* Keep below dropdown stacking context */
-    min-height: 200px;
+    min-height: 0; /* Reduced from 200px */
 }
 
 table {
@@ -434,7 +434,43 @@ tbody tr:hover {
 
 .subject-cell { font-weight: 600; color: var(--accent); }
 .group-cell { font-family: var(--font-mono); font-weight: 600; }
-.code-cell { font-family: var(--font-mono); background: var(--bg-hover); padding: 4px 8px; border-radius: 4px; color: var(--accent); }
+.code-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-start;
+}
+
+.code-cell { 
+    font-family: var(--font-mono); 
+    background: var(--bg-hover); 
+    padding: 4px 8px; 
+    border-radius: 4px; 
+    color: var(--accent); 
+    font-size: 13px;
+}
+
+.copy-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    cursor: pointer;
+    padding: 4px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+}
+
+.copy-btn:hover {
+    color: var(--accent);
+    background: var(--accent-bg);
+}
+
+.copy-btn.copied {
+    color: #22c55e; /* Success green */
+}
 
 .highlight {
     background: #ff00ff44;

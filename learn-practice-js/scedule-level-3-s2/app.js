@@ -310,9 +310,45 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${highlightText(item.doctor)}</td>
                 <td>${highlightText(item.day)}</td>
                 <td>${highlightText(item.time)}</td>
-                <td><span class="code-cell">${highlightText(item.code)}</span></td>
+                <td>
+                    <div class="code-wrapper">
+                        <span class="code-cell">${highlightText(item.code)}</span>
+                        <button class="copy-btn" title="Copy Code" data-code="${item.code}">
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
+                    </div>
+                </td>
             `;
             tableBody.appendChild(tr);
+        });
+
+        // Add event listeners for copy buttons
+        const copyButtons = tableBody.querySelectorAll('.copy-btn');
+        copyButtons.forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const code = btn.dataset.code;
+                try {
+                    await navigator.clipboard.writeText(code);
+                    
+                    // Visual feedback
+                    const icon = btn.querySelector('i');
+                    icon.classList.remove('fa-copy');
+                    icon.classList.remove('fa-regular');
+                    icon.classList.add('fa-solid');
+                    icon.classList.add('fa-check');
+                    btn.classList.add('copied');
+
+                    setTimeout(() => {
+                        icon.classList.remove('fa-check');
+                        icon.classList.remove('fa-solid');
+                        icon.classList.add('fa-regular');
+                        icon.classList.add('fa-copy');
+                        btn.classList.remove('copied');
+                    }, 2000);
+                } catch (err) {
+                    console.error('Failed to copy text: ', err);
+                }
+            });
         });
 
         renderPagination();
