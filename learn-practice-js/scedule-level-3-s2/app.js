@@ -297,6 +297,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        noResults.classList.add('hidden');
+        document.getElementById('meme-container').innerHTML = ''; // Clear meme if results found
+        resultCount.textContent = filteredData.length;
+
         // Create table rows dynamically
         pageData.forEach(item => {
             const tr = document.createElement('tr');
