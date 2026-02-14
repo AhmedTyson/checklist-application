@@ -628,11 +628,19 @@ tbody tr:hover {
 }
 
 
-/* Mobile Specific Height Fix */
+/* Mobile Specific Height Fix - Ultimate Stop */
 @media screen and (max-width: 1200px) {
-    html, body {
+    html {
         height: auto !important;
-        min-height: 0 !important; /* Removed 100% which caused the stretch void */
+        min-height: 0 !important;
+        overflow: clip !important; /* Prevents scrolling past content edges */
+    }
+
+    body {
+        height: auto !important;
+        max-height: fit-content !important; /* Force browser to wrap content exactly */
+        min-height: 0 !important;
+        display: flow-root !important; /* Establishes a clean block formatting context */
         overflow-y: visible !important;
         position: relative !important;
         margin: 0 !important;
@@ -642,6 +650,6 @@ tbody tr:hover {
     .container {
         min-height: 0 !important;
         height: auto !important;
-        padding-bottom: 20px !important; /* Tighten bottom on mobile */
+        padding-bottom: 20px !important;
     }
 }
