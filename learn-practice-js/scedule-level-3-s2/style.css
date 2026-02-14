@@ -1,5 +1,6 @@
 :root {
     --bg-app: #0a0a0a;
+    --bg-void: #050505;
     --bg-panel: #111111;
     --bg-hover: #171717;
     --border: #262626;
@@ -20,8 +21,14 @@
     padding: 0;
 }
 
+html {
+    background-color: var(--bg-void); /* The space outside the 1200px paper */
+}
+
 body {
-    background-color: #050505;
+    width: 1200px;
+    margin: 0 auto;
+    background-color: var(--bg-app);
     background-image: 
         linear-gradient(rgba(168, 85, 247, 0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(168, 85, 247, 0.03) 1px, transparent 1px);
@@ -30,20 +37,14 @@ body {
     font-family: var(--font-ui);
     line-height: 1.6;
     font-size: 15px;
-    margin: 0;
-    padding: 0;
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    box-shadow: 0 0 100px rgba(0,0,0,0.5); /* Soft shadow on the sides */
+    min-height: 90vh; /* Ensures paper reaches bottom on large screens */
 }
 
 .container {
-    width: 1200px;
-    margin: 40px auto; /* Margin ensures breathing room without expanding body background */
     padding: 60px 40px;
-    background: var(--bg-app);
-    border: 1px solid var(--border);
-    border-radius: 4px; /* Sharper, more paper-like corners */
-    box-shadow: 
-        0 20px 50px rgba(0,0,0,0.8),
-        0 0 20px rgba(168, 85, 247, 0.05); /* Subtle accent glow */
     display: flex;
     flex-direction: column;
     position: relative;
