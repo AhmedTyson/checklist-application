@@ -33,6 +33,9 @@ body {
     width: 1200px; /* Match viewport for stable zoomed-out view */
     margin: 0 auto;
     padding: 40px 20px;
+    min-height: 1700px; /* A4 aspect ratio at 1200px width */
+    display: flex;
+    flex-direction: column;
 }
 
 /* Header & Branding */
