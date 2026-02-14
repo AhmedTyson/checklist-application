@@ -22,7 +22,11 @@
 }
 
 html {
-    background-color: var(--bg-void); /* The space outside the 1200px paper */
+    background-color: var(--bg-void);
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0;
+    padding: 0;
 }
 
 body {
@@ -39,7 +43,10 @@ body {
     font-size: 15px;
     border-left: 1px solid var(--border);
     border-right: 1px solid var(--border);
-    box-shadow: 0 0 100px rgba(0,0,0,0.5); /* Soft shadow on the sides */
+    box-shadow: 0 0 100px rgba(0,0,0,0.5);
+    height: auto !important;
+    min-height: 0 !important;
+    padding-bottom: 40px; /* Minimal breathing room at the very end */
 }
 
 .container {
@@ -47,6 +54,7 @@ body {
     display: flex;
     flex-direction: column;
     position: relative;
+    height: auto;
 }
 
 /* Header & Branding */
