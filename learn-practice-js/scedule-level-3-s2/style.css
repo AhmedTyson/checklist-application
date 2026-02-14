@@ -628,29 +628,31 @@ tbody tr:hover {
 }
 
 
-/* Mobile Specific Height Fix - Absolute Minimum Stop */
+/* Mobile Specific Height Fix - Viewport Lock */
 @media screen and (max-width: 1200px) {
     html {
-        height: auto !important;
-        min-height: 0 !important;
-        overflow: hidden !important; /* Forces scrollbar to end exactly at content */
+        height: 100% !important;
+        overflow: hidden !important; /* Locks the browser window from stretching */
+        width: 100%;
+        margin: 0;
+        padding: 0;
     }
 
     body {
-        display: table !important; /* Shrink-wraps to content height aggressively */
+        height: 100% !important;
         width: 1200px !important;
         margin: 0 auto !important;
-        height: auto !important;
-        min-height: 0 !important;
-        overflow-y: visible !important;
-        position: static !important; /* Remove relative stacking to prevent height growth */
+        overflow-y: auto !important; /* Makes the body the only scrollable area */
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch; /* Smooth momentum scrolling for iOS */
+        display: block !important;
+        position: relative !important;
         padding: 0 !important;
     }
     
     .container {
-        display: block !important;
-        min-height: 0 !important;
+        min-height: 100%; /* Ensures the paper covers the full view */
         height: auto !important;
-        padding-bottom: 0 !important; /* Absolute zero bottom slack */
+        padding-bottom: 20px !important;
     }
 }
