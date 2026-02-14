@@ -278,11 +278,24 @@ document.addEventListener('DOMContentLoaded', () => {
             paginationNumbers.innerHTML = '';
             prevBtn.disabled = true;
             nextBtn.disabled = true;
+
+            const selectedDay = dayFilter.value;
+            const memeContainer = document.getElementById('meme-container');
+            const noResultsText = document.getElementById('no-results-text');
+            const ghostIcon = noResults.querySelector('.fa-ghost');
+
+            if (selectedDay === 'Friday') {
+                const randomMeme = Math.floor(Math.random() * 3) + 1;
+                memeContainer.innerHTML = `<img src="assets/meme-friday-${randomMeme}.png" alt="Friday Meme" class="meme-img">`;
+                noResultsText.textContent = "Enjoy your Friday! No schedules, just vibes. 😎";
+                if (ghostIcon) ghostIcon.classList.add('hidden');
+            } else {
+                memeContainer.innerHTML = '';
+                noResultsText.textContent = "No matching schedules found.";
+                if (ghostIcon) ghostIcon.classList.remove('hidden');
+            }
             return;
         }
-
-        noResults.classList.add('hidden');
-        resultCount.textContent = filteredData.length;
 
         // Create table rows dynamically
         pageData.forEach(item => {
