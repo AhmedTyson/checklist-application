@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1200">
+    <title>Schedule Search | C2C</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="loader">
+        <div class="loader-icon">
+            <i class="fa-solid fa-calendar-days"></i>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="brand">
+                <div class="brand-logo">
+                    <i class="fa-solid fa-calendar-check"></i>
+                </div>
+                <div class="brand-info">
+                    <h1>Scedule Search <span class="brand-badge">Made by Tyson</span></h1>
+                    <span>Level 3 • Unified Search Portal</span>
+                </div>
+            </div>
+            <div class="stats">
+                <span id="result-count">0</span> Results Found
+            </div>
+        </header>
+
+        <main>
+            <section class="controls">
+                <div class="search-header">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="search-input" placeholder="Search by subject, doctor, group, day, time or code...">
+                    </div>
+                    <button id="clear-filters" class="btn-secondary clear-btn-styled">
+                        <i class="fa-solid fa-filter-circle-xmark"></i> Clear All
+                    </button>
+                </div>
+                
+                <div class="filters-grid">
+                    <div class="filter-group">
+                        <label><i class="fa-solid fa-book"></i> Subject</label>
+                        <div class="custom-select" id="subject-dropdown">
+                            <div class="select-trigger">
+                                <span>All Subjects</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                            <div class="select-options" id="subject-options">
+                                <div class="option selected" data-value="all">All Subjects</div>
+                            </div>
+                        </div>
+                        <select id="subject-filter" class="hidden">
+                            <option value="all">All Subjects</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label><i class="fa-solid fa-users"></i> Group</label>
+                        <div class="custom-select" id="group-dropdown">
+                            <div class="select-trigger">
+                                <span>All Groups</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                            <div class="select-options" id="group-options">
+                                <div class="option selected" data-value="all">All Groups</div>
+                            </div>
+                        </div>
+                        <select id="group-filter" class="hidden">
+                            <option value="all">All Groups</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label><i class="fa-solid fa-clock"></i> Day</label>
+                        <div class="custom-select" id="day-dropdown">
+                            <div class="select-trigger">
+                                <span>All Days</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                            <div class="select-options" id="day-options">
+                                <div class="option selected" data-value="all">All Days</div>
+                                <div class="option" data-value="Saturday">Saturday</div>
+                                <div class="option" data-value="Sunday">Sunday</div>
+                                <div class="option" data-value="Monday">Monday</div>
+                                <div class="option" data-value="Tuesday">Tuesday</div>
+                                <div class="option" data-value="Wednesday">Wednesday</div>
+                                <div class="option" data-value="Thursday">Thursday</div>
+                                <div class="option" data-value="Friday">Friday</div>
+                            </div>
+                        </div>
+                        <select id="day-filter" class="hidden">
+                            <option value="all">All Days</option>
+                            <option value="Saturday">Saturday</option>
+                            <option value="Sunday">Sunday</option>
+                            <option value="Monday">Monday</option>
+                            <option value="Tuesday">Tuesday</option>
+                            <option value="Wednesday">Wednesday</option>
+                            <option value="Thursday">Thursday</option>
+                            <option value="Friday">Friday</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <div id="subject-list-container" class="subject-highlight-box hidden">
+                <h4>Available Subjects:</h4>
+                <div id="subject-tags" class="subject-tags"></div>
+            </div>
+
+            <div class="table-container">
+                <table id="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Group</th>
+                            <th>Doctor Name</th>
+                            <th>Day</th>
+                            <th>Time</th>
+                            <th>Teams Code</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <!-- Data will be injected here -->
+                    </tbody>
+                </table>
+                <div id="no-results" class="hidden">
+                    <i class="fa-solid fa-ghost"></i>
+                    <p>No matching schedules found.</p>
+                </div>
+            </div>
+
+            <nav class="pagination" id="pagination">
+                <button id="prev-page" disabled><i class="fa-solid fa-chevron-left"></i> Previous</button>
+                <div id="page-numbers"></div>
+                <button id="next-page">Next <i class="fa-solid fa-chevron-right"></i></button>
+            </nav>
+        </main>
+
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
