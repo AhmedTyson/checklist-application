@@ -49,7 +49,11 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     function initializeUI() {
         // Populate Subject Filter and Subject Highlight Box
-        const subjects = [...new Set(allData.map(item => item.subject))].sort();
+        const subjects = [...new Set(allData
+            .map(item => item.subject)
+            .filter(subject => subject && typeof subject === 'string')
+        )].sort();
+
         if (subjects.length > 0) {
             subjectListContainer.classList.remove('hidden');
             // Update Subject Sizer with longest text (if element exists)
@@ -83,7 +87,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Populate Group Filter
-        const groups = [...new Set(allData.map(item => item.group))].sort((a, b) => {
+        const groups = [...new Set(allData
+            .map(item => item.group)
+            .filter(group => group && typeof group === 'string')
+        )].sort((a, b) => {
             const numA = parseInt(a.replace(/\D/g, '')) || 0;
             const numB = parseInt(b.replace(/\D/g, '')) || 0;
             return numA - numB || a.localeCompare(b);

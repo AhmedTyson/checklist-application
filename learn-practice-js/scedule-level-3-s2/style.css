@@ -107,6 +107,8 @@ header {
     flex-direction: column;
     gap: 24px;
     box-shadow: var(--shadow);
+    position: relative;
+    z-index: 100; /* Ensure dropdowns stack above the table container */
 }
 
 .search-header {
@@ -234,7 +236,7 @@ header {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     height: 38px;
     position: relative;
-    /* Removed overflow: hidden to ensure text depth isn't clipped */
+    /* Removed overflow: hidden to ensure the dropdown arrow (chevron) and text are not clipped */
 }
 
 .select-trigger span:first-child {
@@ -277,8 +279,10 @@ header {
     border-radius: 12px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.8);
     z-index: 1000;
-    max-height: 200px; /* More compact height */
+    max-height: 200px;
     overflow-y: auto;
+    overflow-x: hidden; /* Prevent horizontal overflow from matching content width */
+    transform: translateZ(0); /* Fixes rendering glitches with backdrop-filter parents */
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
@@ -314,12 +318,29 @@ header {
 }
 
 .select-options::-webkit-scrollbar {
-    width: 6px;
+    width: 8px; /* Slightly narrower */
+}
+
+.select-options::-webkit-scrollbar-button {
+    display: none;
+    height: 0;
+    width: 0;
+}
+
+.select-options::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 4px 0; /* Balanced margin */
 }
 
 .select-options::-webkit-scrollbar-thumb {
     background: var(--border-highlight);
     border-radius: 10px;
+    border: 3px solid var(--bg-panel); /* Matches container background for a 'floating' look */
+    background-clip: content-box;
+}
+
+.select-options::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
 }
 
 .filter-actions {
@@ -363,6 +384,7 @@ header {
     border-radius: 12px;
     overflow-x: auto;
     position: relative;
+    z-index: 1; /* Keep below dropdown stacking context */
     min-height: 200px;
 }
 
