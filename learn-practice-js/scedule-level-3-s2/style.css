@@ -632,13 +632,16 @@ tbody tr:hover {
 @media screen and (max-width: 1200px) {
     html, body {
         height: auto !important;
-        min-height: 100% !important;
+        min-height: 0 !important; /* Removed 100% which caused the stretch void */
         overflow-y: visible !important;
         position: relative !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
     
     .container {
         min-height: 0 !important;
         height: auto !important;
+        padding-bottom: 20px !important; /* Tighten bottom on mobile */
     }
 }
