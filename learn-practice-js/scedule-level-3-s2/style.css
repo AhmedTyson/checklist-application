@@ -628,28 +628,29 @@ tbody tr:hover {
 }
 
 
-/* Mobile Specific Height Fix - Ultimate Stop */
+/* Mobile Specific Height Fix - Absolute Minimum Stop */
 @media screen and (max-width: 1200px) {
     html {
         height: auto !important;
         min-height: 0 !important;
-        overflow: clip !important; /* Prevents scrolling past content edges */
+        overflow: hidden !important; /* Forces scrollbar to end exactly at content */
     }
 
     body {
+        display: table !important; /* Shrink-wraps to content height aggressively */
+        width: 1200px !important;
+        margin: 0 auto !important;
         height: auto !important;
-        max-height: fit-content !important; /* Force browser to wrap content exactly */
         min-height: 0 !important;
-        display: flow-root !important; /* Establishes a clean block formatting context */
         overflow-y: visible !important;
-        position: relative !important;
-        margin: 0 !important;
+        position: static !important; /* Remove relative stacking to prevent height growth */
         padding: 0 !important;
     }
     
     .container {
+        display: block !important;
         min-height: 0 !important;
         height: auto !important;
-        padding-bottom: 20px !important;
+        padding-bottom: 0 !important; /* Absolute zero bottom slack */
     }
 }
