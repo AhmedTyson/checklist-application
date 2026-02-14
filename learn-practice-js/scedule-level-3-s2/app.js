@@ -285,8 +285,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const ghostIcon = noResults.querySelector('.fa-ghost');
 
             if (selectedDay === 'Friday') {
-                const randomMeme = Math.floor(Math.random() * 3) + 1;
-                memeContainer.innerHTML = `<img src="assets/meme-friday-${randomMeme}.png" alt="Friday Meme" class="meme-img">`;
+                const randomMeme = Math.floor(Math.random() * 5) + 1;
+                memeContainer.innerHTML = `<img src="assets/meme-friday-${randomMeme}.webp" alt="Friday Meme" class="meme-img">`;
                 noResultsText.textContent = "Enjoy your Friday! No schedules, just vibes. 😎";
                 if (ghostIcon) ghostIcon.classList.add('hidden');
             } else {
