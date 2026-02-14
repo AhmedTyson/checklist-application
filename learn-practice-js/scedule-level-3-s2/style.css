@@ -40,11 +40,10 @@ body {
     border-left: 1px solid var(--border);
     border-right: 1px solid var(--border);
     box-shadow: 0 0 100px rgba(0,0,0,0.5); /* Soft shadow on the sides */
-    min-height: 90vh; /* Ensures paper reaches bottom on large screens */
 }
 
 .container {
-    padding: 60px 40px;
+    padding: 40px;
     display: flex;
     flex-direction: column;
     position: relative;
