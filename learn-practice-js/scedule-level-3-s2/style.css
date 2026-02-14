@@ -632,10 +632,9 @@ tbody tr:hover {
 @media screen and (max-width: 1200px) {
     html {
         height: auto !important;
+        min-height: 100% !important;
         overflow: visible !important;
-        width: 100%;
-        margin: 0;
-        padding: 0;
+        overscroll-behavior-y: auto !important;
     }
 
     body {
@@ -643,14 +642,12 @@ tbody tr:hover {
         width: 1200px !important;
         margin: 0 auto !important;
         overflow-y: visible !important;
-        display: block !important;
         position: relative !important;
-        padding: 0 !important;
+        overscroll-behavior-y: auto !important;
     }
     
     .container {
         min-height: 0 !important;
         height: auto !important;
-        padding-bottom: 20px !important;
     }
 }
