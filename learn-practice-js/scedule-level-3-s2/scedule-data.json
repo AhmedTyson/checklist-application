@@ -2,7 +2,8 @@
   {
     "subject": "Auditing",
     "group": "G1",
-    "doctor": "د. حنان جابر (Dr. Hanan Gaber)",
+    "doctorAr": "د. حنان جابر",
+    "doctorEn": "Dr. Hanan Gaber",
     "day": "Monday",
     "time": "8:00 AM – 10:00 AM",
     "code": "dp45mtq"
@@ -10,7 +11,8 @@
   {
     "subject": "Auditing",
     "group": "G2",
-    "doctor": "د. حنان جابر (Dr. Hanan Gaber)",
+    "doctorAr": "د. حنان جابر",
+    "doctorEn": "Dr. Hanan Gaber",
     "day": "Monday",
     "time": "10:00 AM – 12:00 PM",
     "code": "i6keet2"
@@ -18,7 +20,8 @@
   {
     "subject": "Auditing",
     "group": "G3",
-    "doctor": "د. حنان جابر (Dr. Hanan Gaber)",
+    "doctorAr": "د. حنان جابر",
+    "doctorEn": "Dr. Hanan Gaber",
     "day": "Wednesday",
     "time": "8:00 AM – 10:00 AM",
     "code": "xykdety"
@@ -26,7 +29,8 @@
   {
     "subject": "Auditing",
     "group": "G4",
-    "doctor": "د. حنان جابر (Dr. Hanan Gaber)",
+    "doctorAr": "د. حنان جابر",
+    "doctorEn": "Dr. Hanan Gaber",
     "day": "Wednesday",
     "time": "10:00 AM – 12:00 PM",
     "code": "9w4xny1"
@@ -34,7 +38,8 @@
   {
     "subject": "Auditing",
     "group": "G5",
-    "doctor": "د. حنان جابر (Dr. Hanan Gaber)",
+    "doctorAr": "د. حنان جابر",
+    "doctorEn": "Dr. Hanan Gaber",
     "day": "Wednesday",
     "time": "12:00 PM – 2:00 PM",
     "code": "ncw8t8v"
@@ -42,7 +47,8 @@
   {
     "subject": "Auditing",
     "group": "G6",
-    "doctor": "د. حنان جابر (Dr. Hanan Gaber)",
+    "doctorAr": "د. حنان جابر",
+    "doctorEn": "Dr. Hanan Gaber",
     "day": "Thursday",
     "time": "8:00 AM – 10:00 AM",
     "code": "x5clkey"
@@ -50,7 +56,8 @@
   {
     "subject": "Auditing",
     "group": "G7",
-    "doctor": "د. حنان جابر (Dr. Hanan Gaber)",
+    "doctorAr": "د. حنان جابر",
+    "doctorEn": "Dr. Hanan Gaber",
     "day": "Thursday",
     "time": "10:00 AM – 12:00 PM",
     "code": "jlw11zf"
@@ -58,7 +65,8 @@
   {
     "subject": "Auditing",
     "group": "G8",
-    "doctor": "د. حنان جابر (Dr. Hanan Gaber)",
+    "doctorAr": "د. حنان جابر",
+    "doctorEn": "Dr. Hanan Gaber",
     "day": "Thursday",
     "time": "2:00 PM – 4:00 PM",
     "code": "ld9d46h"
@@ -66,7 +74,8 @@
   {
     "subject": "Auditing",
     "group": "G9",
-    "doctor": "د. اشرف منصور (Dr. Ashraf Mansour)",
+    "doctorAr": "د. اشرف منصور",
+    "doctorEn": "Dr. Ashraf Mansour",
     "day": "Saturday",
     "time": "8:00 AM – 10:00 AM",
     "code": "gl5nd6w"
@@ -74,7 +83,8 @@
   {
     "subject": "Auditing",
     "group": "G10",
-    "doctor": "د. اشرف منصور (Dr. Ashraf Mansour)",
+    "doctorAr": "د. اشرف منصور",
+    "doctorEn": "Dr. Ashraf Mansour",
     "day": "Saturday",
     "time": "10:00 AM – 12:00 PM",
     "code": "n4j7lm2"
@@ -82,7 +92,8 @@
   {
     "subject": "Auditing",
     "group": "G11",
-    "doctor": "د. اشرف منصور (Dr. Ashraf Mansour)",
+    "doctorAr": "د. اشرف منصور",
+    "doctorEn": "Dr. Ashraf Mansour",
     "day": "Saturday",
     "time": "12:00 PM – 2:00 PM",
     "code": "a7a83iq"
@@ -90,7 +101,8 @@
   {
     "subject": "Auditing",
     "group": "G12",
-    "doctor": "د. اشرف منصور (Dr. Ashraf Mansour)",
+    "doctorAr": "د. اشرف منصور",
+    "doctorEn": "Dr. Ashraf Mansour",
     "day": "Tuesday",
     "time": "8:00 AM – 10:00 AM",
     "code": "uxxv9qu"
@@ -98,7 +110,8 @@
   {
     "subject": "Auditing",
     "group": "G13",
-    "doctor": "د. اشرف منصور (Dr. Ashraf Mansour)",
+    "doctorAr": "د. اشرف منصور",
+    "doctorEn": "Dr. Ashraf Mansour",
     "day": "Tuesday",
     "time": "10:00 AM – 12:00 PM",
     "code": "6tyet47"
@@ -106,7 +119,8 @@
   {
     "subject": "Auditing",
     "group": "G14",
-    "doctor": "د. اشرف منصور (Dr. Ashraf Mansour)",
+    "doctorAr": "د. اشرف منصور",
+    "doctorEn": "Dr. Ashraf Mansour",
     "day": "Tuesday",
     "time": "2:00 PM – 4:00 PM",
     "code": "vhplgat"
@@ -114,7 +128,8 @@
   {
     "subject": "Auditing",
     "group": "G15",
-    "doctor": "د. اشرف منصور (Dr. Ashraf Mansour)",
+    "doctorAr": "د. اشرف منصور",
+    "doctorEn": "Dr. Ashraf Mansour",
     "day": "Thursday",
     "time": "8:00 AM – 10:00 AM",
     "code": "c8knul9"
@@ -122,7 +137,8 @@
   {
     "subject": "Auditing",
     "group": "G16",
-    "doctor": "د. اشرف منصور (Dr. Ashraf Mansour)",
+    "doctorAr": "د. اشرف منصور",
+    "doctorEn": "Dr. Ashraf Mansour",
     "day": "Thursday",
     "time": "10:00 AM – 12:00 PM",
     "code": "harcdfu"
@@ -130,7 +146,8 @@
   {
     "subject": "Auditing",
     "group": "G17",
-    "doctor": "د. اشرف منصور (Dr. Ashraf Mansour)",
+    "doctorAr": "د. اشرف منصور",
+    "doctorEn": "Dr. Ashraf Mansour",
     "day": "Thursday",
     "time": "2:00 PM – 4:00 PM",
     "code": "gcow3hx"
@@ -138,7 +155,8 @@
   {
     "subject": "Auditing",
     "group": "G18",
-    "doctor": "د. ايمان سعد الدين (Dr. Eman Saad El-Din)",
+    "doctorAr": "د. ايمان سعد الدين",
+    "doctorEn": "Dr. Eman Saad El-Din",
     "day": "Saturday",
     "time": "4:00 PM – 6:00 PM",
     "code": "z6n5thl"
@@ -146,7 +164,8 @@
   {
     "subject": "Auditing",
     "group": "G19",
-    "doctor": "د. ايمان سعد الدين (Dr. Eman Saad El-Din)",
+    "doctorAr": "د. ايمان سعد الدين",
+    "doctorEn": "Dr. Eman Saad El-Din",
     "day": "Tuesday",
     "time": "8:00 AM – 10:00 AM",
     "code": "uodb1jj"
@@ -154,7 +173,8 @@
   {
     "subject": "Auditing",
     "group": "G20",
-    "doctor": "د. ايمان سعد الدين (Dr. Eman Saad El-Din)",
+    "doctorAr": "د. ايمان سعد الدين",
+    "doctorEn": "Dr. Eman Saad El-Din",
     "day": "Tuesday",
     "time": "10:00 AM – 12:00 PM",
     "code": "3p1x7yy"
@@ -162,7 +182,8 @@
   {
     "subject": "Auditing",
     "group": "G21",
-    "doctor": "د. ايمان سعد الدين (Dr. Eman Saad El-Din)",
+    "doctorAr": "د. ايمان سعد الدين",
+    "doctorEn": "Dr. Eman Saad El-Din",
     "day": "Tuesday",
     "time": "2:00 PM – 4:00 PM",
     "code": "hcxbo4l"
@@ -170,7 +191,8 @@
   {
     "subject": "Auditing",
     "group": "G22",
-    "doctor": "د. حمدي السعيد (Dr. Hamdy El-Said)",
+    "doctorAr": "د. حمدي السعيد",
+    "doctorEn": "Dr. Hamdy El-Said",
     "day": "Thursday",
     "time": "8:00 AM – 10:00 AM",
     "code": "fuyz9b6"
@@ -178,7 +200,8 @@
   {
     "subject": "Auditing",
     "group": "G23",
-    "doctor": "د. حمدي السعيد (Dr. Hamdy El-Said)",
+    "doctorAr": "د. حمدي السعيد",
+    "doctorEn": "Dr. Hamdy El-Said",
     "day": "Thursday",
     "time": "10:00 AM – 12:00 PM",
     "code": "cg11jye"
@@ -186,7 +209,8 @@
   {
     "subject": "Auditing",
     "group": "G24",
-    "doctor": "د. حمدي السعيد (Dr. Hamdy El-Said)",
+    "doctorAr": "د. حمدي السعيد",
+    "doctorEn": "Dr. Hamdy El-Said",
     "day": "Thursday",
     "time": "12:00 PM – 2:00 PM",
     "code": "rmvypwb"
@@ -194,7 +218,8 @@
   {
     "subject": "Management Information Systems",
     "group": "G1",
-    "doctor": "د. يحي حلمي (Dr. Yehia Helmy)",
+    "doctorAr": "د. يحي حلمي",
+    "doctorEn": "Dr. Yehia Helmy",
     "day": "Tuesday",
     "time": "10:00 AM – 12:00 PM",
     "code": "mzypuv2"
@@ -202,7 +227,8 @@
   {
     "subject": "Management Information Systems",
     "group": "G2",
-    "doctor": "د. يحي حلمي (Dr. Yehia Helmy)",
+    "doctorAr": "د. يحي حلمي",
+    "doctorEn": "Dr. Yehia Helmy",
     "day": "Tuesday",
     "time": "12:00 PM – 2:00 PM",
     "code": "299ae1k"
@@ -210,7 +236,8 @@
   {
     "subject": "Management Information Systems",
     "group": "G3",
-    "doctor": "د. يحي حلمي (Dr. Yehia Helmy)",
+    "doctorAr": "د. يحي حلمي",
+    "doctorEn": "Dr. Yehia Helmy",
     "day": "Tuesday",
     "time": "4:00 PM – 6:00 PM",
     "code": "hwzk4ja"
@@ -218,7 +245,8 @@
   {
     "subject": "Management Information Systems",
     "group": "G4",
-    "doctor": "د. كريستينا (Dr. Christina)",
+    "doctorAr": "د. كريستينا",
+    "doctorEn": "Dr. Christina",
     "day": "Sunday",
     "time": "8:00 AM – 10:00 AM",
     "code": "bogtbag"
@@ -226,7 +254,8 @@
   {
     "subject": "Management Information Systems",
     "group": "G5",
-    "doctor": "د. كريستينا (Dr. Christina)",
+    "doctorAr": "د. كريستينا",
+    "doctorEn": "Dr. Christina",
     "day": "Sunday",
     "time": "10:00 AM – 12:00 PM",
     "code": "m07dr7b"
@@ -234,7 +263,8 @@
   {
     "subject": "Management Information Systems",
     "group": "G6",
-    "doctor": "د. كريستينا (Dr. Christina)",
+    "doctorAr": "د. كريستينا",
+    "doctorEn": "Dr. Christina",
     "day": "Sunday",
     "time": "2:00 PM – 4:00 PM",
     "code": "ysowp50"
@@ -242,7 +272,8 @@
   {
     "subject": "Management Information Systems",
     "group": "G7",
-    "doctor": "د. شيرين طايع (Dr. Sherin Tayea)",
+    "doctorAr": "د. شيرين طايع",
+    "doctorEn": "Dr. Sherin Tayea",
     "day": "Tuesday",
     "time": "8:00 AM – 10:00 AM",
     "code": "uk0k445"
@@ -250,7 +281,8 @@
   {
     "subject": "Management Information Systems",
     "group": "G8",
-    "doctor": "د. شيرين طايع (Dr. Sherin Tayea)",
+    "doctorAr": "د. شيرين طايع",
+    "doctorEn": "Dr. Sherin Tayea",
     "day": "Tuesday",
     "time": "10:00 AM – 12:00 PM",
     "code": "p2hmpej"
@@ -258,7 +290,8 @@
   {
     "subject": "Management Information Systems",
     "group": "G9",
-    "doctor": "د. شيرين طايع (Dr. Sherin Tayea)",
+    "doctorAr": "د. شيرين طايع",
+    "doctorEn": "Dr. Sherin Tayea",
     "day": "Tuesday",
     "time": "2:00 PM – 4:00 PM",
     "code": "c205ye9"
@@ -266,7 +299,8 @@
   {
     "subject": "Management Information Systems",
     "group": "G10",
-    "doctor": "د. احمد منير (Dr. Ahmed Monir)",
+    "doctorAr": "د. احمد منير",
+    "doctorEn": "Dr. Ahmed Monir",
     "day": "Wednesday",
     "time": "8:00 AM – 10:00 AM",
     "code": "rq0nrk6"
@@ -274,7 +308,8 @@
   {
     "subject": "Management Information Systems",
     "group": "G11",
-    "doctor": "د. احمد منير (Dr. Ahmed Monir)",
+    "doctorAr": "د. احمد منير",
+    "doctorEn": "Dr. Ahmed Monir",
     "day": "Saturday",
     "time": "10:00 AM – 12:00 PM",
     "code": "vajoidm"
@@ -282,7 +317,8 @@
   {
     "subject": "Management Information Systems",
     "group": "G12",
-    "doctor": "د. احمد منير (Dr. Ahmed Monir)",
+    "doctorAr": "د. احمد منير",
+    "doctorEn": "Dr. Ahmed Monir",
     "day": "Saturday",
     "time": "12:00 PM – 2:00 PM",
     "code": "3g0pxws"
@@ -290,7 +326,8 @@
   {
     "subject": "Management Information Systems",
     "group": "G13",
-    "doctor": "د. احمد منير (Dr. Ahmed Monir)",
+    "doctorAr": "د. احمد منير",
+    "doctorEn": "Dr. Ahmed Monir",
     "day": "Tuesday",
     "time": "4:00 PM – 6:00 PM",
     "code": "xf42b0r"
@@ -298,7 +335,8 @@
   {
     "subject": "Management Information Systems",
     "group": "G14",
-    "doctor": "د. داليا (Dr. Dalia)",
+    "doctorAr": "د. داليا",
+    "doctorEn": "Dr. Dalia",
     "day": "Thursday",
     "time": "8:00 AM – 10:00 AM",
     "code": "c73y1dc"
@@ -306,7 +344,8 @@
   {
     "subject": "Management Information Systems",
     "group": "G15",
-    "doctor": "د. داليا (Dr. Dalia)",
+    "doctorAr": "د. داليا",
+    "doctorEn": "Dr. Dalia",
     "day": "Thursday",
     "time": "10:00 AM – 12:00 PM",
     "code": "xzq87j0"
@@ -314,7 +353,8 @@
   {
     "subject": "Management Information Systems",
     "group": "G16",
-    "doctor": "د. داليا (Dr. Dalia)",
+    "doctorAr": "د. داليا",
+    "doctorEn": "Dr. Dalia",
     "day": "Thursday",
     "time": "2:00 PM – 4:00 PM",
     "code": "h22h64j"
@@ -322,7 +362,8 @@
   {
     "subject": "Management Information Systems",
     "group": "G17",
-    "doctor": "د. بيشوي (Dr. Bishoy)",
+    "doctorAr": "د. بيشوي",
+    "doctorEn": "Dr. Bishoy",
     "day": "Tuesday",
     "time": "8:00 AM – 10:00 AM",
     "code": "snomrgg"
@@ -330,7 +371,8 @@
   {
     "subject": "Management Information Systems",
     "group": "G18",
-    "doctor": "د. بيشوي (Dr. Bishoy)",
+    "doctorAr": "د. بيشوي",
+    "doctorEn": "Dr. Bishoy",
     "day": "Tuesday",
     "time": "10:00 AM – 12:00 PM",
     "code": "sqqo3ju"
@@ -338,7 +380,8 @@
   {
     "subject": "Management Information Systems",
     "group": "G19",
-    "doctor": "د. بيشوي (Dr. Bishoy)",
+    "doctorAr": "د. بيشوي",
+    "doctorEn": "Dr. Bishoy",
     "day": "Tuesday",
     "time": "12:00 PM – 2:00 PM",
     "code": "mr6t343"
@@ -346,7 +389,8 @@
   {
     "subject": "Management Information Systems",
     "group": "G20",
-    "doctor": "د. دنيا هلال (Dr. Dina Hilal)",
+    "doctorAr": "د. دنيا هلال",
+    "doctorEn": "Dr. Dina Hilal",
     "day": "Thursday",
     "time": "8:00 AM – 10:00 AM",
     "code": "ujanp32"
@@ -354,7 +398,8 @@
   {
     "subject": "Management Information Systems",
     "group": "G21",
-    "doctor": "د. دنيا هلال (Dr. Dina Hilal)",
+    "doctorAr": "د. دنيا هلال",
+    "doctorEn": "Dr. Dina Hilal",
     "day": "Thursday",
     "time": "12:00 PM – 2:00 PM",
     "code": "4fnbzqs"
@@ -362,7 +407,8 @@
   {
     "subject": "Management Information Systems",
     "group": "G22",
-    "doctor": "د. دنيا هلال (Dr. Dina Hilal)",
+    "doctorAr": "د. دنيا هلال",
+    "doctorEn": "Dr. Dina Hilal",
     "day": "Thursday",
     "time": "2:00 PM – 4:00 PM",
     "code": "ojhwn3j"
@@ -370,7 +416,8 @@
   {
     "subject": "Advanced Database",
     "group": "G1",
-    "doctor": "د. احمد السيداوي (Dr. Ahmed El-Saidawy)",
+    "doctorAr": "د. احمد السيداوي",
+    "doctorEn": "Dr. Ahmed El-Saidawy",
     "day": "Monday",
     "time": "4:00 PM – 6:00 PM",
     "code": "ab5fv6j"
@@ -378,7 +425,8 @@
   {
     "subject": "Advanced Database",
     "group": "G2",
-    "doctor": "د. احمد السيداوي (Dr. Ahmed El-Saidawy)",
+    "doctorAr": "د. احمد السيداوي",
+    "doctorEn": "Dr. Ahmed El-Saidawy",
     "day": "Monday",
     "time": "6:00 PM – 8:00 PM",
     "code": "zlqlsph"
@@ -386,7 +434,8 @@
   {
     "subject": "Advanced Database",
     "group": "G3",
-    "doctor": "د. احمد السيداوي (Dr. Ahmed El-Saidawy)",
+    "doctorAr": "د. احمد السيداوي",
+    "doctorEn": "Dr. Ahmed El-Saidawy",
     "day": "Thursday",
     "time": "12:00 PM – 2:00 PM",
     "code": "zjcvmri"
@@ -394,7 +443,8 @@
   {
     "subject": "Advanced Database",
     "group": "G4",
-    "doctor": "د. احمد السيداوي (Dr. Ahmed El-Saidawy)",
+    "doctorAr": "د. احمد السيداوي",
+    "doctorEn": "Dr. Ahmed El-Saidawy",
     "day": "Thursday",
     "time": "2:00 PM – 4:00 PM",
     "code": "35d2tlw"
@@ -402,7 +452,8 @@
   {
     "subject": "Advanced Database",
     "group": "G5",
-    "doctor": "د. إبراهيم الدسوقي (Dr. Ibrahim El-Desouky)",
+    "doctorAr": "د. إبراهيم الدسوقي",
+    "doctorEn": "Dr. Ibrahim El-Desouky",
     "day": "Monday",
     "time": "8:00 AM – 10:00 AM",
     "code": "cerl280"
@@ -410,7 +461,8 @@
   {
     "subject": "Advanced Database",
     "group": "G6",
-    "doctor": "د. إبراهيم الدسوقي (Dr. Ibrahim El-Desouky)",
+    "doctorAr": "د. إبراهيم الدسوقي",
+    "doctorEn": "Dr. Ibrahim El-Desouky",
     "day": "Thursday",
     "time": "8:00 AM – 10:00 AM",
     "code": "cnemwpa"
@@ -418,7 +470,8 @@
   {
     "subject": "Advanced Database",
     "group": "G7",
-    "doctor": "د. إبراهيم الدسوقي (Dr. Ibrahim El-Desouky)",
+    "doctorAr": "د. إبراهيم الدسوقي",
+    "doctorEn": "Dr. Ibrahim El-Desouky",
     "day": "Thursday",
     "time": "10:00 AM – 12:00 PM",
     "code": "8hb8f5z"
@@ -426,7 +479,8 @@
   {
     "subject": "Advanced Database",
     "group": "G8",
-    "doctor": "د. إبراهيم الدسوقي (Dr. Ibrahim El-Desouky)",
+    "doctorAr": "د. إبراهيم الدسوقي",
+    "doctorEn": "Dr. Ibrahim El-Desouky",
     "day": "Thursday",
     "time": "2:00 PM – 4:00 PM",
     "code": "7u971gi"
@@ -434,7 +488,8 @@
   {
     "subject": "Advanced Database",
     "group": "G9",
-    "doctor": "د. محمد حسن (Dr. Mohamed Hassan)",
+    "doctorAr": "د. محمد حسن",
+    "doctorEn": "Dr. Mohamed Hassan",
     "day": "Saturday",
     "time": "4:00 PM – 6:00 PM",
     "code": "lzvcyuv"
@@ -442,7 +497,8 @@
   {
     "subject": "Advanced Database",
     "group": "G10",
-    "doctor": "د. محمد حسن (Dr. Mohamed Hassan)",
+    "doctorAr": "د. محمد حسن",
+    "doctorEn": "Dr. Mohamed Hassan",
     "day": "Saturday",
     "time": "6:00 PM – 8:00 PM",
     "code": "rit1ua2"
@@ -450,7 +506,8 @@
   {
     "subject": "Advanced Database",
     "group": "G11",
-    "doctor": "د. محمد حسن (Dr. Mohamed Hassan)",
+    "doctorAr": "د. محمد حسن",
+    "doctorEn": "Dr. Mohamed Hassan",
     "day": "Thursday",
     "time": "8:00 AM – 10:00 AM",
     "code": "gbt7gdk"
@@ -458,7 +515,8 @@
   {
     "subject": "Advanced Database",
     "group": "G12",
-    "doctor": "د. محمد حسن (Dr. Mohamed Hassan)",
+    "doctorAr": "د. محمد حسن",
+    "doctorEn": "Dr. Mohamed Hassan",
     "day": "Thursday",
     "time": "10:00 AM – 12:00 PM",
     "code": "4blhhbd"
@@ -466,7 +524,8 @@
   {
     "subject": "Advanced Database",
     "group": "G13",
-    "doctor": "د. هاني جودة (Dr. Hany Gouda)",
+    "doctorAr": "د. هاني جودة",
+    "doctorEn": "Dr. Hany Gouda",
     "day": "Thursday",
     "time": "8:00 AM – 10:00 AM",
     "code": "ecci9d7"
@@ -474,7 +533,8 @@
   {
     "subject": "Advanced Database",
     "group": "G14",
-    "doctor": "د. هاني جودة (Dr. Hany Gouda)",
+    "doctorAr": "د. هاني جودة",
+    "doctorEn": "Dr. Hany Gouda",
     "day": "Thursday",
     "time": "10:00 AM – 12:00 PM",
     "code": "rqebaka"
@@ -482,7 +542,8 @@
   {
     "subject": "Advanced Database",
     "group": "G15",
-    "doctor": "د. هاني جودة (Dr. Hany Gouda)",
+    "doctorAr": "د. هاني جودة",
+    "doctorEn": "Dr. Hany Gouda",
     "day": "Thursday",
     "time": "2:00 PM – 4:00 PM",
     "code": "m78xunj"
@@ -490,7 +551,8 @@
   {
     "subject": "Advanced Database",
     "group": "G16",
-    "doctor": "د. ميرا تامر (Dr. Mira Tamer)",
+    "doctorAr": "د. ميرا تامر",
+    "doctorEn": "Dr. Mira Tamer",
     "day": "Tuesday",
     "time": "8:00 AM – 10:00 AM",
     "code": "9yzajdt"
@@ -498,7 +560,8 @@
   {
     "subject": "Advanced Database",
     "group": "G17",
-    "doctor": "د. ميرا تامر (Dr. Mira Tamer)",
+    "doctorAr": "د. ميرا تامر",
+    "doctorEn": "Dr. Mira Tamer",
     "day": "Tuesday",
     "time": "10:00 AM – 12:00 PM",
     "code": "pa4ysrw"
@@ -506,7 +569,8 @@
   {
     "subject": "Advanced Database",
     "group": "G18",
-    "doctor": "د. ميرا تامر (Dr. Mira Tamer)",
+    "doctorAr": "د. ميرا تامر",
+    "doctorEn": "Dr. Mira Tamer",
     "day": "Tuesday",
     "time": "2:00 PM – 4:00 PM",
     "code": "de3kqzo"
@@ -514,7 +578,8 @@
   {
     "subject": "Advanced Database",
     "group": "G19",
-    "doctor": "د. ياسر الجداوي (Dr. Yasser El-Gedawy)",
+    "doctorAr": "د. ياسر الجداوي",
+    "doctorEn": "Dr. Yasser El-Gedawy",
     "day": "Tuesday",
     "time": "8:00 AM – 10:00 AM",
     "code": "bgvr7y9"
@@ -522,7 +587,8 @@
   {
     "subject": "Advanced Database",
     "group": "G20",
-    "doctor": "د. ياسر الجداوي (Dr. Yasser El-Gedawy)",
+    "doctorAr": "د. ياسر الجداوي",
+    "doctorEn": "Dr. Yasser El-Gedawy",
     "day": "Thursday",
     "time": "2:00 PM – 4:00 PM",
     "code": "5mlo5lj"
@@ -530,7 +596,8 @@
   {
     "subject": "Advanced Database",
     "group": "G21",
-    "doctor": "د. ياسر الجداوي (Dr. Yasser El-Gedawy)",
+    "doctorAr": "د. ياسر الجداوي",
+    "doctorEn": "Dr. Yasser El-Gedawy",
     "day": "Thursday",
     "time": "4:00 PM – 6:00 PM",
     "code": "l2w8v25"
@@ -538,7 +605,8 @@
   {
     "subject": "Advanced Database",
     "group": "G22",
-    "doctor": "د. ياسر الجداوي (Dr. Yasser El-Gedawy)",
+    "doctorAr": "د. ياسر الجداوي",
+    "doctorEn": "Dr. Yasser El-Gedawy",
     "day": "Thursday",
     "time": "6:00 PM – 8:00 PM",
     "code": "5xuoa52"
@@ -546,7 +614,8 @@
   {
     "subject": "Advanced Database",
     "group": "G23",
-    "doctor": "د. منه ممدوح (Dr. Menna Mamdouh)",
+    "doctorAr": "د. منه ممدوح",
+    "doctorEn": "Dr. Menna Mamdouh",
     "day": "Sunday",
     "time": "8:00 AM – 10:00 AM",
     "code": "7wxocbg"
@@ -554,7 +623,8 @@
   {
     "subject": "Advanced Database",
     "group": "G24",
-    "doctor": "د. منه ممدوح (Dr. Menna Mamdouh)",
+    "doctorAr": "د. منه ممدوح",
+    "doctorEn": "Dr. Menna Mamdouh",
     "day": "Wednesday",
     "time": "8:00 AM – 10:00 AM",
     "code": "8dfvet2"
@@ -562,7 +632,8 @@
   {
     "subject": "Internet Applications",
     "group": "G1",
-    "doctor": "د. محمد مرتضي (Dr. Mohamed Mortada)",
+    "doctorAr": "د. محمد مرتضي",
+    "doctorEn": "Dr. Mohamed Mortada",
     "day": "Thursday",
     "time": "10:00 AM – 12:00 PM",
     "code": "3v0msbt"
@@ -570,7 +641,8 @@
   {
     "subject": "Internet Applications",
     "group": "G2",
-    "doctor": "د. محمد مرتضي (Dr. Mohamed Mortada)",
+    "doctorAr": "د. محمد مرتضي",
+    "doctorEn": "Dr. Mohamed Mortada",
     "day": "Thursday",
     "time": "2:00 PM – 4:00 PM",
     "code": "h5os5po"
@@ -578,7 +650,8 @@
   {
     "subject": "Internet Applications",
     "group": "G3",
-    "doctor": "د. محمد مرتضي (Dr. Mohamed Mortada)",
+    "doctorAr": "د. محمد مرتضي",
+    "doctorEn": "Dr. Mohamed Mortada",
     "day": "Thursday",
     "time": "4:00 PM – 6:00 PM",
     "code": "d0p5m18"
@@ -586,7 +659,8 @@
   {
     "subject": "Internet Applications",
     "group": "G4",
-    "doctor": "د. إبراهيم زغلول (Dr. Ibrahim Zaghloul)",
+    "doctorAr": "د. إبراهيم زغلول",
+    "doctorEn": "Dr. Ibrahim Zaghloul",
     "day": "Tuesday",
     "time": "10:00 AM – 12:00 PM",
     "code": "lob88u1"
@@ -594,7 +668,8 @@
   {
     "subject": "Internet Applications",
     "group": "G5",
-    "doctor": "د. إبراهيم زغلول (Dr. Ibrahim Zaghloul)",
+    "doctorAr": "د. إبراهيم زغلول",
+    "doctorEn": "Dr. Ibrahim Zaghloul",
     "day": "Tuesday",
     "time": "2:00 PM – 4:00 PM",
     "code": "0dtycdi"
@@ -602,7 +677,8 @@
   {
     "subject": "Internet Applications",
     "group": "G6",
-    "doctor": "د. إبراهيم زغلول (Dr. Ibrahim Zaghloul)",
+    "doctorAr": "د. إبراهيم زغلول",
+    "doctorEn": "Dr. Ibrahim Zaghloul",
     "day": "Tuesday",
     "time": "4:00 PM – 6:00 PM",
     "code": "g5o7vpd"
@@ -610,7 +686,8 @@
   {
     "subject": "Internet Applications",
     "group": "G7",
-    "doctor": "د. اماني احمد (Dr. Amany Ahmed)",
+    "doctorAr": "د. اماني احمد",
+    "doctorEn": "Dr. Amany Ahmed",
     "day": "Saturday",
     "time": "4:00 PM – 6:00 PM",
     "code": "gat6p30"
@@ -618,7 +695,8 @@
   {
     "subject": "Internet Applications",
     "group": "G8",
-    "doctor": "د. اماني احمد (Dr. Amany Ahmed)",
+    "doctorAr": "د. اماني احمد",
+    "doctorEn": "Dr. Amany Ahmed",
     "day": "Thursday",
     "time": "8:00 AM – 10:00 AM",
     "code": "bp3u0x1"
@@ -626,7 +704,8 @@
   {
     "subject": "Internet Applications",
     "group": "G9",
-    "doctor": "د. اماني احمد (Dr. Amany Ahmed)",
+    "doctorAr": "د. اماني احمد",
+    "doctorEn": "Dr. Amany Ahmed",
     "day": "Thursday",
     "time": "10:00 AM – 12:00 PM",
     "code": "42du7s7"
@@ -634,7 +713,8 @@
   {
     "subject": "Internet Applications",
     "group": "G10",
-    "doctor": "د. اماني احمد (Dr. Amany Ahmed)",
+    "doctorAr": "د. اماني احمد",
+    "doctorEn": "Dr. Amany Ahmed",
     "day": "Thursday",
     "time": "2:00 PM – 4:00 PM",
     "code": "w96k7it"
@@ -642,7 +722,8 @@
   {
     "subject": "Internet Applications",
     "group": "G11",
-    "doctor": "د. ثناء محمد (Dr. Thanaa Mohamed)",
+    "doctorAr": "د. ثناء محمد",
+    "doctorEn": "Dr. Thanaa Mohamed",
     "day": "Thursday",
     "time": "8:00 AM – 10:00 AM",
     "code": "2uwpdpw"
@@ -650,7 +731,8 @@
   {
     "subject": "Internet Applications",
     "group": "G12",
-    "doctor": "د. ثناء محمد (Dr. Thanaa Mohamed)",
+    "doctorAr": "د. ثناء محمد",
+    "doctorEn": "Dr. Thanaa Mohamed",
     "day": "Thursday",
     "time": "10:00 AM – 12:00 PM",
     "code": "c3iw5c0"
@@ -658,7 +740,8 @@
   {
     "subject": "Internet Applications",
     "group": "G13",
-    "doctor": "د. ثناء محمد (Dr. Thanaa Mohamed)",
+    "doctorAr": "د. ثناء محمد",
+    "doctorEn": "Dr. Thanaa Mohamed",
     "day": "Thursday",
     "time": "8:00 AM – 10:00 AM",
     "code": "j4me9m9"
@@ -666,7 +749,8 @@
   {
     "subject": "Internet Applications",
     "group": "G14",
-    "doctor": "د. ثناء محمد (Dr. Thanaa Mohamed)",
+    "doctorAr": "د. ثناء محمد",
+    "doctorEn": "Dr. Thanaa Mohamed",
     "day": "Thursday",
     "time": "10:00 AM – 12:00 PM",
     "code": "uw5h1fn"
@@ -674,7 +758,8 @@
   {
     "subject": "Internet Applications",
     "group": "G15",
-    "doctor": "د. نانيس نبيل (Dr. Nanis Nabil)",
+    "doctorAr": "د. نانيس نبيل",
+    "doctorEn": "Dr. Nanis Nabil",
     "day": "Tuesday",
     "time": "8:00 AM – 10:00 AM",
     "code": "d12fkfu"
@@ -682,7 +767,8 @@
   {
     "subject": "Internet Applications",
     "group": "G16",
-    "doctor": "د. نانيس نبيل (Dr. Nanis Nabil)",
+    "doctorAr": "د. نانيس نبيل",
+    "doctorEn": "Dr. Nanis Nabil",
     "day": "Tuesday",
     "time": "10:00 AM – 12:00 PM",
     "code": "s72bs58"
@@ -690,7 +776,8 @@
   {
     "subject": "Internet Applications",
     "group": "G17",
-    "doctor": "د. نانيس نبيل (Dr. Nanis Nabil)",
+    "doctorAr": "د. نانيس نبيل",
+    "doctorEn": "Dr. Nanis Nabil",
     "day": "Thursday",
     "time": "8:00 AM – 10:00 AM",
     "code": "cov8pu2"
@@ -698,7 +785,8 @@
   {
     "subject": "Internet Applications",
     "group": "G18",
-    "doctor": "د. نانيس نبيل (Dr. Nanis Nabil)",
+    "doctorAr": "د. نانيس نبيل",
+    "doctorEn": "Dr. Nanis Nabil",
     "day": "Thursday",
     "time": "10:00 AM – 12:00 PM",
     "code": "m53h9ch"
@@ -706,7 +794,8 @@
   {
     "subject": "Internet Applications",
     "group": "G19",
-    "doctor": "د. نورا شعيب (Dr. Nora Shoaib)",
+    "doctorAr": "د. نورا شعيب",
+    "doctorEn": "Dr. Nora Shoaib",
     "day": "Thursday",
     "time": "10:00 AM – 12:00 PM",
     "code": "j4y12uv"
@@ -714,7 +803,8 @@
   {
     "subject": "Internet Applications",
     "group": "G20",
-    "doctor": "د. نورا شعيب (Dr. Nora Shoaib)",
+    "doctorAr": "د. نورا شعيب",
+    "doctorEn": "Dr. Nora Shoaib",
     "day": "Thursday",
     "time": "2:00 PM – 4:00 PM",
     "code": "29wm6uv"
@@ -722,7 +812,8 @@
   {
     "subject": "Internet Applications",
     "group": "G21",
-    "doctor": "د. نورا شعيب (Dr. Nora Shoaib)",
+    "doctorAr": "د. نورا شعيب",
+    "doctorEn": "Dr. Nora Shoaib",
     "day": "Thursday",
     "time": "4:00 PM – 6:00 PM",
     "code": "dq97r49"
@@ -730,7 +821,8 @@
   {
     "subject": "Internet Applications",
     "group": "G22",
-    "doctor": "د. ايمان حنفي (Dr. Eman Hanafy)",
+    "doctorAr": "د. ايمان حنفي",
+    "doctorEn": "Dr. Eman Hanafy",
     "day": "Tuesday",
     "time": "8:00 AM – 10:00 AM",
     "code": "tqx7d7q"
@@ -738,7 +830,8 @@
   {
     "subject": "Internet Applications",
     "group": "G23",
-    "doctor": "د. ايمان حنفي (Dr. Eman Hanafy)",
+    "doctorAr": "د. ايمان حنفي",
+    "doctorEn": "Dr. Eman Hanafy",
     "day": "Tuesday",
     "time": "10:00 AM – 12:00 PM",
     "code": "5pucld7"
@@ -746,7 +839,8 @@
   {
     "subject": "Internet Applications",
     "group": "G24",
-    "doctor": "د. ايمان حنفي (Dr. Eman Hanafy)",
+    "doctorAr": "د. ايمان حنفي",
+    "doctorEn": "Dr. Eman Hanafy",
     "day": "Tuesday",
     "time": "2:00 PM – 4:00 PM",
     "code": "uarpavh"
@@ -754,7 +848,8 @@
   {
     "subject": "Operations Research",
     "group": "G1",
-    "doctor": "د. احمد عبد الهادي (Dr. Ahmed Abdelhady)",
+    "doctorAr": "د. احمد عبد الهادي",
+    "doctorEn": "Dr. Ahmed Abdelhady",
     "day": "Monday",
     "time": "10:00 AM – 12:00 PM",
     "code": "iw9a8ac"
@@ -762,7 +857,8 @@
   {
     "subject": "Operations Research",
     "group": "G2",
-    "doctor": "د. احمد عبد الهادي (Dr. Ahmed Abdelhady)",
+    "doctorAr": "د. احمد عبد الهادي",
+    "doctorEn": "Dr. Ahmed Abdelhady",
     "day": "Monday",
     "time": "2:00 PM – 4:00 PM",
     "code": "r0wb41r"
@@ -770,7 +866,8 @@
   {
     "subject": "Operations Research",
     "group": "G3",
-    "doctor": "د. احمد عبد الهادي (Dr. Ahmed Abdelhady)",
+    "doctorAr": "د. احمد عبد الهادي",
+    "doctorEn": "Dr. Ahmed Abdelhady",
     "day": "Monday",
     "time": "4:00 PM – 6:00 PM",
     "code": "28yykz0"
@@ -778,7 +875,8 @@
   {
     "subject": "Operations Research",
     "group": "G4",
-    "doctor": "د. احمد عبد الهادي (Dr. Ahmed Abdelhady)",
+    "doctorAr": "د. احمد عبد الهادي",
+    "doctorEn": "Dr. Ahmed Abdelhady",
     "day": "Wednesday",
     "time": "10:00 AM – 12:00 PM",
     "code": "4mdi80z"
@@ -786,7 +884,8 @@
   {
     "subject": "Operations Research",
     "group": "G5",
-    "doctor": "د. احمد عبد الهادي (Dr. Ahmed Abdelhady)",
+    "doctorAr": "د. احمد عبد الهادي",
+    "doctorEn": "Dr. Ahmed Abdelhady",
     "day": "Wednesday",
     "time": "2:00 PM – 4:00 PM",
     "code": "gdrvnyv"
@@ -794,7 +893,8 @@
   {
     "subject": "Operations Research",
     "group": "G6",
-    "doctor": "د. هند عطيه (Dr. Hind Atiya)",
+    "doctorAr": "د. هند عطيه",
+    "doctorEn": "Dr. Hind Atiya",
     "day": "Tuesday",
     "time": "2:00 PM – 4:00 PM",
     "code": "y1meizl"
@@ -802,7 +902,8 @@
   {
     "subject": "Operations Research",
     "group": "G7",
-    "doctor": "د. هند عطيه (Dr. Hind Atiya)",
+    "doctorAr": "د. هند عطيه",
+    "doctorEn": "Dr. Hind Atiya",
     "day": "Tuesday",
     "time": "4:00 PM – 6:00 PM",
     "code": "9zmszjb"
@@ -810,7 +911,8 @@
   {
     "subject": "Operations Research",
     "group": "G8",
-    "doctor": "د. هند عطيه (Dr. Hind Atiya)",
+    "doctorAr": "د. هند عطيه",
+    "doctorEn": "Dr. Hind Atiya",
     "day": "Thursday",
     "time": "8:00 AM – 10:00 AM",
     "code": "06apxiv"
@@ -818,7 +920,8 @@
   {
     "subject": "Operations Research",
     "group": "G9",
-    "doctor": "د. هند عطيه (Dr. Hind Atiya)",
+    "doctorAr": "د. هند عطيه",
+    "doctorEn": "Dr. Hind Atiya",
     "day": "Thursday",
     "time": "10:00 AM – 12:00 PM",
     "code": "rmbp399"
@@ -826,7 +929,8 @@
   {
     "subject": "Operations Research",
     "group": "G10",
-    "doctor": "د. هند عطيه (Dr. Hind Atiya)",
+    "doctorAr": "د. هند عطيه",
+    "doctorEn": "Dr. Hind Atiya",
     "day": "Thursday",
     "time": "2:00 PM – 4:00 PM",
     "code": "r91rqxr"
@@ -834,7 +938,8 @@
   {
     "subject": "Operations Research",
     "group": "G11",
-    "doctor": "د. محمود صادق (Dr. Mahmoud Sadek)",
+    "doctorAr": "د. محمود صادق",
+    "doctorEn": "Dr. Mahmoud Sadek",
     "day": "Tuesday",
     "time": "8:00 AM – 10:00 AM",
     "code": "f7dn8bu"
@@ -842,7 +947,8 @@
   {
     "subject": "Operations Research",
     "group": "G12",
-    "doctor": "د. محمود صادق (Dr. Mahmoud Sadek)",
+    "doctorAr": "د. محمود صادق",
+    "doctorEn": "Dr. Mahmoud Sadek",
     "day": "Tuesday",
     "time": "10:00 AM – 12:00 PM",
     "code": "451zgnn"
@@ -850,7 +956,8 @@
   {
     "subject": "Operations Research",
     "group": "G13",
-    "doctor": "د. محمود صادق (Dr. Mahmoud Sadek)",
+    "doctorAr": "د. محمود صادق",
+    "doctorEn": "Dr. Mahmoud Sadek",
     "day": "Wednesday",
     "time": "8:00 AM – 10:00 AM",
     "code": "zms4ll5"
@@ -858,7 +965,8 @@
   {
     "subject": "Operations Research",
     "group": "G14",
-    "doctor": "د. محمود صادق (Dr. Mahmoud Sadek)",
+    "doctorAr": "د. محمود صادق",
+    "doctorEn": "Dr. Mahmoud Sadek",
     "day": "Wednesday",
     "time": "10:00 AM – 12:00 PM",
     "code": "2bpw4k5"
@@ -866,7 +974,8 @@
   {
     "subject": "Operations Research",
     "group": "G15",
-    "doctor": "د. غاده محمد (Dr. Ghada Mohamed)",
+    "doctorAr": "د. غاده محمد",
+    "doctorEn": "Dr. Ghada Mohamed",
     "day": "Saturday",
     "time": "8:00 AM – 10:00 AM",
     "code": "jgrp9nj"
@@ -874,7 +983,8 @@
   {
     "subject": "Operations Research",
     "group": "G16",
-    "doctor": "د. غاده محمد (Dr. Ghada Mohamed)",
+    "doctorAr": "د. غاده محمد",
+    "doctorEn": "Dr. Ghada Mohamed",
     "day": "Saturday",
     "time": "10:00 AM – 12:00 PM",
     "code": "0z80zuz"
@@ -882,7 +992,8 @@
   {
     "subject": "Operations Research",
     "group": "G17",
-    "doctor": "د. غاده محمد (Dr. Ghada Mohamed)",
+    "doctorAr": "د. غاده محمد",
+    "doctorEn": "Dr. Ghada Mohamed",
     "day": "Saturday",
     "time": "2:00 PM – 4:00 PM",
     "code": "nbrbptw"
@@ -890,7 +1001,8 @@
   {
     "subject": "Operations Research",
     "group": "G18",
-    "doctor": "د. غاده محمد (Dr. Ghada Mohamed)",
+    "doctorAr": "د. غاده محمد",
+    "doctorEn": "Dr. Ghada Mohamed",
     "day": "Tuesday",
     "time": "8:00 AM – 10:00 AM",
     "code": "s8ntlkm"
@@ -898,7 +1010,8 @@
   {
     "subject": "Operations Research",
     "group": "G19",
-    "doctor": "د. خالد الخبيري (Dr. Khaled Elkhebairy)",
+    "doctorAr": "د. خالد الخبيري",
+    "doctorEn": "Dr. Khaled Elkhebairy",
     "day": "Monday",
     "time": "2:00 PM – 4:00 PM",
     "code": "7gw3v63"
@@ -906,7 +1019,8 @@
   {
     "subject": "Operations Research",
     "group": "G20",
-    "doctor": "د. خالد الخبيري (Dr. Khaled Elkhebairy)",
+    "doctorAr": "د. خالد الخبيري",
+    "doctorEn": "Dr. Khaled Elkhebairy",
     "day": "Monday",
     "time": "4:00 PM – 6:00 PM",
     "code": "iee5ujh"
@@ -914,7 +1028,8 @@
   {
     "subject": "Operations Research",
     "group": "G21",
-    "doctor": "د. خالد الخبيري (Dr. Khaled Elkhebairy)",
+    "doctorAr": "د. خالد الخبيري",
+    "doctorEn": "Dr. Khaled Elkhebairy",
     "day": "Tuesday",
     "time": "8:00 AM – 10:00 AM",
     "code": "jx7tkx6"
@@ -922,7 +1037,8 @@
   {
     "subject": "Operations Research",
     "group": "G22",
-    "doctor": "د. خالد الخبيري (Dr. Khaled Elkhebairy)",
+    "doctorAr": "د. خالد الخبيري",
+    "doctorEn": "Dr. Khaled Elkhebairy",
     "day": "Thursday",
     "time": "10:00 AM – 12:00 PM",
     "code": "ls4gzvv"
@@ -930,7 +1046,8 @@
   {
     "subject": "Operations Research",
     "group": "G23",
-    "doctor": "د. خالد الخبيري (Dr. Khaled Elkhebairy)",
+    "doctorAr": "د. خالد الخبيري",
+    "doctorEn": "Dr. Khaled Elkhebairy",
     "day": "Thursday",
     "time": "2:00 PM – 4:00 PM",
     "code": "yx80g7l"
@@ -938,7 +1055,8 @@
   {
     "subject": "Operations Research",
     "group": "G24",
-    "doctor": "د. خالد الخبيري (Dr. Khaled Elkhebairy)",
+    "doctorAr": "د. خالد الخبيري",
+    "doctorEn": "Dr. Khaled Elkhebairy",
     "day": "Thursday",
     "time": "4:00 PM – 6:00 PM",
     "code": "ij27gbz"
@@ -946,7 +1064,8 @@
   {
     "subject": "Economics of Information",
     "group": "G1",
-    "doctor": "د. عمر سالمان (Dr. Omar Salman)",
+    "doctorAr": "د. عمر سالمان",
+    "doctorEn": "Dr. Omar Salman",
     "day": "Wednesday",
     "time": "10:00 AM – 12:00 PM",
     "code": "8udkg43"
@@ -954,7 +1073,8 @@
   {
     "subject": "Economics of Information",
     "group": "G2",
-    "doctor": "د. عمر سالمان (Dr. Omar Salman)",
+    "doctorAr": "د. عمر سالمان",
+    "doctorEn": "Dr. Omar Salman",
     "day": "Wednesday",
     "time": "2:00 PM – 4:00 PM",
     "code": "tnax6kj"
@@ -962,7 +1082,8 @@
   {
     "subject": "Economics of Information",
     "group": "G3",
-    "doctor": "د. عمر سالمان (Dr. Omar Salman)",
+    "doctorAr": "د. عمر سالمان",
+    "doctorEn": "Dr. Omar Salman",
     "day": "Wednesday",
     "time": "4:00 PM – 6:00 PM",
     "code": "oizv2td"
@@ -970,7 +1091,8 @@
   {
     "subject": "Economics of Information",
     "group": "G4",
-    "doctor": "د. سمية عبد المولي (Dr. Somia Abdelmouly)",
+    "doctorAr": "د. سمية عبد المولي",
+    "doctorEn": "Dr. Somia Abdelmouly",
     "day": "Saturday",
     "time": "2:00 PM – 4:00 PM",
     "code": "cci163o"
@@ -978,7 +1100,8 @@
   {
     "subject": "Economics of Information",
     "group": "G5",
-    "doctor": "د. سمية عبد المولي (Dr. Somia Abdelmouly)",
+    "doctorAr": "د. سمية عبد المولي",
+    "doctorEn": "Dr. Somia Abdelmouly",
     "day": "Sunday",
     "time": "8:00 AM – 10:00 AM",
     "code": "tjq7t8c"
@@ -986,7 +1109,8 @@
   {
     "subject": "Economics of Information",
     "group": "G6",
-    "doctor": "د. سمية عبد المولي (Dr. Somia Abdelmouly)",
+    "doctorAr": "د. سمية عبد المولي",
+    "doctorEn": "Dr. Somia Abdelmouly",
     "day": "Sunday",
     "time": "10:00 AM – 12:00 PM",
     "code": "wjqqckm"
@@ -994,7 +1118,8 @@
   {
     "subject": "Economics of Information",
     "group": "G7",
-    "doctor": "د. سمية عبد المولي (Dr. Somia Abdelmouly)",
+    "doctorAr": "د. سمية عبد المولي",
+    "doctorEn": "Dr. Somia Abdelmouly",
     "day": "Sunday",
     "time": "2:00 PM – 4:00 PM",
     "code": "vzoj9gz"
@@ -1002,7 +1127,8 @@
   {
     "subject": "Economics of Information",
     "group": "G8",
-    "doctor": "د. سمية عبد المولي (Dr. Somia Abdelmouly)",
+    "doctorAr": "د. سمية عبد المولي",
+    "doctorEn": "Dr. Somia Abdelmouly",
     "day": "Wednesday",
     "time": "8:00 AM – 10:00 AM",
     "code": "5q7gqse"
@@ -1010,7 +1136,8 @@
   {
     "subject": "Economics of Information",
     "group": "G9",
-    "doctor": "د. سمية عبد المولي (Dr. Somia Abdelmouly)",
+    "doctorAr": "د. سمية عبد المولي",
+    "doctorEn": "Dr. Somia Abdelmouly",
     "day": "Wednesday",
     "time": "10:00 AM – 12:00 PM",
     "code": "r5xbrjf"
@@ -1018,7 +1145,8 @@
   {
     "subject": "Economics of Information",
     "group": "G10",
-    "doctor": "د. سمية عبد المولي (Dr. Somia Abdelmouly)",
+    "doctorAr": "د. سمية عبد المولي",
+    "doctorEn": "Dr. Somia Abdelmouly",
     "day": "Wednesday",
     "time": "2:00 PM – 4:00 PM",
     "code": "e44gp7m"
@@ -1026,7 +1154,8 @@
   {
     "subject": "Economics of Information",
     "group": "G11",
-    "doctor": "د. رشا الكردي (Dr. Rasha El-Kurdy)",
+    "doctorAr": "د. رشا الكردي",
+    "doctorEn": "Dr. Rasha El-Kurdy",
     "day": "Saturday",
     "time": "8:00 AM – 10:00 AM",
     "code": "oylyot7"
@@ -1034,7 +1163,8 @@
   {
     "subject": "Economics of Information",
     "group": "G12",
-    "doctor": "د. رشا الكردي (Dr. Rasha El-Kurdy)",
+    "doctorAr": "د. رشا الكردي",
+    "doctorEn": "Dr. Rasha El-Kurdy",
     "day": "Saturday",
     "time": "10:00 AM – 12:00 PM",
     "code": "le2xny0"
@@ -1042,7 +1172,8 @@
   {
     "subject": "Economics of Information",
     "group": "G13",
-    "doctor": "د. رشا الكردي (Dr. Rasha El-Kurdy)",
+    "doctorAr": "د. رشا الكردي",
+    "doctorEn": "Dr. Rasha El-Kurdy",
     "day": "Saturday",
     "time": "2:00 PM – 4:00 PM",
     "code": "j555jgj"
@@ -1050,7 +1181,8 @@
   {
     "subject": "Economics of Information",
     "group": "G14",
-    "doctor": "د. رشا الكردي (Dr. Rasha El-Kurdy)",
+    "doctorAr": "د. رشا الكردي",
+    "doctorEn": "Dr. Rasha El-Kurdy",
     "day": "Monday",
     "time": "8:00 AM – 10:00 AM",
     "code": "3iypem7"
@@ -1058,7 +1190,8 @@
   {
     "subject": "Economics of Information",
     "group": "G15",
-    "doctor": "د. رشا الكردي (Dr. Rasha El-Kurdy)",
+    "doctorAr": "د. رشا الكردي",
+    "doctorEn": "Dr. Rasha El-Kurdy",
     "day": "Monday",
     "time": "10:00 AM – 12:00 PM",
     "code": "l97oshc"
@@ -1066,7 +1199,8 @@
   {
     "subject": "Economics of Information",
     "group": "G16",
-    "doctor": "د. رشا الكردي (Dr. Rasha El-Kurdy)",
+    "doctorAr": "د. رشا الكردي",
+    "doctorEn": "Dr. Rasha El-Kurdy",
     "day": "Monday",
     "time": "2:00 PM – 4:00 PM",
     "code": "u3uh8qp"
@@ -1074,7 +1208,8 @@
   {
     "subject": "Economics of Information",
     "group": "G17",
-    "doctor": "د. شيماء وهبه (Dr. Shaimaa Wahba)",
+    "doctorAr": "د. شيماء وهبه",
+    "doctorEn": "Dr. Shaimaa Wahba",
     "day": "Saturday",
     "time": "8:00 AM – 10:00 AM",
     "code": "5xb1hu5"
@@ -1082,7 +1217,8 @@
   {
     "subject": "Economics of Information",
     "group": "G18",
-    "doctor": "د. شيماء وهبه (Dr. Shaimaa Wahba)",
+    "doctorAr": "د. شيماء وهبه",
+    "doctorEn": "Dr. Shaimaa Wahba",
     "day": "Saturday",
     "time": "10:00 AM – 12:00 PM",
     "code": "bx3zp2s"
@@ -1090,7 +1226,8 @@
   {
     "subject": "Economics of Information",
     "group": "G19",
-    "doctor": "د. شيماء وهبه (Dr. Shaimaa Wahba)",
+    "doctorAr": "د. شيماء وهبه",
+    "doctorEn": "Dr. Shaimaa Wahba",
     "day": "Saturday",
     "time": "2:00 PM – 4:00 PM",
     "code": "id9i1wj"
@@ -1098,7 +1235,8 @@
   {
     "subject": "Economics of Information",
     "group": "G20",
-    "doctor": "د. شيماء وهبه (Dr. Shaimaa Wahba)",
+    "doctorAr": "د. شيماء وهبه",
+    "doctorEn": "Dr. Shaimaa Wahba",
     "day": "Monday",
     "time": "8:00 AM – 10:00 AM",
     "code": "bhq4pmj"
@@ -1106,7 +1244,8 @@
   {
     "subject": "Economics of Information",
     "group": "G21",
-    "doctor": "د. شيماء وهبه (Dr. Shaimaa Wahba)",
+    "doctorAr": "د. شيماء وهبه",
+    "doctorEn": "Dr. Shaimaa Wahba",
     "day": "Monday",
     "time": "10:00 AM – 12:00 PM",
     "code": "ts01z1i"
@@ -1114,7 +1253,8 @@
   {
     "subject": "Economics of Information",
     "group": "G22",
-    "doctor": "د. شيماء وهبه (Dr. Shaimaa Wahba)",
+    "doctorAr": "د. شيماء وهبه",
+    "doctorEn": "Dr. Shaimaa Wahba",
     "day": "Wednesday",
     "time": "8:00 AM – 10:00 AM",
     "code": "ei3re8z"
@@ -1122,7 +1262,8 @@
   {
     "subject": "Economics of Information",
     "group": "G23",
-    "doctor": "د. شيماء وهبه (Dr. Shaimaa Wahba)",
+    "doctorAr": "د. شيماء وهبه",
+    "doctorEn": "Dr. Shaimaa Wahba",
     "day": "Wednesday",
     "time": "10:00 AM – 12:00 PM",
     "code": "c84awau"
@@ -1130,7 +1271,8 @@
   {
     "subject": "Economics of Information",
     "group": "G24",
-    "doctor": "د. شيماء وهبه (Dr. Shaimaa Wahba)",
+    "doctorAr": "د. شيماء وهبه",
+    "doctorEn": "Dr. Shaimaa Wahba",
     "day": "Wednesday",
     "time": "2:00 PM – 4:00 PM",
     "code": "i6558wp"

@@ -366,6 +366,8 @@ tbody tr:hover {
 
 .subject-cell { font-weight: 600; color: var(--accent); }
 .group-cell { font-family: var(--font-mono); font-weight: 600; }
+.doctor-ar-cell { font-weight: 500; text-align: right; direction: rtl; }
+.doctor-en-cell { font-weight: 400; color: var(--text-muted); }
 .code-wrapper { display: flex; align-items: center; gap: 8px; }
 .code-cell { 
     font-family: var(--font-mono); 

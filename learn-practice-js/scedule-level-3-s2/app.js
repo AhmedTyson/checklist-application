@@ -208,7 +208,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 tr.innerHTML = `
                     <td class="subject-cell">${Utils.highlightText(item.subject, State.filters.search)}</td>
                     <td class="group-cell">${Utils.highlightText(item.group, State.filters.search)}</td>
-                    <td>${Utils.highlightText(item.doctor, State.filters.search)}</td>
+                    <td class="doctor-ar-cell">${Utils.highlightText(item.doctorAr, State.filters.search)}</td>
+                    <td class="doctor-en-cell">${Utils.highlightText(item.doctorEn, State.filters.search)}</td>
                     <td>${Utils.highlightText(item.day, State.filters.search)}</td>
                     <td>${Utils.highlightText(item.time, State.filters.search)}</td>
                     <td>
@@ -318,11 +319,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Initialize Fuse.js for fuzzy search
                 State.fuse = new Fuse(State.allData, {
-                    keys: ['subject', 'group', 'doctor', 'day', 'time', 'code'],
+                    keys: ['subject', 'group', 'doctorAr', 'doctorEn', 'day', 'time', 'code'],
                     threshold: 0.3,
                     ignoreLocation: true,
                     minMatchCharLength: 2,
-                    findAllMatches: true
+                    findAllMatches: true,
+                    // Use custom getter to normalize data for searching
+                    getFn: (obj, key) => Utils.normalizeText(obj[key])
                 });
 
                 this.initializeUI();
@@ -445,11 +448,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // 2. Fuzzy Search using Fuse.js
             if (search && State.fuse) {
-                // We search from 'filtered' if dropdowns are active, 
-                // but Fuse works best on the full dataset if we want global search.
-                // However, user usually expects filters to apply AND search.
-                // Fuse.js search results are objects like { item, refIndex }
-                const fuseResults = State.fuse.search(search);
+                // Normalize search term to match normalized data in Fuse
+                const normalizedSearch = Utils.normalizeText(search);
+                const fuseResults = State.fuse.search(normalizedSearch);
                 const searchResults = fuseResults.map(r => r.item);
                 
                 // Intersect search results with currently filtered data
