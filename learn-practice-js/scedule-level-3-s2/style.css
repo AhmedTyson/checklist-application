@@ -60,11 +60,12 @@ body {
         linear-gradient(rgba(168, 85, 247, 0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(168, 85, 247, 0.03) 1px, transparent 1px);
     background-size: 40px 40px;
-    border-left: 1px solid var(--border);
-    border-right: 1px solid var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px; /* Slight rounding for a "card" look */
     box-shadow: 0 0 100px rgba(0,0,0,0.5);
     width: 1200px; /* Force the container to stay 1200px */
 }
+
 
 /* Ensure footer/bottom spacing is correct after scaling */
 main {
@@ -661,11 +662,11 @@ tbody tr:hover {
 }
 
 
-/* Mobile Specific Height Fix - Standard Flow */
 /* Scaling fix for very small screens */
 @media screen and (max-width: 480px) {
     .brand-info h1 {
         font-size: 20px;
     }
 }
+
 
