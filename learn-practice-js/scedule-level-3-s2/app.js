@@ -43,7 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
             subject: 'all',
             group: 'all',
             day: 'all'
-        }
+        },
+        fuse: null
     };
 
     /**
@@ -72,13 +73,60 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     const Utils = {
         /**
+         * Normalizes text for searching:
+         * - Lowercases
+         * - Removes common titles
+         * - Normalizes Arabic characters (Alif variants)
+         */
+        normalizeText(text) {
+            if (!text) return '';
+            let normalized = String(text).toLowerCase().trim();
+            
+            // 1. Professional Arabic Normalization using Arabic-Services library
+            if (typeof ArabicServices !== 'undefined') {
+                normalized = ArabicServices.removeTashkeel(normalized);
+                normalized = ArabicServices.removeTatweel(normalized);
+            }
+            
+            // 2. Remove common titles (English & Arabic)
+            // Handles: dr, dr., d., د, د., د/
+            normalized = normalized.replace(/\b(dr|dr\.|d\.|د|د\.|د\/)\b/g, '');
+            
+            // 3. Manual Arabic Normalization for common typing variants:
+            normalized = normalized.replace(/[أإآ]/g, 'ا'); // Alif
+            normalized = normalized.replace(/ة/g, 'ه');     // Ta Marbuta
+            normalized = normalized.replace(/ى/g, 'ي');     // Alif Maqsura
+            
+            // 4. Remove extra characters that might confuse matching
+            normalized = normalized.replace(/[()\-–—]/g, ' '); 
+            
+            // 5. Remove extra whitespace
+            return normalized.replace(/\s+/g, ' ').trim();
+        },
+
+        /**
          * Highlights matching search terms using regex.
+         * Handles multiple tokens and avoids breaking HTML tags.
          */
         highlightText(text, term) {
             if (!term) return text;
-            const escapedSearch = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-            const regex = new RegExp(`(${escapedSearch})`, 'gi');
-            return text.replace(regex, '<span class="highlight">$1</span>');
+            
+            const tokens = term.split(/\s+/).filter(t => t.length > 0);
+            if (tokens.length === 0) return text;
+
+            let highlighted = text;
+            tokens.forEach(token => {
+                // Escape token for regex
+                const escaped = token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                
+                // For highlighting, we still want to handle Arabic normalization visually if possible,
+                // but since the actual text has variants, we highlight the variant if it matches the normalized query.
+                // A simpler robust way: highlight the exact match case-insensitively.
+                const regex = new RegExp(`(${escaped})`, 'gi');
+                highlighted = highlighted.replace(regex, '<span class="highlight">$1</span>');
+            });
+            
+            return highlighted;
         }
     };
 
@@ -267,6 +315,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 const response = await fetch(Config.DATA_URL);
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 State.allData = await response.json();
+                
+                // Initialize Fuse.js for fuzzy search
+                State.fuse = new Fuse(State.allData, {
+                    keys: ['subject', 'group', 'doctor', 'day', 'time', 'code'],
+                    threshold: 0.3,
+                    ignoreLocation: true,
+                    minMatchCharLength: 2,
+                    findAllMatches: true
+                });
+
                 this.initializeUI();
                 this.handleFilterChange();
             } catch (error) {
@@ -342,7 +400,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         initEventListeners() {
             Elements.searchInput.addEventListener('input', (e) => {
-                State.filters.search = e.target.value.toLowerCase().trim();
+                State.filters.search = e.target.value; // Store raw value for highlighting
                 this.handleFilterChange();
             });
 
@@ -376,13 +434,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
         handleFilterChange() {
             const { search, subject, group, day } = State.filters;
-            State.filteredData = State.allData.filter(item => {
-                const matchesSearch = !search || Object.values(item).some(v => String(v).toLowerCase().includes(search));
+            
+            // 1. Initial filter by exact dropdowns
+            let filtered = State.allData.filter(item => {
                 const matchesSubject = subject === 'all' || item.subject === subject;
                 const matchesGroup = group === 'all' || item.group === group;
                 const matchesDay = day === 'all' || item.day === day;
-                return matchesSearch && matchesSubject && matchesGroup && matchesDay;
+                return matchesSubject && matchesGroup && matchesDay;
             });
+
+            // 2. Fuzzy Search using Fuse.js
+            if (search && State.fuse) {
+                // We search from 'filtered' if dropdowns are active, 
+                // but Fuse works best on the full dataset if we want global search.
+                // However, user usually expects filters to apply AND search.
+                // Fuse.js search results are objects like { item, refIndex }
+                const fuseResults = State.fuse.search(search);
+                const searchResults = fuseResults.map(r => r.item);
+                
+                // Intersect search results with currently filtered data
+                State.filteredData = searchResults.filter(item => filtered.includes(item));
+            } else {
+                State.filteredData = filtered;
+            }
 
             State.currentPage = 1;
             View.renderTable();
