@@ -40,7 +40,6 @@
 html {
     background-color: var(--bg-app);
     min-height: 100vh;
-    overflow-x: hidden;
 }
 
 body {
