@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let allData = [];
     let filteredData = [];
     let currentPage = 1;
-    const rowsPerPage = window.innerWidth <= 1200 ? 20 : 24;
+    const rowsPerPage = 24;
 
     // 1. Fetch and Initialize Data
     async function loadData() {
