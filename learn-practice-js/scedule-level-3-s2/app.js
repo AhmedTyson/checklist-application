@@ -1,422 +1,379 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const tableBody = document.getElementById('table-body');
-    const searchInput = document.getElementById('search-input');
-    const subjectFilter = document.getElementById('subject-filter');
-    const groupFilter = document.getElementById('group-filter');
-    const dayFilter = document.getElementById('day-filter');
-    const resultCount = document.getElementById('result-count');
-    const noResults = document.getElementById('no-results');
-    const paginationNumbers = document.getElementById('page-numbers');
-    const prevBtn = document.getElementById('prev-page');
-    const nextBtn = document.getElementById('next-page');
-    const loader = document.getElementById('loader');
-    const subjectListContainer = document.getElementById('subject-list-container');
-    const subjectTags = document.getElementById('subject-tags');
-    const clearBtn = document.getElementById('clear-filters');
-
-    let allData = [];
-    let filteredData = [];
-    let currentPage = 1;
-    const rowsPerPage = 24;
-
-    // 1. Fetch and Initialize Data
-    async function loadData() {
-        try {
-            const response = await fetch('scedule-data.json');
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-            }
-            allData = await response.json();
-            initializeUI();
-            initApp();
-        } catch (error) {
-            console.error('Error loading schedule data:', error);
-            noResults.innerHTML = `
-                <div style="color: var(--danger); font-weight: 600;">Error loading data: ${error.message}</div>
-                <div style="margin-top: 10px; font-size: 0.9em; color: var(--text-muted);">
-                    Check if <strong>scedule-data.json</strong> exists and is accessible. 
-                    If you are opening this file directly, you may need to use a local server.
-                </div>
-            `;
-            noResults.classList.remove('hidden');
-        } finally {
-            loader.classList.add('fade-out');
-        }
-    }
+    /**
+     * 1. CONFIGURATION
+     * Centralized settings for the application.
+     */
+    const Config = {
+        DATA_URL: 'scedule-data.json',
+        ROWS_PER_PAGE: 24,
+        DESKTOP_WIDTH: 1200,
+        FRIDAY_MEME_COUNT: 5
+    };
 
     /**
-     * Initializes the UI components (filters, tags) based on the loaded data.
+     * 2. STATE MANAGEMENT
+     * Holds the data state and filter criteria.
      */
-    function initializeUI() {
-        // Populate Subject Filter and Subject Highlight Box
-        const subjects = [...new Set(allData
-            .map(item => item.subject)
-            .filter(subject => subject && typeof subject === 'string')
-        )].sort();
-
-        if (subjects.length > 0) {
-            subjectListContainer.classList.remove('hidden');
-            // Update Subject Sizer with longest text (if element exists)
-            const longestSubject = subjects.reduce((a, b) => a.length > b.length ? a : b, "All Subjects");
-            const sizer = document.querySelector('#subject-dropdown .select-sizer');
-            if (sizer) sizer.textContent = longestSubject;
+    const State = {
+        allData: [],
+        filteredData: [],
+        currentPage: 1,
+        filters: {
+            search: '',
+            subject: 'all',
+            group: 'all',
+            day: 'all'
         }
-
-        subjects.forEach(subject => {
-            // Dropdown option
-            const option = document.createElement('option');
-            option.value = subject;
-            option.textContent = subject;
-            subjectFilter.appendChild(option);
-
-            // Custom dropdown populate
-            const customOption = document.createElement('div');
-            customOption.className = 'option';
-            customOption.dataset.value = subject;
-            customOption.textContent = subject;
-            document.getElementById('subject-options').appendChild(customOption);
-
-            // Tag for highlight box
-            const tag = document.createElement('span');
-            tag.className = 'subject-tag';
-            tag.textContent = subject;
-            tag.addEventListener('click', () => {
-                selectCustomOption('subject-dropdown', subject);
-            });
-            subjectTags.appendChild(tag);
-        });
-
-        // Populate Group Filter
-        const groups = [...new Set(allData
-            .map(item => item.group)
-            .filter(group => group && typeof group === 'string')
-        )].sort((a, b) => {
-            const numA = parseInt(a.replace(/\D/g, '')) || 0;
-            const numB = parseInt(b.replace(/\D/g, '')) || 0;
-            return numA - numB || a.localeCompare(b);
-        });
-
-        groups.forEach(group => {
-            // Native select sync
-            const option = document.createElement('option');
-            option.value = group;
-            option.textContent = group;
-            groupFilter.appendChild(option);
-
-            // Custom dropdown populate
-            const customOption = document.createElement('div');
-            customOption.className = 'option';
-            customOption.dataset.value = group;
-            customOption.textContent = group;
-            document.getElementById('group-options').appendChild(customOption);
-        });
-
-        initCustomDropdowns();
-    }
+    };
 
     /**
-     * Initializes custom dropdown behavior (opening/closing/selecting).
+     * 3. DOM ELEMENTS
+     * Grouping references to DOM elements for easier access.
      */
-    function initCustomDropdowns() {
-        const dropdowns = document.querySelectorAll('.custom-select');
+    const Elements = {
+        tableBody: document.getElementById('table-body'),
+        searchInput: document.getElementById('search-input'),
+        resultCount: document.getElementById('result-count'),
+        noResults: document.getElementById('no-results'),
+        paginationNumbers: document.getElementById('page-numbers'),
+        prevBtn: document.getElementById('prev-page'),
+        nextBtn: document.getElementById('next-page'),
+        loader: document.getElementById('loader'),
+        subjectListContainer: document.getElementById('subject-list-container'),
+        subjectTags: document.getElementById('subject-tags'),
+        clearBtn: document.getElementById('clear-filters'),
+        memeContainer: document.getElementById('meme-container'),
+        noResultsText: document.getElementById('no-results-text'),
+        pagination: document.getElementById('pagination')
+    };
 
-        dropdowns.forEach(dropdown => {
-            const trigger = dropdown.querySelector('.select-trigger');
-            const optionsContainer = dropdown.querySelector('.select-options');
-            const options = dropdown.querySelectorAll('.option');
-            const hiddenSelect = dropdown.parentElement.querySelector('select');
+    /**
+     * 4. APP UTILITIES & COMPONENTS
+     */
+    const Utils = {
+        /**
+         * Highlights matching search terms using regex.
+         */
+        highlightText(text, term) {
+            if (!term) return text;
+            const escapedSearch = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const regex = new RegExp(`(${escapedSearch})`, 'gi');
+            return text.replace(regex, '<span class="highlight">$1</span>');
+        }
+    };
 
-            trigger.addEventListener('click', (e) => {
+    /**
+     * CustomSelect Component Logic
+     */
+    class CustomSelect {
+        constructor(id, onSelect) {
+            this.container = document.getElementById(id);
+            if (!this.container) return;
+            
+            this.trigger = this.container.querySelector('.select-trigger');
+            this.optionsContainer = this.container.querySelector('.select-options');
+            this.hiddenSelect = this.container.parentElement.querySelector('select');
+            this.onSelect = onSelect;
+            this.id = id;
+
+            this.init();
+        }
+
+        init() {
+            this.trigger.addEventListener('click', (e) => {
                 e.stopPropagation();
-                // Close other dropdowns
-                dropdowns.forEach(d => { if (d !== dropdown) d.classList.remove('active'); });
-                dropdown.classList.toggle('active');
+                document.querySelectorAll('.custom-select').forEach(d => {
+                    if (d !== this.container) d.classList.remove('active');
+                });
+                this.container.classList.toggle('active');
             });
 
-            dropdown.addEventListener('click', (e) => {
-                if (e.target.classList.contains('option')) {
-                    const value = e.target.dataset.value;
-                    const text = e.target.textContent;
-
-                    // Update UI
-                    trigger.querySelector('span').textContent = text;
-                    options.forEach(opt => opt.classList.remove('selected'));
-                    e.target.classList.add('selected');
-
-                    // Sync native select
-                    hiddenSelect.value = value;
-                    dropdown.classList.remove('active');
-                    
-                    // Trigger filter
-                    handleFilterChange();
+            this.container.addEventListener('click', (e) => {
+                const option = e.target.closest('.option');
+                if (option) {
+                    this.select(option.dataset.value, option.textContent);
                 }
             });
-        });
+        }
 
-        // Close when clicking elsewhere
-        window.addEventListener('click', () => {
-            dropdowns.forEach(d => d.classList.remove('active'));
-        });
-    }
-
-    /**
-     * Programmatically selects an option in a custom dropdown.
-     */
-    function selectCustomOption(dropdownId, value) {
-        const dropdown = document.getElementById(dropdownId);
-        const options = dropdown.querySelectorAll('.option');
-        const trigger = dropdown.querySelector('.select-trigger');
-        const hiddenSelect = dropdown.parentElement.querySelector('select');
-
-        options.forEach(opt => {
-            if (opt.dataset.value === value) {
-                opt.classList.add('selected');
-                trigger.querySelector('span').textContent = opt.textContent;
-                hiddenSelect.value = value;
-            } else {
-                opt.classList.remove('selected');
-            }
-        });
-        handleFilterChange();
-    }
-
-    /**
-     * Initializes event listeners and performs the first render.
-     */
-    function initApp() {
-        filteredData = [...allData];
-        renderTable();
-        
-        // Listen for input, select changes to trigger filtering
-        searchInput.addEventListener('input', handleFilterChange);
-        
-        clearBtn.addEventListener('click', () => {
-            searchInput.value = '';
-            // Reset custom dropdowns
-            ['subject-dropdown', 'group-dropdown', 'day-dropdown'].forEach(id => {
-                const dropdown = document.getElementById(id);
-                const trigger = dropdown.querySelector('.select-trigger');
-                const defaultOption = dropdown.querySelector('.option[data-value="all"]');
-                trigger.querySelector('span').textContent = defaultOption.textContent;
-                dropdown.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
-                defaultOption.classList.add('selected');
-                dropdown.parentElement.querySelector('select').value = 'all';
+        select(value, text) {
+            this.trigger.querySelector('span').textContent = text;
+            this.container.querySelectorAll('.option').forEach(opt => {
+                opt.classList.toggle('selected', opt.dataset.value === value);
             });
-            handleFilterChange();
-        });
+            this.hiddenSelect.value = value;
+            this.container.classList.remove('active');
+            if (this.onSelect) this.onSelect(this.id, value);
+        }
 
-        // Pagination button listeners
-        prevBtn.addEventListener('click', () => {
-            if (currentPage > 1) {
-                currentPage--;
-                renderTable();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+        reset() {
+            const defaultOption = this.container.querySelector('.option[data-value="all"]');
+            if (defaultOption) {
+                this.select('all', defaultOption.textContent);
             }
-        });
-
-        nextBtn.addEventListener('click', () => {
-            const maxPage = Math.ceil(filteredData.length / rowsPerPage);
-            if (currentPage < maxPage) {
-                currentPage++;
-                renderTable();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        });
-    }
-
-    /**
-     * Handles search input and filter changes to update filteredData.
-     */
-    function handleFilterChange() {
-        const searchTerm = searchInput.value.toLowerCase().trim();
-        const selectedSubject = subjectFilter.value;
-        const selectedGroup = groupFilter.value;
-        const selectedDay = dayFilter.value;
-
-        filteredData = allData.filter(item => {
-            // Search logic mapping for subject, doctor, group, day, time, and code
-            const matchesSearch = searchTerm === '' || 
-                item.subject.toLowerCase().includes(searchTerm) ||
-                item.doctor.toLowerCase().includes(searchTerm) ||
-                item.group.toLowerCase().includes(searchTerm) ||
-                item.day.toLowerCase().includes(searchTerm) ||
-                item.time.toLowerCase().includes(searchTerm) ||
-                item.code.toLowerCase().includes(searchTerm);
-            
-            // Filter dropdown matches
-            const matchesSubject = selectedSubject === 'all' || item.subject === selectedSubject;
-            const matchesGroup = selectedGroup === 'all' || item.group === selectedGroup;
-            const matchesDay = selectedDay === 'all' || item.day === selectedDay;
-
-            return matchesSearch && matchesSubject && matchesGroup && matchesDay;
-        });
-
-        // Reset to first page on filter change
-        currentPage = 1;
-        renderTable();
-        
-        // Optional: Smooth scroll back to table header if user is deep in results
-        const tableHeader = document.querySelector('thead');
-        if (window.scrollY > tableHeader.offsetTop + 100) {
-            window.scrollTo({ top: tableHeader.offsetTop - 100, behavior: 'smooth' });
         }
     }
 
     /**
-     * Renders the table body based on the current page of filteredData.
+     * 5. VIEW ENGINE
+     * Functions responsible for rendering data to the screen.
      */
-    function renderTable() {
-        const start = (currentPage - 1) * rowsPerPage;
-        const end = start + rowsPerPage;
-        const pageData = filteredData.slice(start, end);
+    const View = {
+        renderTable() {
+            const start = (State.currentPage - 1) * Config.ROWS_PER_PAGE;
+            const end = start + Config.ROWS_PER_PAGE;
+            const pageData = State.filteredData.slice(start, end);
 
-        tableBody.innerHTML = '';
-        
-        if (pageData.length === 0) {
-            noResults.classList.remove('hidden');
-            resultCount.textContent = '0';
-            paginationNumbers.innerHTML = '';
-            prevBtn.disabled = true;
-            nextBtn.disabled = true;
+            Elements.tableBody.innerHTML = '';
+            
+            if (pageData.length === 0) {
+                this.renderNoResults();
+                return;
+            }
 
-            const selectedDay = dayFilter.value;
-            const memeContainer = document.getElementById('meme-container');
-            const noResultsText = document.getElementById('no-results-text');
-            const ghostIcon = noResults.querySelector('.fa-ghost');
+            Elements.noResults.classList.add('hidden');
+            Elements.memeContainer.innerHTML = '';
+            Elements.resultCount.textContent = State.filteredData.length;
 
-            if (selectedDay === 'Friday') {
-                const randomMeme = Math.floor(Math.random() * 5) + 1;
-                memeContainer.innerHTML = `<img src="assets/meme-friday-${randomMeme}.webp" alt="Friday Meme" class="meme-img">`;
-                noResultsText.textContent = "Enjoy your Friday! No schedules, just vibes. 😎";
+            pageData.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="subject-cell">${Utils.highlightText(item.subject, State.filters.search)}</td>
+                    <td class="group-cell">${Utils.highlightText(item.group, State.filters.search)}</td>
+                    <td>${Utils.highlightText(item.doctor, State.filters.search)}</td>
+                    <td>${Utils.highlightText(item.day, State.filters.search)}</td>
+                    <td>${Utils.highlightText(item.time, State.filters.search)}</td>
+                    <td>
+                        <div class="code-wrapper">
+                            <span class="code-cell">${Utils.highlightText(item.code, State.filters.search)}</span>
+                            <button class="copy-btn" title="Copy Code" data-code="${item.code}">
+                                <i class="fa-regular fa-copy"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                Elements.tableBody.appendChild(tr);
+            });
+
+            this.initCopyButtons();
+            this.renderPagination();
+        },
+
+        renderNoResults() {
+            Elements.noResults.classList.remove('hidden');
+            Elements.resultCount.textContent = '0';
+            Elements.paginationNumbers.innerHTML = '';
+            Elements.prevBtn.disabled = true;
+            Elements.nextBtn.disabled = true;
+
+            const ghostIcon = Elements.noResults.querySelector('.fa-ghost');
+
+            if (State.filters.day === 'Friday') {
+                const randomMeme = Math.floor(Math.random() * Config.FRIDAY_MEME_COUNT) + 1;
+                Elements.memeContainer.innerHTML = `<img src="assets/meme-friday-${randomMeme}.webp" alt="Friday Meme" class="meme-img">`;
+                Elements.noResultsText.textContent = "Enjoy your Friday! No schedules, just vibes. 😎";
                 if (ghostIcon) ghostIcon.classList.add('hidden');
             } else {
-                memeContainer.innerHTML = '';
-                noResultsText.textContent = "No matching schedules found.";
+                Elements.memeContainer.innerHTML = '';
+                Elements.noResultsText.textContent = "No matching schedules found.";
                 if (ghostIcon) ghostIcon.classList.remove('hidden');
             }
-            return;
+        },
+
+        renderPagination() {
+            const maxPage = Math.ceil(State.filteredData.length / Config.ROWS_PER_PAGE);
+            Elements.paginationNumbers.innerHTML = '';
+
+            if (maxPage <= 1) {
+                Elements.pagination.classList.add('hidden');
+                return;
+            }
+            Elements.pagination.classList.remove('hidden');
+
+            Elements.prevBtn.disabled = State.currentPage === 1;
+            Elements.nextBtn.disabled = State.currentPage === maxPage;
+
+            for (let i = 1; i <= maxPage; i++) {
+                const btn = document.createElement('button');
+                btn.textContent = i;
+                btn.className = `page-btn ${i === State.currentPage ? 'active' : ''}`;
+                btn.onclick = () => {
+                    State.currentPage = i;
+                    this.renderTable();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                };
+                Elements.paginationNumbers.appendChild(btn);
+            }
+        },
+
+        initCopyButtons() {
+            Elements.tableBody.querySelectorAll('.copy-btn').forEach(btn => {
+                btn.onclick = async () => {
+                    const code = btn.dataset.code;
+                    try {
+                        await navigator.clipboard.writeText(code);
+                        const icon = btn.querySelector('i');
+                        icon.className = 'fa-solid fa-check';
+                        btn.classList.add('copied');
+                        setTimeout(() => {
+                            icon.className = 'fa-regular fa-copy';
+                            btn.classList.remove('copied');
+                        }, 2000);
+                    } catch (err) {
+                        console.error('Failed to copy text: ', err);
+                    }
+                };
+            });
         }
+    };
 
-        noResults.classList.add('hidden');
-        document.getElementById('meme-container').innerHTML = ''; // Clear meme if results found
-        resultCount.textContent = filteredData.length;
+    /**
+     * 6. CORE LOGIC
+     */
+    const App = {
+        dropdowns: {},
 
-        // Create table rows dynamically
-        pageData.forEach(item => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td class="subject-cell">${highlightText(item.subject)}</td>
-                <td class="group-cell">${highlightText(item.group)}</td>
-                <td>${highlightText(item.doctor)}</td>
-                <td>${highlightText(item.day)}</td>
-                <td>${highlightText(item.time)}</td>
-                <td>
-                    <div class="code-wrapper">
-                        <span class="code-cell">${highlightText(item.code)}</span>
-                        <button class="copy-btn" title="Copy Code" data-code="${item.code}">
-                            <i class="fa-regular fa-copy"></i>
-                        </button>
-                    </div>
-                </td>
-            `;
-            tableBody.appendChild(tr);
-        });
+        async init() {
+            window.addEventListener('click', () => {
+                document.querySelectorAll('.custom-select').forEach(d => d.classList.remove('active'));
+            });
 
-        // Add event listeners for copy buttons
-        const copyButtons = tableBody.querySelectorAll('.copy-btn');
-        copyButtons.forEach(btn => {
-            btn.addEventListener('click', async () => {
-                const code = btn.dataset.code;
-                try {
-                    await navigator.clipboard.writeText(code);
-                    
-                    // Visual feedback
-                    const icon = btn.querySelector('i');
-                    icon.classList.remove('fa-copy');
-                    icon.classList.remove('fa-regular');
-                    icon.classList.add('fa-solid');
-                    icon.classList.add('fa-check');
-                    btn.classList.add('copied');
+            this.initEventListeners();
+            await this.loadData();
+        },
 
-                    setTimeout(() => {
-                        icon.classList.remove('fa-check');
-                        icon.classList.remove('fa-solid');
-                        icon.classList.add('fa-regular');
-                        icon.classList.add('fa-copy');
-                        btn.classList.remove('copied');
-                    }, 2000);
-                } catch (err) {
-                    console.error('Failed to copy text: ', err);
+        async loadData() {
+            try {
+                const response = await fetch(Config.DATA_URL);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                State.allData = await response.json();
+                this.initializeUI();
+                this.handleFilterChange();
+            } catch (error) {
+                console.error('Error loading schedule:', error);
+                Elements.noResults.innerHTML = `<div style="color: var(--danger);">Error loading data: ${error.message}</div>`;
+                Elements.noResults.classList.remove('hidden');
+            } finally {
+                Elements.loader.classList.add('fade-out');
+            }
+        },
+
+        initializeUI() {
+            // Dropdowns
+            ['subject-dropdown', 'group-dropdown', 'day-dropdown'].forEach(id => {
+                this.dropdowns[id] = new CustomSelect(id, (dropdownId, value) => {
+                    const key = dropdownId.split('-')[0];
+                    State.filters[key] = value;
+                    this.handleFilterChange();
+                });
+            });
+
+            // Subjects Tags and Highlight Box
+            const subjects = [...new Set(State.allData.map(item => item.subject).filter(Boolean))].sort();
+            if (subjects.length > 0) Elements.subjectListContainer.classList.remove('hidden');
+
+            const subjectOptions = document.getElementById('subject-options');
+            const groupOptions = document.getElementById('group-options');
+            const subjectFilter = document.getElementById('subject-filter');
+            const groupFilter = document.getElementById('group-filter');
+
+            subjects.forEach(subject => {
+                // To Options
+                const opt = document.createElement('div');
+                opt.className = 'option';
+                opt.dataset.value = subject;
+                opt.textContent = subject;
+                subjectOptions.appendChild(opt);
+
+                // To hidden select
+                const nativeOpt = document.createElement('option');
+                nativeOpt.value = subject;
+                nativeOpt.textContent = subject;
+                subjectFilter.appendChild(nativeOpt);
+
+                // To Tags
+                const tag = document.createElement('span');
+                tag.className = 'subject-tag';
+                tag.textContent = subject;
+                tag.onclick = () => this.dropdowns['subject-dropdown'].select(subject, subject);
+                Elements.subjectTags.appendChild(tag);
+            });
+
+            // Groups
+            const groups = [...new Set(State.allData.map(item => item.group).filter(Boolean))].sort((a, b) => {
+                const numA = parseInt(a.replace(/\D/g, '')) || 0;
+                const numB = parseInt(b.replace(/\D/g, '')) || 0;
+                return numA - numB || a.localeCompare(b);
+            });
+
+            groups.forEach(group => {
+                const opt = document.createElement('div');
+                opt.className = 'option';
+                opt.dataset.value = group;
+                opt.textContent = group;
+                groupOptions.appendChild(opt);
+
+                const nativeOpt = document.createElement('option');
+                nativeOpt.value = group;
+                nativeOpt.textContent = group;
+                groupFilter.appendChild(nativeOpt);
+            });
+        },
+
+        initEventListeners() {
+            Elements.searchInput.addEventListener('input', (e) => {
+                State.filters.search = e.target.value.toLowerCase().trim();
+                this.handleFilterChange();
+            });
+
+            Elements.clearBtn.onclick = () => {
+                Elements.searchInput.value = '';
+                State.filters.search = '';
+                Object.values(this.dropdowns).forEach(d => d.reset());
+                State.filters.subject = 'all';
+                State.filters.group = 'all';
+                State.filters.day = 'all';
+                this.handleFilterChange();
+            };
+
+            Elements.prevBtn.onclick = () => {
+                if (State.currentPage > 1) {
+                    State.currentPage--;
+                    View.renderTable();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
+            };
+
+            Elements.nextBtn.onclick = () => {
+                const maxPage = Math.ceil(State.filteredData.length / Config.ROWS_PER_PAGE);
+                if (State.currentPage < maxPage) {
+                    State.currentPage++;
+                    View.renderTable();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            };
+        },
+
+        handleFilterChange() {
+            const { search, subject, group, day } = State.filters;
+            State.filteredData = State.allData.filter(item => {
+                const matchesSearch = !search || Object.values(item).some(v => String(v).toLowerCase().includes(search));
+                const matchesSubject = subject === 'all' || item.subject === subject;
+                const matchesGroup = group === 'all' || item.group === group;
+                const matchesDay = day === 'all' || item.day === day;
+                return matchesSearch && matchesSubject && matchesGroup && matchesDay;
             });
-        });
 
-        renderPagination();
-    }
+            State.currentPage = 1;
+            View.renderTable();
 
-    /**
-     * Highlights matching search terms within a given string using regex.
-     */
-    function highlightText(text) {
-        const searchTerm = searchInput.value.trim();
-        if (!searchTerm) return text;
-        // Escape special characters in search and create a global case-insensitive regex
-        const escapedSearch = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const regex = new RegExp(`(${escapedSearch})`, 'gi');
-        return text.replace(regex, '<span class="highlight">$1</span>');
-    }
-
-    function renderPagination() {
-        const maxPage = Math.ceil(filteredData.length / rowsPerPage);
-        paginationNumbers.innerHTML = '';
-
-        if (maxPage <= 1) {
-            document.getElementById('pagination').classList.add('hidden');
-            return;
+            // Smooth scroll back to table header
+            const tableRect = document.querySelector('thead').getBoundingClientRect();
+            if (tableRect.top < 0) {
+                window.scrollTo({ top: window.scrollY + tableRect.top - 100, behavior: 'smooth' });
+            }
         }
-        document.getElementById('pagination').classList.remove('hidden');
+    };
 
-        prevBtn.disabled = currentPage === 1;
-        nextBtn.disabled = currentPage === maxPage;
-
-        for (let i = 1; i <= maxPage; i++) {
-            const btn = document.createElement('button');
-            btn.textContent = i;
-            btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
-            btn.addEventListener('click', () => {
-                currentPage = i;
-                renderTable();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-            paginationNumbers.appendChild(btn);
-        }
-    }
-
-    /**
-     * Dynamically scales the entire page to fit the screen width, 
-     * preserving the 1200px desktop layout perfectly.
-     */
-    function updateScale() {
-        const desktopWidth = 1200;
-        const windowWidth = window.innerWidth;
-        
-        if (windowWidth < desktopWidth) {
-            const scaleFactor = windowWidth / desktopWidth;
-            document.documentElement.style.setProperty('--scale-factor', scaleFactor);
-            
-            // Use the container's height for more precision
-            const container = document.querySelector('.container');
-            const contentHeight = container ? container.offsetHeight : document.documentElement.scrollHeight;
-            document.body.style.height = (contentHeight * scaleFactor) + 'px';
-        } else {
-            document.documentElement.style.setProperty('--scale-factor', '1');
-            document.body.style.height = 'auto';
-        }
-    }
-
-    // Initial scale and listener
-    updateScale();
-    window.addEventListener('resize', updateScale);
-
-    loadData();
+    App.init();
 });

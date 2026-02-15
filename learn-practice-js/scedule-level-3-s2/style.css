@@ -1,4 +1,5 @@
 :root {
+    /* Colors */
     --bg-app: #0a0a0a;
     --bg-void: #050505;
     --bg-panel: #111111;
@@ -10,74 +11,77 @@
     --text-dim: #52525b;
     --accent: #a855f7;
     --accent-bg: rgba(168, 85, 247, 0.1);
+    --danger: #ef4444;
+
+    /* Typography */
     --font-ui: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
     --font-mono: "JetBrains Mono", monospace;
+
+    /* Spacing & Layout */
+    --padding-container: 24px 32px;
+    --radius-lg: 16px;
+    --radius-md: 12px;
+    --radius-sm: 8px;
     --shadow: 0 10px 30px rgba(0,0,0,0.5);
+    --container-width: 1200px;
+
+    /* Transitions */
+    --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    -webkit-tap-highlight-color: transparent; /* Removes the blue highlight on mobile taps */
-}
-
-/* Mobile/Scaling Responsiveness - Scale to Fit Strategy */
-:root {
-    --scale-factor: 1;
+    -webkit-tap-highlight-color: transparent;
 }
 
 html {
-    background-color: var(--bg-void);
-    height: auto !important;
-    min-height: 100vh !important;
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden; /* Prevent horizontal scroll on body */
+    background-color: var(--bg-app);
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
 body {
-    width: 1200px;
-    min-height: auto;
-    margin: 0 auto;
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
     background-color: transparent;
     color: var(--text-main);
     font-family: var(--font-ui);
     line-height: 1.6;
     font-size: 15px;
-    transform-origin: top center;
-    transform: scale(var(--scale-factor));
 }
 
 .container {
-    padding: 20px 40px;
+    padding: var(--padding-container);
     display: flex;
     flex-direction: column;
     position: relative;
-    min-height: calc(100vh / var(--scale-factor));
+    min-height: 100vh;
     background-color: var(--bg-app);
-    background-image: 
+    background-image:
         linear-gradient(rgba(168, 85, 247, 0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(168, 85, 247, 0.03) 1px, transparent 1px);
     background-size: 40px 40px;
     border: 1px solid var(--border);
-    border-radius: 8px; /* Slight rounding for a "card" look */
+    border-radius: var(--radius-sm);
     box-shadow: 0 0 100px rgba(0,0,0,0.5);
-    width: 1200px; /* Force the container to stay 1200px */
+    width: var(--container-width);
+    margin: 0 auto;
+    flex: 1;
 }
 
-
-/* Ensure footer/bottom spacing is correct after scaling */
 main {
     padding-bottom: 20px;
 }
 
-
 /* Header & Branding */
 header {
     border-bottom: 1px solid var(--border);
-    padding-bottom: 20px; /* Reduced from 30px */
-    margin-bottom: 24px; /* Reduced from 40px */
+    padding-bottom: 20px;
+    margin-bottom: 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -138,37 +142,37 @@ header {
     background: linear-gradient(135deg, rgba(17, 17, 17, 0.7), rgba(10, 10, 10, 0.7));
     backdrop-filter: blur(10px);
     border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px; /* Reduced from 30px */
-    margin-bottom: 24px; /* Reduced from 32px */
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 24px;
     display: flex;
     flex-direction: column;
     gap: 24px;
     box-shadow: var(--shadow);
     position: relative;
-    z-index: 100; /* Ensure dropdowns stack above the table container */
+    z-index: 100;
 }
 
 .search-header {
     width: 100%;
     display: flex;
     gap: 12px;
-    align-items: center; /* Better alignment */
+    align-items: center;
 }
 
 .clear-btn-styled {
     flex: 0 0 auto;
-    height: 44px; /* Matches search height better */
+    height: 44px;
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     padding: 0 16px;
     font-size: 11px;
     color: var(--text-muted);
     font-weight: 600;
     display: flex;
     align-items: center;
-    transition: all 0.2s;
+    transition: all var(--transition-fast);
     gap: 8px;
 }
 
@@ -198,12 +202,12 @@ header {
     height: 44px;
     background: rgba(0, 0, 0, 0.3);
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     padding: 0 14px 0 48px;
     color: var(--text-main);
     font-family: var(--font-ui);
     font-size: 15px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all var(--transition-normal);
 }
 
 .search-box input:focus {
@@ -211,37 +215,29 @@ header {
     border-color: var(--accent);
     background: rgba(0, 0, 0, 0.5);
     box-shadow: 0 0 0 4px var(--accent-bg);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .filters-grid {
     display: flex;
-    flex-wrap: nowrap;
     gap: 16px;
-    align-items: flex-end;
-    justify-content: center; /* Center the filters */
-}
-
-.filters-grid::-webkit-scrollbar {
-    display: none;
+    justify-content: center;
 }
 
 .filter-group {
     flex: 0 0 auto;
-    width: 250px; /* Reduced from 250px */
+    width: 250px;
     display: flex;
     flex-direction: column;
     gap: 6px;
 }
 
 .filter-group label {
-    font-size: 11px; /* Slightly smaller */
+    font-size: 11px;
     font-weight: 700;
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     padding-left: 2px;
-    white-space: nowrap;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -263,7 +259,7 @@ header {
 .select-trigger {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     padding: 0 14px;
     color: var(--text-main);
     font-size: 13px;
@@ -273,8 +269,6 @@ header {
     justify-content: space-between;
     align-items: center;
     height: 38px;
-    position: relative;
-    /* Removed overflow: hidden to ensure the dropdown arrow (chevron) and text are not clipped */
 }
 
 .select-trigger span:first-child {
@@ -282,7 +276,6 @@ header {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    display: block;
 }
 
 .select-trigger:hover {
@@ -293,17 +286,6 @@ header {
 .custom-select.active .select-trigger {
     border-color: var(--accent);
     background: rgba(0, 0, 0, 0.5);
-    box-shadow: 0 0 0 4px var(--accent-bg);
-}
-
-.select-trigger i {
-    color: var(--accent);
-    font-size: 10px;
-    transition: transform 0.3s;
-}
-
-.custom-select.active .select-trigger i {
-    transform: rotate(180deg);
 }
 
 .select-options {
@@ -314,19 +296,15 @@ header {
     width: max-content;
     background: var(--bg-panel);
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     box-shadow: 0 10px 40px rgba(0,0,0,0.8);
     z-index: 1000;
     max-height: 200px;
     overflow-y: auto;
-    overflow-x: hidden; /* Prevent horizontal overflow from matching content width */
-    transform: translateZ(0); /* Fixes rendering glitches with backdrop-filter parents */
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
-    scrollbar-width: thin;
-    scrollbar-color: var(--border-highlight) transparent;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all var(--transition-fast);
 }
 
 .custom-select.active .select-options {
@@ -340,8 +318,7 @@ header {
     cursor: pointer;
     font-size: 13px;
     color: var(--text-muted);
-    white-space: nowrap;
-    transition: all 0.2s;
+    transition: background 0.2s;
 }
 
 .option:hover {
@@ -355,81 +332,17 @@ header {
     font-weight: 600;
 }
 
-.select-options::-webkit-scrollbar {
-    width: 8px; /* Slightly narrower */
-}
-
-.select-options::-webkit-scrollbar-button {
-    display: none;
-    height: 0;
-    width: 0;
-}
-
-.select-options::-webkit-scrollbar-track {
-    background: transparent;
-    margin: 4px 0; /* Balanced margin */
-}
-
-.select-options::-webkit-scrollbar-thumb {
-    background: var(--border-highlight);
-    border-radius: 10px;
-    border: 3px solid var(--bg-panel); /* Matches container background for a 'floating' look */
-    background-clip: content-box;
-}
-
-.select-options::-webkit-scrollbar-thumb:hover {
-    background: var(--text-muted);
-}
-
-.filter-actions {
-    display: flex;
-    align-items: flex-end;
-    flex: 0 0 auto;
-}
-
-.btn-secondary {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--border);
-    color: var(--text-muted);
-    padding: 0 12px;
-    border-radius: 8px;
-    font-size: 11px;
-    font-weight: 600;
-    cursor: pointer;
-    height: 38px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    white-space: nowrap;
-    transition: all 0.2s;
-}
-
-.btn-secondary:hover {
-    background: var(--bg-hover);
-    color: var(--text-main);
-    border-color: var(--accent);
-}
-
-.btn-secondary i {
-    font-size: 14px;
-    opacity: 0.7;
-}
-
 /* Table Design */
 .table-container {
     background: var(--bg-panel);
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     overflow-x: auto;
-    position: relative;
-    z-index: 1; /* Keep below dropdown stacking context */
-    min-height: 0; /* Reduced from 200px */
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    text-align: left;
 }
 
 th {
@@ -439,7 +352,6 @@ th {
     font-weight: 600;
     color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
     border-bottom: 1px solid var(--border);
 }
 
@@ -449,23 +361,13 @@ td {
     color: var(--text-main);
 }
 
-tbody tr {
-    transition: background 0.2s;
-}
-
 tbody tr:hover {
     background: var(--bg-hover);
 }
 
 .subject-cell { font-weight: 600; color: var(--accent); }
 .group-cell { font-family: var(--font-mono); font-weight: 600; }
-.code-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    justify-content: flex-start;
-}
-
+.code-wrapper { display: flex; align-items: center; gap: 8px; }
 .code-cell { 
     font-family: var(--font-mono); 
     background: var(--bg-hover); 
@@ -481,27 +383,12 @@ tbody tr:hover {
     color: var(--text-dim);
     cursor: pointer;
     padding: 4px;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     border-radius: 4px;
 }
 
 .copy-btn:hover {
     color: var(--accent);
     background: var(--accent-bg);
-}
-
-.copy-btn.copied {
-    color: #22c55e; /* Success green */
-}
-
-.highlight {
-    background: #ff00ff44;
-    color: #fff;
-    border-radius: 2px;
-    padding: 0 2px;
 }
 
 /* Pagination */
@@ -521,28 +408,14 @@ tbody tr:hover {
     border-radius: 8px;
     cursor: pointer;
     font-size: 13px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 8px;
     transition: all 0.2s;
 }
 
 .pagination button:hover:not(:disabled) {
-    background: var(--bg-hover);
     border-color: var(--accent);
 }
 
-.pagination button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-#page-numbers {
-    display: flex;
-    gap: 8px;
-}
-
+#page-numbers { display: flex; gap: 8px; }
 .page-btn {
     width: 32px;
     height: 32px;
@@ -569,12 +442,6 @@ tbody tr:hover {
     color: var(--text-dim);
 }
 
-#no-results i {
-    font-size: 48px;
-    margin-bottom: 16px;
-    display: block; /* Ensure it stays below meme */
-}
-
 #meme-container {
     margin-bottom: 24px;
     display: flex;
@@ -586,7 +453,6 @@ tbody tr:hover {
     height: auto;
     border-radius: 16px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 20px var(--accent-bg);
-    border: 1px solid var(--border-highlight);
 }
 
 .hidden { display: none; }
@@ -604,7 +470,6 @@ tbody tr:hover {
     font-size: 48px;
     color: var(--accent);
     animation: spin 2s infinite linear;
-    -webkit-animation: spin 2s infinite linear;
 }
 
 @keyframes spin {
@@ -612,15 +477,10 @@ tbody tr:hover {
     to { transform: rotate(360deg); }
 }
 
-@-webkit-keyframes spin {
-    from { -webkit-transform: rotate(0deg); }
-    to { -webkit-transform: rotate(360deg); }
-}
-
 .fade-out {
     opacity: 0;
     pointer-events: none;
-    display: none !important; /* Ensure it takes 0px height */
+    display: none !important;
     transition: opacity 0.5s ease;
 }
 
@@ -660,13 +520,3 @@ tbody tr:hover {
     border-color: var(--accent);
     background: var(--accent-bg);
 }
-
-
-/* Scaling fix for very small screens */
-@media screen and (max-width: 480px) {
-    .brand-info h1 {
-        font-size: 20px;
-    }
-}
-
-
