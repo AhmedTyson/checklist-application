@@ -19,6 +19,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    -webkit-tap-highlight-color: transparent; /* Removes the blue highlight on mobile taps */
 }
 
 html {
@@ -588,11 +589,17 @@ tbody tr:hover {
     font-size: 48px;
     color: var(--accent);
     animation: spin 2s infinite linear;
+    -webkit-animation: spin 2s infinite linear;
 }
 
 @keyframes spin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
+}
+
+@-webkit-keyframes spin {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
 }
 
 .fade-out {
