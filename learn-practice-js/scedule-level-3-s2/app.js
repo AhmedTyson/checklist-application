@@ -27,7 +27,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return Math.min(Math.max(calculatedRows + 5, 24), 100);
         },
         DESKTOP_WIDTH: 1200,
-        FRIDAY_MEME_COUNT: 5
+        FRIDAY_MEME_COUNT: 5,
+        SUBJECT_ACRONYMS: {
+            "Management Information Systems": "MIS",
+            "Operations Research": "OR",
+            "Advanced Database": "Adv. Database",
+            "Economics of Information": "Econ. of Info",
+            "Internet Applications": "Internet Apps"
+        }
     };
 
     /**
@@ -150,6 +157,13 @@ document.addEventListener('DOMContentLoaded', () => {
             return highlighted
                 .replace(/___HL_START___/g, '<span class="highlight">')
                 .replace(/___HL_END___/g, '</span>');
+        },
+
+        /**
+         * Returns the short form (acronym) of a subject if it exists.
+         */
+        getSubjectDisplay(subject) {
+            return Config.SUBJECT_ACRONYMS[subject] || subject;
         }
     };
 
@@ -228,8 +242,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             pageData.forEach(item => {
                 const tr = document.createElement('tr');
+                const subjectDisplay = Utils.getSubjectDisplay(item.subject);
                 tr.innerHTML = `
-                    <td class="subject-cell">${Utils.highlightText(item.subject, State.filters.search)}</td>
+                    <td class="subject-cell">${Utils.highlightText(subjectDisplay, State.filters.search)}</td>
                     <td class="group-cell">${Utils.highlightText(item.group, State.filters.search)}</td>
                     <td class="doctor-ar-cell">${Utils.highlightText(item.doctorAr, State.filters.search)}</td>
                     <td class="doctor-en-cell">${Utils.highlightText(item.doctorEn, State.filters.search)}</td>
@@ -342,12 +357,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Initialize Fuse.js for fuzzy search
                 State.fuse = new Fuse(State.allData, {
-                    keys: ['subject', 'group', 'doctorAr', 'doctorEn', 'day', 'time', 'code'],
-                    threshold: 0.2, // Stricter threshold (was 0.3) to avoid irrelevant matches
+                    keys: ['subject', 'subjectAcronym', 'group', 'doctorAr', 'doctorEn', 'day', 'time', 'code'],
+                    threshold: 0.2, // Stricter threshold to avoid irrelevant matches
                     ignoreLocation: true,
-                    minMatchCharLength: 3, // Increased to 3 to avoid matching short common sequences
+                    minMatchCharLength: 3, // Increased to avoid matching short common sequences
                     findAllMatches: true,
-                    getFn: (obj, key) => Utils.normalizeText(obj[key])
+                    getFn: (obj, key) => {
+                        // Handle subjectAcronym as a virtual field
+                        if (key === 'subjectAcronym') {
+                            return Utils.normalizeText(Utils.getSubjectDisplay(obj.subject));
+                        }
+                        return Utils.normalizeText(obj[key]);
+                    }
                 });
 
                 this.initializeUI();
@@ -475,14 +496,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Tier 1: Exact Substring Match (High Priority)
                 const tier1 = pool.filter(item => {
-                    const searchable = Utils.normalizeText(`${item.subject} ${item.group} ${item.doctorAr} ${item.doctorEn} ${item.day} ${item.time} ${item.code}`);
+                    const subjectShort = Utils.getSubjectDisplay(item.subject);
+                    const searchable = Utils.normalizeText(`${item.subject} ${subjectShort} ${item.group} ${item.doctorAr} ${item.doctorEn} ${item.day} ${item.time} ${item.code}`);
                     return searchable.includes(query);
                 });
 
                 // Tier 2: Token Matching (AND logic)
                 const tier2 = pool.filter(item => {
                     if (tier1.includes(item)) return false; // Already in Tier 1
-                    const searchable = Utils.normalizeText(`${item.subject} ${item.group} ${item.doctorAr} ${item.doctorEn} ${item.day} ${item.time} ${item.code}`);
+                    const subjectShort = Utils.getSubjectDisplay(item.subject);
+                    const searchable = Utils.normalizeText(`${item.subject} ${subjectShort} ${item.group} ${item.doctorAr} ${item.doctorEn} ${item.day} ${item.time} ${item.code}`);
                     return queryTokens.every(token => searchable.includes(token));
                 });
 
