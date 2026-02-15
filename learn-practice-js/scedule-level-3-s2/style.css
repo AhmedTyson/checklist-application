@@ -152,6 +152,7 @@ header {
     font-weight: 600;
     display: flex;
     align-items: center;
+    transition: all 0.2s;
     gap: 8px;
 }
 
@@ -186,6 +187,7 @@ header {
     color: var(--text-main);
     font-family: var(--font-ui);
     font-size: 15px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .search-box input:focus {
@@ -193,6 +195,7 @@ header {
     border-color: var(--accent);
     background: rgba(0, 0, 0, 0.5);
     box-shadow: 0 0 0 4px var(--accent-bg);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .filters-grid {
@@ -280,6 +283,7 @@ header {
 .select-trigger i {
     color: var(--accent);
     font-size: 10px;
+    transition: transform 0.3s;
 }
 
 .custom-select.active .select-trigger i {
@@ -306,6 +310,7 @@ header {
     transform: translateY(-10px);
     scrollbar-width: thin;
     scrollbar-color: var(--border-highlight) transparent;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .custom-select.active .select-options {
@@ -320,6 +325,7 @@ header {
     font-size: 13px;
     color: var(--text-muted);
     white-space: nowrap;
+    transition: all 0.2s;
 }
 
 .option:hover {
@@ -379,6 +385,7 @@ header {
     align-items: center;
     gap: 8px;
     white-space: nowrap;
+    transition: all 0.2s;
 }
 
 .btn-secondary:hover {
@@ -426,7 +433,9 @@ td {
     color: var(--text-main);
 }
 
-
+tbody tr {
+    transition: background 0.2s;
+}
 
 tbody tr:hover {
     background: var(--bg-hover);
@@ -500,6 +509,7 @@ tbody tr:hover {
     display: flex;
     align-items: center;
     gap: 8px;
+    transition: all 0.2s;
 }
 
 .pagination button:hover:not(:disabled) {
@@ -589,6 +599,7 @@ tbody tr:hover {
     opacity: 0;
     pointer-events: none;
     display: none !important; /* Ensure it takes 0px height */
+    transition: opacity 0.5s ease;
 }
 
 /* Subject Highlights */
@@ -620,6 +631,7 @@ tbody tr:hover {
     border-radius: 20px;
     font-size: 12px;
     cursor: pointer;
+    transition: all 0.2s;
 }
 
 .subject-tag:hover {
