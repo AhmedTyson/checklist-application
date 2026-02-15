@@ -392,5 +392,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    /**
+     * Dynamically scales the entire page to fit the screen width, 
+     * preserving the 1200px desktop layout perfectly.
+     */
+    function updateScale() {
+        const desktopWidth = 1200;
+        const windowWidth = window.innerWidth;
+        
+        if (windowWidth < desktopWidth) {
+            const scaleFactor = windowWidth / desktopWidth;
+            document.documentElement.style.setProperty('--scale-factor', scaleFactor);
+            // Adjust the body height because scaling doesn't update the layout space occupied
+            document.body.style.height = (document.documentElement.scrollHeight * scaleFactor) + 'px';
+        } else {
+            document.documentElement.style.setProperty('--scale-factor', '1');
+            document.body.style.height = 'auto';
+        }
+    }
+
+    // Initial scale and listener
+    updateScale();
+    window.addEventListener('resize', updateScale);
+
     loadData();
 });

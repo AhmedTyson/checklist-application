@@ -22,24 +22,31 @@
     -webkit-tap-highlight-color: transparent; /* Removes the blue highlight on mobile taps */
 }
 
+/* Mobile/Scaling Responsiveness - Scale to Fit Strategy */
+:root {
+    --scale-factor: 1;
+}
+
 html {
     background-color: var(--bg-void);
     height: auto !important;
-    min-height: 0 !important;
+    min-height: 100vh !important;
     margin: 0;
     padding: 0;
+    overflow-x: hidden; /* Prevent horizontal scroll on body */
 }
 
 body {
     width: 1200px;
+    min-height: 100vh;
     margin: 0 auto;
-    background-color: transparent; /* Void color from html will show through */
+    background-color: transparent;
     color: var(--text-main);
     font-family: var(--font-ui);
     line-height: 1.6;
     font-size: 15px;
-    height: auto !important;
-    min-height: 0 !important;
+    transform-origin: top center;
+    transform: scale(var(--scale-factor));
 }
 
 .container {
@@ -47,7 +54,7 @@ body {
     display: flex;
     flex-direction: column;
     position: relative;
-    height: auto;
+    min-height: 100vh;
     background-color: var(--bg-app);
     background-image: 
         linear-gradient(rgba(168, 85, 247, 0.03) 1px, transparent 1px),
@@ -56,7 +63,14 @@ body {
     border-left: 1px solid var(--border);
     border-right: 1px solid var(--border);
     box-shadow: 0 0 100px rgba(0,0,0,0.5);
+    width: 1200px; /* Force the container to stay 1200px */
 }
+
+/* Ensure footer/bottom spacing is correct after scaling */
+main {
+    padding-bottom: 50px;
+}
+
 
 /* Header & Branding */
 header {
@@ -648,25 +662,10 @@ tbody tr:hover {
 
 
 /* Mobile Specific Height Fix - Standard Flow */
-@media screen and (max-width: 1200px) {
-    html {
-        height: auto !important;
-        min-height: 100% !important;
-        overflow: visible !important;
-        overscroll-behavior-y: auto !important;
-    }
-
-    body {
-        height: auto !important;
-        width: 1200px !important;
-        margin: 0 auto !important;
-        overflow-y: visible !important;
-        position: relative !important;
-        overscroll-behavior-y: auto !important;
-    }
-    
-    .container {
-        min-height: 0 !important;
-        height: auto !important;
+/* Scaling fix for very small screens */
+@media screen and (max-width: 480px) {
+    .brand-info h1 {
+        font-size: 20px;
     }
 }
+
