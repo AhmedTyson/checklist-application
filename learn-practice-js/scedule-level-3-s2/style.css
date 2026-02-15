@@ -72,6 +72,31 @@
     -webkit-overflow-scrolling: touch; /* Smooth mobile scroll for large areas */
 }
 
+/* WIDGET MODE - For embedding or compact linking */
+body.widget-mode .container {
+    max-width: 100%;
+    width: 100%;
+    padding: 10px;
+    border-radius: 0;
+    margin: 0;
+}
+
+body.widget-mode header {
+    display: none;
+}
+
+body.widget-mode main {
+    padding: 0;
+}
+
+body.widget-mode .controls {
+    margin-bottom: 15px;
+}
+
+body.widget-mode .brand-badge {
+    display: none;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;

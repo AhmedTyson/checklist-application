@@ -1,4 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // 0. WIDGET MODE DETECTION
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('view') === 'widget') {
+        document.body.classList.add('widget-mode');
+    }
+
     /**
      * 1. CONFIGURATION
      * Centralized settings for the application.
