@@ -37,18 +37,20 @@
 }
 
 ::-webkit-scrollbar {
-    width: 4px; /* Ultra-thin hit area */
-    height: 4px;
+    width: 8px; /* Slightly wider total area for better containment control */
+    height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: transparent;
+    background: #111111; /* Solid dark background */
+    border-radius: 10px;
+    margin: 4px 0; /* Keeps the scrollbar from hitting top/bottom edges */
 }
 
 ::-webkit-scrollbar-thumb {
     background: #404040; /* 3 AM Design - Ultra Thinner */
     border-radius: 10px;
-    border: 1.5px solid transparent; 
+    border: 2px solid transparent; 
     background-clip: content-box;
     transition: background 0.3s ease;
 }
@@ -58,9 +60,16 @@
     border: 1px solid transparent;
 }
 
+/* Hide buttons to prevent mobile overflow glitches */
+::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
 /* Specific for Mobile Scrollable Areas */
-.table-container, .select-options, body {
-    -webkit-overflow-scrolling: touch; /* Smooth mobile scroll */
+.table-container, body {
+    -webkit-overflow-scrolling: touch; /* Smooth mobile scroll for large areas */
 }
 
 * {
@@ -334,25 +343,29 @@ header {
     z-index: 1000;
     max-height: 200px;
     overflow-y: auto;
+    overflow-x: hidden; /* Prevent horizontal bleed */
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
     transition: all var(--transition-fast);
+    padding: 4px 0; 
 }
 
-/* 3 AM Design Specific for Dropdowns - Ultra Thinner */
+/* 3 AM Design Specific for Dropdowns - Ultra Thinner & Contained */
 .select-options::-webkit-scrollbar {
-    width: 4px;
+    width: 8px;
 }
 
 .select-options::-webkit-scrollbar-track {
-    background: transparent;
+    background: #000000; /* Deep black slot */
+    border-radius: 10px;
+    margin: 8px 2px; /* Pulls the bar away from all edges (Top/Bottom and Right) */
 }
 
 .select-options::-webkit-scrollbar-thumb {
     background: #404040;
     border-radius: 10px;
-    border: 1.5px solid transparent;
+    border: 2px solid transparent;
     background-clip: content-box;
     transition: background 0.3s ease;
 }
