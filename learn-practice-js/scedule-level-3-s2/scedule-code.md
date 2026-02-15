@@ -180,13 +180,13 @@ Below is the **Corrected Schedule** with the exact Days and Times verified again
 | **G1** | د. عمر سالمان | Wednesday | 10:00 AM – 12:00 PM | **8udkg43** |
 | **G2** | د. عمر سالمان | Wednesday | 12:00 PM – 02:00 PM | **tnax6kj** |
 | **G3** | د. عمر سالمان | Wednesday | 02:00 PM – 04:00 PM | **oizv2td** |
-| **G4** | د. سميه عبد المولي | Saturday | 02:00 PM – 04:00 PM | **cci163o** |
-| **G5** | د. سميه عبد المولي | Sunday | 08:00 AM – 10:00 AM | **tjq7t8c** |
-| **G6** | د. سميه عبد المولي | Sunday | 10:00 AM – 12:00 PM | **wjqqckm** |
-| **G7** | د. سميه عبد المولي | Sunday | 12:00 PM – 02:00 PM | **vzoj9gz** |
-| **G8** | د. سميه عبد المولي | Wednesday | 08:00 AM – 10:00 AM | **5q7gqse** |
-| **G9** | د. سميه عبد المولي | Wednesday | 10:00 AM – 12:00 PM | **r5xbrjf** |
-| **G10** | د. سميه عبد المولي | Wednesday | 12:00 PM – 02:00 PM | **e44gp7m** |
+| **G4** | د. سمية عبد المولي | Saturday | 02:00 PM – 04:00 PM | **cci163o** |
+| **G5** | د. سمية عبد المولي | Sunday | 08:00 AM – 10:00 AM | **tjq7t8c** |
+| **G6** | د. سمية عبد المولي | Sunday | 10:00 AM – 12:00 PM | **wjqqckm** |
+| **G7** | د. سمية عبد المولي | Sunday | 12:00 PM – 02:00 PM | **vzoj9gz** |
+| **G8** | د. سمية عبد المولي | Wednesday | 08:00 AM – 10:00 AM | **5q7gqse** |
+| **G9** | د. سمية عبد المولي | Wednesday | 10:00 AM – 12:00 PM | **r5xbrjf** |
+| **G10** | د. سمية عبد المولي | Wednesday | 12:00 PM – 02:00 PM | **e44gp7m** |
 | **G11** | د. رشا الكردي | Sunday | 08:00 AM – 10:00 AM | **oylyot7** |
 | **G12** | د. رشا الكردي | Sunday | 10:00 AM – 12:00 PM | **le2xny0** |
 | **G13** | د. رشا الكردي | Sunday | 12:00 PM – 02:00 PM | **j555jgj** |
