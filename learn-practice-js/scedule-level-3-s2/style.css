@@ -24,37 +24,35 @@
 
 html {
     background-color: var(--bg-void);
-    height: auto !important;
-    min-height: 0 !important;
     margin: 0;
     padding: 0;
 }
 
 body {
-    width: 1200px;
-    margin: 0 auto;
-    background-color: transparent; /* Void color from html will show through */
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-void);
     color: var(--text-main);
     font-family: var(--font-ui);
     line-height: 1.6;
     font-size: 15px;
-    height: auto !important;
-    min-height: 0 !important;
 }
 
 .container {
+    width: 95%;
+    max-width: 1200px;
+    margin: 40px auto;
     padding: 20px 40px;
     display: flex;
     flex-direction: column;
     position: relative;
-    height: auto;
     background-color: var(--bg-app);
     background-image: 
         linear-gradient(rgba(168, 85, 247, 0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(168, 85, 247, 0.03) 1px, transparent 1px);
     background-size: 40px 40px;
-    border-left: 1px solid var(--border);
-    border-right: 1px solid var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px; /* Slight rounding for a "card" look */
     box-shadow: 0 0 100px rgba(0,0,0,0.5);
 }
 
@@ -647,26 +645,43 @@ tbody tr:hover {
 }
 
 
-/* Mobile Specific Height Fix - Standard Flow */
-@media screen and (max-width: 1200px) {
-    html {
-        height: auto !important;
-        min-height: 100% !important;
-        overflow: visible !important;
-        overscroll-behavior-y: auto !important;
+/* Responsive Mobile Adjustments */
+@media screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        margin: 0;
+        padding: 20px 15px;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
     }
 
-    body {
-        height: auto !important;
-        width: 1200px !important;
-        margin: 0 auto !important;
-        overflow-y: visible !important;
-        position: relative !important;
-        overscroll-behavior-y: auto !important;
+    .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 0 -15px;
+        padding: 0 15px;
     }
-    
-    .container {
-        min-height: 0 !important;
-        height: auto !important;
+
+    table {
+        min-width: 600px; /* Ensures table doesn't collapse too much */
+    }
+
+    .controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-wrapper {
+        width: 100%;
+    }
+
+    .filter-group {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .custom-select {
+        width: 100% !important;
     }
 }
