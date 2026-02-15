@@ -1,0 +1,130 @@
+Total MD sessions: 106
+Total JSON sessions: 142
+
+--- DISCREPANCIES ---
+Time mismatch: Economics of Information G17 | MD: 8:00-10:00 AM vs JSON: 8:00 AM – 10:00 AM
+Time mismatch: Auditing G9 | MD: 8:00-10:00 AM vs JSON: 8:00 AM – 10:00 AM
+Time mismatch: Economics of Information G18 | MD: 10:00-12:00 PM vs JSON: 10:00 AM – 12:00 PM
+Time mismatch: Management Information Systems G11 | MD: 10:00-12:00 PM vs JSON: 10:00 AM – 12:00 PM
+Time mismatch: Auditing G10 | MD: 10:00-12:00 PM vs JSON: 10:00 AM – 12:00 PM
+Time mismatch: Economics of Information G19 | MD: 12:00-2:00 PM vs JSON: 2:00 PM – 4:00 PM
+Time mismatch: Management Information Systems G12 | MD: 12:00-2:00 PM vs JSON: 12:00 PM – 2:00 PM
+Time mismatch: Auditing G11 | MD: 12:00-2:00 PM vs JSON: 12:00 PM – 2:00 PM
+Time mismatch: Economics of Information G4 | MD: 2:00-4:00 PM vs JSON: 2:00 PM – 4:00 PM
+Time mismatch: Advanced Database G9 | MD: 2:00-4:00 PM vs JSON: 4:00 PM – 6:00 PM
+Time mismatch: Advanced Database G10 | MD: 4:00-6:00 PM vs JSON: 6:00 PM – 8:00 PM
+Time mismatch: Economics of Information G5 | MD: 8:00-10:00 AM vs JSON: 8:00 AM – 10:00 AM
+Time mismatch: Management Information Systems G4 | MD: 8:00-10:00 AM vs JSON: 8:00 AM – 10:00 AM
+Time mismatch: Advanced Database G23 | MD: 8:00-10:00 AM vs JSON: 8:00 AM – 10:00 AM
+Day mismatch: Auditing G12 | MD: Sunday vs JSON: Tuesday
+Time mismatch: Auditing G12 | MD: 8:00-10:00 AM vs JSON: 8:00 AM – 10:00 AM
+Time mismatch: Economics of Information G6 | MD: 10:00-12:00 PM vs JSON: 10:00 AM – 12:00 PM
+Time mismatch: Management Information Systems G5 | MD: 10:00-12:00 PM vs JSON: 10:00 AM – 12:00 PM
+Day mismatch: Auditing G13 | MD: Sunday vs JSON: Tuesday
+Time mismatch: Auditing G13 | MD: 10:00-12:00 PM vs JSON: 10:00 AM – 12:00 PM
+Time mismatch: Economics of Information G7 | MD: 12:00-2:00 PM vs JSON: 2:00 PM – 4:00 PM
+Time mismatch: Management Information Systems G6 | MD: 12:00-2:00 PM vs JSON: 2:00 PM – 4:00 PM
+Day mismatch: Auditing G14 | MD: Sunday vs JSON: Tuesday
+Time mismatch: Auditing G14 | MD: 12:00-2:00 PM vs JSON: 2:00 PM – 4:00 PM
+Time mismatch: Auditing G1 | MD: 8:00-10:00 AM vs JSON: 8:00 AM – 10:00 AM
+Day mismatch: Management Information Systems G10 | MD: Monday vs JSON: Wednesday
+Time mismatch: Management Information Systems G10 | MD: 8:00-10:00 AM vs JSON: 8:00 AM – 10:00 AM
+Time mismatch: Economics of Information G20 | MD: 8:00-10:00 AM vs JSON: 8:00 AM – 10:00 AM
+Day mismatch: Management Information Systems G7 | MD: Monday vs JSON: Tuesday
+Time mismatch: Management Information Systems G7 | MD: 8:00-10:00 AM vs JSON: 8:00 AM – 10:00 AM
+Day mismatch: Auditing G15 | MD: Monday vs JSON: Thursday
+Time mismatch: Auditing G15 | MD: 8:00-10:00 AM vs JSON: 8:00 AM – 10:00 AM
+Time mismatch: Auditing G2 | MD: 10:00-12:00 PM vs JSON: 10:00 AM – 12:00 PM
+Time mismatch: Economics of Information G21 | MD: 10:00-12:00 PM vs JSON: 10:00 AM – 12:00 PM
+Day mismatch: Management Information Systems G8 | MD: Monday vs JSON: Tuesday
+Time mismatch: Management Information Systems G8 | MD: 10:00-12:00 PM vs JSON: 10:00 AM – 12:00 PM
+Day mismatch: Auditing G16 | MD: Monday vs JSON: Thursday
+Time mismatch: Auditing G16 | MD: 10:00-12:00 PM vs JSON: 10:00 AM – 12:00 PM
+Day mismatch: Management Information Systems G1 | MD: Monday vs JSON: Tuesday
+Time mismatch: Management Information Systems G1 | MD: 10:00-12:00 PM vs JSON: 10:00 AM – 12:00 PM
+Day mismatch: Management Information Systems G9 | MD: Monday vs JSON: Tuesday
+Time mismatch: Management Information Systems G9 | MD: 12:00-2:00 PM vs JSON: 2:00 PM – 4:00 PM
+Day mismatch: Auditing G17 | MD: Monday vs JSON: Thursday
+Time mismatch: Auditing G17 | MD: 12:00-2:00 PM vs JSON: 2:00 PM – 4:00 PM
+Day mismatch: Management Information Systems G2 | MD: Monday vs JSON: Tuesday
+Time mismatch: Management Information Systems G2 | MD: 12:00-2:00 PM vs JSON: 12:00 PM – 2:00 PM
+Day mismatch: Management Information Systems G3 | MD: Monday vs JSON: Tuesday
+Time mismatch: Management Information Systems G3 | MD: 2:00-4:00 PM vs JSON: 4:00 PM – 6:00 PM
+Time mismatch: Advanced Database G16 | MD: 8:00-10:00 AM vs JSON: 8:00 AM – 10:00 AM
+Time mismatch: Advanced Database G17 | MD: 10:00-12:00 PM vs JSON: 10:00 AM – 12:00 PM
+Time mismatch: Advanced Database G18 | MD: 12:00-2:00 PM vs JSON: 2:00 PM – 4:00 PM
+Time mismatch: Advanced Database G24 | MD: 8:00-10:00 AM vs JSON: 8:00 AM – 10:00 AM
+Time mismatch: Economics of Information G8 | MD: 8:00-10:00 AM vs JSON: 8:00 AM – 10:00 AM
+Time mismatch: Auditing G3 | MD: 8:00-10:00 AM vs JSON: 8:00 AM – 10:00 AM
+Time mismatch: Economics of Information G22 | MD: 8:00-10:00 AM vs JSON: 8:00 AM – 10:00 AM
+Day mismatch: Management Information Systems G14 | MD: Wednesday vs JSON: Thursday
+Time mismatch: Management Information Systems G14 | MD: 8:00-10:00 AM vs JSON: 8:00 AM – 10:00 AM
+Day mismatch: Advanced Database G11 | MD: Wednesday vs JSON: Thursday
+Time mismatch: Advanced Database G11 | MD: 8:00-10:00 AM vs JSON: 8:00 AM – 10:00 AM
+Time mismatch: Economics of Information G1 | MD: 10:00-12:00 PM vs JSON: 10:00 AM – 12:00 PM
+Time mismatch: Economics of Information G9 | MD: 10:00-12:00 PM vs JSON: 10:00 AM – 12:00 PM
+Time mismatch: Auditing G4 | MD: 10:00-12:00 PM vs JSON: 10:00 AM – 12:00 PM
+Time mismatch: Economics of Information G23 | MD: 10:00-12:00 PM vs JSON: 10:00 AM – 12:00 PM
+Day mismatch: Management Information Systems G15 | MD: Wednesday vs JSON: Thursday
+Time mismatch: Management Information Systems G15 | MD: 10:00-12:00 PM vs JSON: 10:00 AM – 12:00 PM
+Day mismatch: Advanced Database G12 | MD: Wednesday vs JSON: Thursday
+Time mismatch: Advanced Database G12 | MD: 10:00-12:00 PM vs JSON: 10:00 AM – 12:00 PM
+Time mismatch: Economics of Information G2 | MD: 12:00-2:00 PM vs JSON: 2:00 PM – 4:00 PM
+Time mismatch: Economics of Information G10 | MD: 12:00-2:00 PM vs JSON: 2:00 PM – 4:00 PM
+Time mismatch: Auditing G5 | MD: 12:00-2:00 PM vs JSON: 12:00 PM – 2:00 PM
+Time mismatch: Economics of Information G24 | MD: 12:00-2:00 PM vs JSON: 2:00 PM – 4:00 PM
+Day mismatch: Management Information Systems G16 | MD: Wednesday vs JSON: Thursday
+Time mismatch: Management Information Systems G16 | MD: 12:00-2:00 PM vs JSON: 2:00 PM – 4:00 PM
+Time mismatch: Economics of Information G3 | MD: 2:00-4:00 PM vs JSON: 4:00 PM – 6:00 PM
+Time mismatch: Auditing G6 | MD: 8:00-10:00 AM vs JSON: 8:00 AM – 10:00 AM
+Time mismatch: Advanced Database G13 | MD: 8:00-10:00 AM vs JSON: 8:00 AM – 10:00 AM
+Time mismatch: Management Information Systems G20 | MD: 8:00-10:00 AM vs JSON: 8:00 AM – 10:00 AM
+Time mismatch: Auditing G22 | MD: 8:00-10:00 AM vs JSON: 8:00 AM – 10:00 AM
+Time mismatch: Auditing G7 | MD: 10:00-12:00 PM vs JSON: 10:00 AM – 12:00 PM
+Time mismatch: Advanced Database G14 | MD: 10:00-12:00 PM vs JSON: 10:00 AM – 12:00 PM
+Time mismatch: Management Information Systems G21 | MD: 10:00-12:00 PM vs JSON: 12:00 PM – 2:00 PM
+Time mismatch: Auditing G23 | MD: 10:00-12:00 PM vs JSON: 10:00 AM – 12:00 PM
+Time mismatch: Auditing G8 | MD: 12:00-2:00 PM vs JSON: 2:00 PM – 4:00 PM
+Time mismatch: Advanced Database G15 | MD: 12:00-2:00 PM vs JSON: 2:00 PM – 4:00 PM
+Time mismatch: Management Information Systems G22 | MD: 12:00-2:00 PM vs JSON: 2:00 PM – 4:00 PM
+Time mismatch: Auditing G24 | MD: 12:00-2:00 PM vs JSON: 12:00 PM – 2:00 PM
+
+--- MISSING IN JSON (38) ---
+Internet Application G7 (Saturday 2:00-4:00 PM)
+Operation Research G15 (Sunday 8:00-10:00 AM)
+Operation Research G11 (Sunday 8:00-10:00 AM)
+Operation Research G16 (Sunday 10:00-12:00 PM)
+Operation Research G12 (Sunday 10:00-12:00 PM)
+Operation Research G17 (Sunday 12:00-2:00 PM)
+Operation Research G21 (Monday 8:00-10:00 AM)
+Internet Application G4 (Monday 10:00-12:00 PM)
+Operation Research G12 (Monday 10:00-12:00 PM)
+Operation Research G19 (Monday 12:00-2:00 PM)
+Internet Application G5 (Monday 12:00-2:00 PM)
+Operation Research G20 (Monday 2:00-4:00 PM)
+Internet Application G6 (Monday 2:00-4:00 PM)
+Internet Application G15 (Tuesday 8:00-10:00 AM)
+Internet Application G16 (Tuesday 10:00-12:00 PM)
+Operation Research G6 (Tuesday 12:00-2:00 PM)
+Operation Research G7 (Tuesday 2:00-4:00 PM)
+Operation Research G13 (Wednesday 8:00-10:00 AM)
+Operation Research G18 (Wednesday 8:00-10:00 AM)
+Internet Application G11 (Wednesday 8:00-10:00 AM)
+Operation Research G8 (Wednesday 8:00-10:00 AM)
+Operation Research G14 (Wednesday 10:00-12:00 PM)
+Internet Application G12 (Wednesday 10:00-12:00 PM)
+Operation Research G9 (Wednesday 10:00-12:00 PM)
+Operation Research G10 (Wednesday 12:00-2:00 PM)
+Internet Application G13 (Thursday 8:00-10:00 AM)
+Internet Application G8 (Thursday 8:00-10:00 AM)
+Internet Application G17 (Thursday 8:00-10:00 AM)
+Internet Application G14 (Thursday 10:00-12:00 PM)
+Internet Application G19 (Thursday 10:00-12:00 PM)
+Internet Application G9 (Thursday 10:00-12:00 PM)
+Operation Research G22 (Thursday 10:00-12:00 PM)
+Internet Application G18 (Thursday 10:00-12:00 PM)
+Internet Application G20 (Thursday 12:00-2:00 PM)
+Internet Application G10 (Thursday 12:00-2:00 PM)
+Operation Research G23 (Thursday 12:00-2:00 PM)
+Internet Application G21 (Thursday 2:00-4:00 PM)
+Operation Research G24 (Thursday 2:00-4:00 PM)

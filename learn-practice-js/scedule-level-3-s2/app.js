@@ -82,25 +82,26 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!text) return '';
             let normalized = String(text).toLowerCase().trim();
             
-            // 1. Professional Arabic Normalization using Arabic-Services library
+            // 1. Professional Arabic Normalization
             if (typeof ArabicServices !== 'undefined') {
                 normalized = ArabicServices.removeTashkeel(normalized);
                 normalized = ArabicServices.removeTatweel(normalized);
             }
             
             // 2. Remove common titles (English & Arabic)
-            // Handles: dr, dr., d., د, د., د/
-            normalized = normalized.replace(/\b(dr|dr\.|d\.|د|د\.|د\/)\b/g, '');
+            normalized = normalized.replace(/\b(dr|dr\.|d\.|د|د\.|د\/|دكتور|دكتوره)\b/g, '');
             
-            // 3. Manual Arabic Normalization for common typing variants:
-            normalized = normalized.replace(/[أإآ]/g, 'ا'); // Alif
-            normalized = normalized.replace(/ة/g, 'ه');     // Ta Marbuta
-            normalized = normalized.replace(/ى/g, 'ي');     // Alif Maqsura
+            // 3. Manual Arabic Normalization for robust matching
+            normalized = normalized.replace(/[أإآء]/g, 'ا'); // Normalize Alif & Hamza on line
+            normalized = normalized.replace(/ة/g, 'ه');      // Ta Marbuta -> Ha
+            normalized = normalized.replace(/ى/g, 'ي');      // Alif Maqsura -> Ya
+            normalized = normalized.replace(/ئ/g, 'ي');      // Hamza on Ya -> Ya
+            normalized = normalized.replace(/ؤ/g, 'ا');      // Hamza on Waw -> Waw (often typed as Alif in search)
             
             // 4. Remove extra characters that might confuse matching
-            normalized = normalized.replace(/[()\-–—]/g, ' '); 
+            normalized = normalized.replace(/[()\-–—.,/]/g, ' '); 
             
-            // 5. Remove extra whitespace
+            // 5. Final cleanup of whitespace
             return normalized.replace(/\s+/g, ' ').trim();
         },
 
@@ -111,22 +112,44 @@ document.addEventListener('DOMContentLoaded', () => {
         highlightText(text, term) {
             if (!term) return text;
             
-            const tokens = term.split(/\s+/).filter(t => t.length > 0);
+            const normalizedTerm = this.normalizeText(term);
+            const tokens = normalizedTerm.split(/\s+/).filter(t => t.length > 0);
             if (tokens.length === 0) return text;
 
+            // To highlight accurately while handling normalization, 
+            // we use a tiered approach for each token using regex.
             let highlighted = text;
+
+            // We sort tokens by length (longest first) to avoid partial highlighting of larger words
+            tokens.sort((a, b) => b.length - a.length);
+
             tokens.forEach(token => {
-                // Escape token for regex
                 const escaped = token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                 
-                // For highlighting, we still want to handle Arabic normalization visually if possible,
-                // but since the actual text has variants, we highlight the variant if it matches the normalized query.
-                // A simpler robust way: highlight the exact match case-insensitively.
-                const regex = new RegExp(`(${escaped})`, 'gi');
-                highlighted = highlighted.replace(regex, '<span class="highlight">$1</span>');
+                // If it's Arabic, we create a flexible regex that handles common variants
+                let pattern = escaped;
+                if (/[\u0600-\u06FF]/.test(token)) {
+                    // Replace normalized characters with sets of their variants
+                    pattern = pattern.replace(/ا/g, '[اأإآءؤ]');
+                    pattern = pattern.replace(/ه/g, '[ههة]');
+                    pattern = pattern.replace(/ي/g, '[يىئ]');
+                }
+
+                try {
+                    const regex = new RegExp(`(${pattern})`, 'gi');
+                    // We use a temporary placeholder to avoid double-highlighting
+                    highlighted = highlighted.replace(regex, (match) => {
+                        return `___HL_START___${match}___HL_END___`;
+                    });
+                } catch (e) {
+                    console.error("Regex highlight error:", e);
+                }
             });
             
-            return highlighted;
+            // Final conversion of placeholders to HTML
+            return highlighted
+                .replace(/___HL_START___/g, '<span class="highlight">')
+                .replace(/___HL_END___/g, '</span>');
         }
     };
 
@@ -320,11 +343,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Initialize Fuse.js for fuzzy search
                 State.fuse = new Fuse(State.allData, {
                     keys: ['subject', 'group', 'doctorAr', 'doctorEn', 'day', 'time', 'code'],
-                    threshold: 0.3,
+                    threshold: 0.2, // Stricter threshold (was 0.3) to avoid irrelevant matches
                     ignoreLocation: true,
-                    minMatchCharLength: 2,
+                    minMatchCharLength: 3, // Increased to 3 to avoid matching short common sequences
                     findAllMatches: true,
-                    // Use custom getter to normalize data for searching
                     getFn: (obj, key) => Utils.normalizeText(obj[key])
                 });
 
@@ -439,30 +461,49 @@ document.addEventListener('DOMContentLoaded', () => {
             const { search, subject, group, day } = State.filters;
             
             // 1. Initial filter by exact dropdowns
-            let filtered = State.allData.filter(item => {
+            let pool = State.allData.filter(item => {
                 const matchesSubject = subject === 'all' || item.subject === subject;
                 const matchesGroup = group === 'all' || item.group === group;
                 const matchesDay = day === 'all' || item.day === day;
                 return matchesSubject && matchesGroup && matchesDay;
             });
 
-            // 2. Fuzzy Search using Fuse.js
-            if (search && State.fuse) {
-                // Normalize search term to match normalized data in Fuse
-                const normalizedSearch = Utils.normalizeText(search);
-                const fuseResults = State.fuse.search(normalizedSearch);
-                const searchResults = fuseResults.map(r => r.item);
-                
-                // Intersect search results with currently filtered data
-                State.filteredData = searchResults.filter(item => filtered.includes(item));
+            // 2. Tiered Search Logic
+            if (search && search.trim().length >= 1) {
+                const query = Utils.normalizeText(search);
+                const queryTokens = query.split(/\s+/);
+
+                // Tier 1: Exact Substring Match (High Priority)
+                const tier1 = pool.filter(item => {
+                    const searchable = Utils.normalizeText(`${item.subject} ${item.group} ${item.doctorAr} ${item.doctorEn} ${item.day} ${item.time} ${item.code}`);
+                    return searchable.includes(query);
+                });
+
+                // Tier 2: Token Matching (AND logic)
+                const tier2 = pool.filter(item => {
+                    if (tier1.includes(item)) return false; // Already in Tier 1
+                    const searchable = Utils.normalizeText(`${item.subject} ${item.group} ${item.doctorAr} ${item.doctorEn} ${item.day} ${item.time} ${item.code}`);
+                    return queryTokens.every(token => searchable.includes(token));
+                });
+
+                // Tier 3: Fuzzy Match (Fuse.js) for typos
+                let tier3 = [];
+                if (State.fuse) {
+                    const fuzzyResults = State.fuse.search(query);
+                    tier3 = fuzzyResults
+                        .map(r => r.item)
+                        .filter(item => pool.includes(item) && !tier1.includes(item) && !tier2.includes(item));
+                }
+
+                State.filteredData = [...tier1, ...tier2, ...tier3];
             } else {
-                State.filteredData = filtered;
+                State.filteredData = pool;
             }
 
             State.currentPage = 1;
             View.renderTable();
 
-            // Smooth scroll back to table header
+            // Smooth scroll back to table header if user scrolled down
             const tableRect = document.querySelector('thead').getBoundingClientRect();
             if (tableRect.top < 0) {
                 window.scrollTo({ top: window.scrollY + tableRect.top - 100, behavior: 'smooth' });
