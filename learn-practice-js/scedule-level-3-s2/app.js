@@ -403,8 +403,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (windowWidth < desktopWidth) {
             const scaleFactor = windowWidth / desktopWidth;
             document.documentElement.style.setProperty('--scale-factor', scaleFactor);
-            // Adjust the body height because scaling doesn't update the layout space occupied
-            document.body.style.height = (document.documentElement.scrollHeight * scaleFactor) + 'px';
+            
+            // Use the container's height for more precision
+            const container = document.querySelector('.container');
+            const contentHeight = container ? container.offsetHeight : document.documentElement.scrollHeight;
+            document.body.style.height = (contentHeight * scaleFactor) + 'px';
         } else {
             document.documentElement.style.setProperty('--scale-factor', '1');
             document.body.style.height = 'auto';

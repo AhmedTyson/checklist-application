@@ -38,7 +38,7 @@ html {
 
 body {
     width: 1200px;
-    min-height: 100vh;
+    min-height: auto;
     margin: 0 auto;
     background-color: transparent;
     color: var(--text-main);
@@ -54,7 +54,7 @@ body {
     display: flex;
     flex-direction: column;
     position: relative;
-    min-height: 100vh;
+    min-height: calc(100vh / var(--scale-factor));
     background-color: var(--bg-app);
     background-image: 
         linear-gradient(rgba(168, 85, 247, 0.03) 1px, transparent 1px),
@@ -69,7 +69,7 @@ body {
 
 /* Ensure footer/bottom spacing is correct after scaling */
 main {
-    padding-bottom: 50px;
+    padding-bottom: 20px;
 }
 
 
