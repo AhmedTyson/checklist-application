@@ -143,6 +143,8 @@ body.widget-mode .brand-badge { display: none; }
     right: 30px;
     width: 48px;
     height: 48px;
+    min-width: 48px; /* Accessibility: Touch Target */
+    min-height: 48px;
     border-radius: 50%;
     background: rgba(168, 85, 247, 0.15);
     backdrop-filter: blur(10px);

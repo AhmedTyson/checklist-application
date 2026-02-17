@@ -253,18 +253,10 @@ export class UIManager {
     }
     
     setLoading(isLoading) {
-        const loader = this.#elements.loader;
-        const container = document.querySelector('.container');
-        if (!loader) return;
-        
         if (isLoading) {
-            loader.classList.remove('fade-out');
-            container?.classList.remove('loaded');
             if (this.#currentMode === 'search') this.#renderSkeletons();
-        } else {
-            loader.classList.add('fade-out');
-            container?.classList.add('loaded');
-        }
+        } 
+        // No else block needed as data rendering will overwrite skeletons
     }
 
     #renderSkeletons() {

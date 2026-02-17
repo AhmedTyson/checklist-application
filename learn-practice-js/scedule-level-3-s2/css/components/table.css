@@ -47,6 +47,7 @@
     border-radius: var(--radius-md);
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    min-height: 50vh; /* Prevent CLS */
 }
 
 @media (max-width: 768px) {
