@@ -15,6 +15,7 @@ class App {
     #dropdowns = {};
 
     constructor() {
+        Config.init();
         this.#detectWidgetMode();
     }
 
@@ -186,23 +187,28 @@ class App {
             'rooms': { ctrls: 'room-controls', view: 'room-view' }
         };
 
-        const switchView = (mode) => {
+        const switchView = (mode, isInitial = false) => {
             this.#ui.switchView(mode, views);
-            this.#updateUrl(mode);
+            this.#updateUrl(mode, isInitial);
         };
 
         tabs.forEach(tab => tab.onclick = () => switchView(tab.dataset.view));
         
-        // Initial View
+        // Initial View - passing true to prevent pushState on load
         const initialMode = new URLSearchParams(window.location.search).get('view') === 'rooms' ? 'rooms' : 'schedule';
-        setTimeout(() => switchView(initialMode), 100);
+        setTimeout(() => switchView(initialMode, true), 100);
     }
 
-    #updateUrl(mode) {
+    #updateUrl(mode, isInitial) {
         if (!window.history.pushState) return;
         const url = new URL(window.location);
         url.searchParams.set('view', mode);
-        window.history.pushState({ view: mode }, '', url);
+        
+        if (isInitial) {
+            window.history.replaceState({ view: mode }, '', url);
+        } else {
+            window.history.pushState({ view: mode }, '', url);
+        }
     }
 
     #initRoomFinder() {
@@ -257,11 +263,14 @@ class App {
     // ...
 
     handleFilterChange() {
+        // Optimization: Read layout (scrollY) BEFORE any DOM changes to avoid forced reflow
+        const currentScroll = window.scrollY;
+        
         this.#state.filteredData = this.#dataService.filterData(this.#state.filters);
         this.#state.currentPage = 1;
         this.#updateTagHighlights();
         this.render();
-        this.#ui.scrollToResults();
+        this.#ui.scrollToResults(currentScroll);
     }
 
     #updateTagHighlights() {

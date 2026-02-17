@@ -43,6 +43,9 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    /* CLS Fix: Lock height */
+    min-height: 81px; 
+    box-sizing: border-box;
 }
 
 @media (max-width: 768px) {
@@ -89,6 +92,8 @@ header {
     font-weight: 700;
     margin: 0;
     letter-spacing: -0.02em;
+    line-height: 1.2; /* CLS Fix */
+    min-height: 29px; /* CLS Fix */
 }
 
 .brand-info span {

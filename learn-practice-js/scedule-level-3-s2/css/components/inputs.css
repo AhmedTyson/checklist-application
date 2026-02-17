@@ -19,7 +19,7 @@
         align-items: center; /* Center label and select */
     }
 
-    .filter-group label {
+    .filter-group .input-label {
         padding-left: 0;
         justify-content: center;
         width: 100%;
@@ -46,7 +46,7 @@
     gap: 6px;
 }
 
-.filter-group label {
+.filter-group .input-label {
     font-size: 11px;
     font-weight: 700;
     color: var(--text-muted);
@@ -56,10 +56,12 @@
     display: flex;
     align-items: center;
     gap: 6px;
+    height: 18px; /* Strict height to prevent CLS */
 }
 
-.filter-group label i {
+.filter-group .input-label i {
     width: 12px;
+    min-width: 12px;
     text-align: center;
     font-size: 10px;
 }

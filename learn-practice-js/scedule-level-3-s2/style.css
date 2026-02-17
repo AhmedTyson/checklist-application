@@ -1,21 +1,5 @@
 /* 
    Main Stylesheet 
-   Imports modular CSS files
+   NOTE: Imports have been moved to index.html to avoid render-blocking @import chains.
+   Use individual files in css/ directory for editing.
 */
-
-/* Base */
-@import 'css/base/variables.css';
-@import 'css/base/reset.css';
-
-/* Layout */
-@import 'css/layout/layout.css';
-
-/* Components */
-@import 'css/components/utilities.css';
-@import 'css/components/buttons.css';
-@import 'css/components/inputs.css';
-@import 'css/components/search.css';
-@import 'css/components/tags.css';
-@import 'css/components/table.css';
-@import 'css/components/pagination.css';
-@import 'css/components/view-switcher.css';

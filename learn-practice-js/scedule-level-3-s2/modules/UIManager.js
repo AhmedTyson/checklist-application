@@ -1,5 +1,6 @@
 import { Config } from './Config.js';
 import { Utils } from './Utils.js';
+import { Icons } from './Icons.js';
 
 export class UIManager {
     #elements = {};
@@ -48,22 +49,30 @@ export class UIManager {
              window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
+        // Throttled Scroll Listener for FAB
+        let isScrolling = false;
         window.addEventListener('scroll', () => {
-            if (this.#elements.fabScrollTop) {
-                this.#elements.fabScrollTop.classList.toggle('visible', window.scrollY > 400);
+            if (!isScrolling) {
+                window.requestAnimationFrame(() => {
+                    if (this.#elements.fabScrollTop) {
+                        this.#elements.fabScrollTop.classList.toggle('visible', window.scrollY > 400);
+                    }
+                    isScrolling = false;
+                });
+                isScrolling = true;
             }
-        });
+        }, { passive: true });
     }
 
     #handleCopySuccess(btn) {
-        const icon = btn.querySelector('i');
-        const originalClass = icon.className;
+        const iconContainer = btn.querySelector('.icon-wrapper');
+        const originalIcon = iconContainer.innerHTML;
         
-        icon.className = 'fa-solid fa-check';
+        iconContainer.innerHTML = Icons.check;
         btn.classList.add('copied');
         
         setTimeout(() => {
-            icon.className = originalClass;
+            iconContainer.innerHTML = originalIcon;
             btn.classList.remove('copied');
         }, 2000);
     }
@@ -76,51 +85,51 @@ export class UIManager {
         const tabs = document.querySelectorAll('.view-tab');
         const tabPill = document.querySelector('.view-tab-pill');
 
-        const updatePill = (mode) => {
-            const activeTab = Array.from(tabs).find(t => t.dataset.view === mode);
-            if (activeTab && tabPill) {
-                tabPill.style.left = `${activeTab.offsetLeft}px`;
-                tabPill.style.width = `${activeTab.offsetWidth}px`;
-            }
-        };
+        // 1. Update State immediately
+        this.#currentMode = mode;
 
-        // 1. Identify current active view to animate it out
-        const activeIds = Object.values(views).find(v => {
-            const el = document.getElementById(v.view);
-            return el && !el.classList.contains('hidden');
-        });
+        // 2. toggle active class on tabs (Visual only, cheap)
+        tabs.forEach(t => t.classList.toggle('active', t.dataset.view === mode));
+
+        // 3. Move Pill (Optimized: Read Layout BEFORE style changes)
+        const nextActiveTab = Array.from(tabs).find(t => t.dataset.view === mode);
+        const container = document.querySelector('.view-switcher');
         
-        if (activeIds && activeIds.view !== views[mode].view) {
-             const oldView = document.getElementById(activeIds.view);
-             const oldCtrls = document.getElementById(activeIds.ctrls);
+        if (nextActiveTab && tabPill && container) {
+             // READ layout (forced reflow if done after writes, but fine before)
+             const containerRect = container.getBoundingClientRect();
+             const tabRect = nextActiveTab.getBoundingClientRect();
              
-             if (oldView) oldView.classList.add('view-exit');
-             if (oldCtrls) oldCtrls.classList.add('view-exit');
-             
-             await new Promise(r => setTimeout(r, 250)); // Wait for half of animation
-             
-             if (oldView) oldView.classList.remove('view-exit');
-             if (oldCtrls) oldCtrls.classList.remove('view-exit');
+             tabPill.style.width = `${tabRect.width}px`;
+             tabPill.style.left = `${tabRect.left - containerRect.left}px`;
         }
 
-        // 2. Perform the actual swap
-        tabs.forEach(t => t.classList.toggle('active', t.dataset.view === mode));
-        updatePill(mode);
-
+        // 4. Swap Views (No Await/Delay - Instant Swap with CSS Animations)
         Object.entries(views).forEach(([key, ids]) => {
             const isMatch = (key === mode);
-            document.getElementById(ids.ctrls)?.classList.toggle('hidden', !isMatch);
-            document.getElementById(ids.view)?.classList.toggle('hidden', !isMatch);
+            const viewEl = document.getElementById(ids.view);
+            const ctrlsEl = document.getElementById(ids.ctrls);
+
+            if (isMatch) {
+                viewEl?.classList.remove('hidden');
+                ctrlsEl?.classList.remove('hidden');
+            } else {
+                viewEl?.classList.add('hidden');
+                ctrlsEl?.classList.add('hidden');
+            }
         });
-        
-        this.#currentMode = mode;
     }
 
-    scrollToResults() {
-        const thead = document.querySelector('thead');
-        if (thead && thead.getBoundingClientRect().top < 0) {
-            window.scrollTo({ top: window.scrollY + thead.getBoundingClientRect().top - 100, behavior: 'smooth' });
-        }
+    scrollToResults(capturedScroll) {
+        // Use the scroll value captured BEFORE DOM changes to avoid forced reflow
+        if (capturedScroll < 300) return;
+
+        requestAnimationFrame(() => {
+            const thead = document.querySelector('thead');
+            if (thead) {
+                thead.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
     }
 
     renderTable(data, currentPage, searchTerm) {
@@ -165,7 +174,7 @@ export class UIManager {
                 <div class="code-wrapper">
                     <span class="code-cell">${highlight(item.code)}</span>
                     <button class="copy-btn" title="Copy Code" aria-label="Copy Code" data-code="${item.code}">
-                        <i class="fa-regular fa-copy"></i>
+                        <span class="icon-wrapper">${Icons.copy}</span>
                     </button>
                 </div>
             </td>
@@ -191,7 +200,7 @@ export class UIManager {
     #renderFridayState() {
         if (!this.#elements.memeContainer) return;
         const randomMeme = Math.floor(Math.random() * Config.FRIDAY_MEME_COUNT) + 1;
-        this.#elements.memeContainer.innerHTML = `<img src="assets/meme-friday-${randomMeme}.webp" alt="Friday Meme" class="meme-img">`;
+        this.#elements.memeContainer.innerHTML = `<img src="assets/meme-friday-${randomMeme}.webp" alt="Friday Meme" class="meme-img" width="400" height="300" style="aspect-ratio: 4/3; object-fit: cover;">`;
         if (this.#elements.noResultsText) this.#elements.noResultsText.textContent = "Enjoy your Friday! No schedules, just vibes. 😎";
     }
 
@@ -199,7 +208,7 @@ export class UIManager {
         if (!this.#elements.noResultsText) return;
         this.#elements.noResultsText.innerHTML = `
             <div class="empty-state-container">
-                <i class="fa-solid fa-ghost empty-state-icon"></i>
+                <div class="empty-state-icon">${Icons.ghost}</div>
                 <h3>No matching schedules found</h3>
                 <p>We couldn't find any sessions for your current filters.<br>Try adjusting your search or clearing filters.</p>
                 <div class="suggestion" onclick="document.querySelector('.clear-btn-styled').click()">Clear all filters</div>
@@ -255,8 +264,15 @@ export class UIManager {
     setLoading(isLoading) {
         if (isLoading) {
             if (this.#currentMode === 'search') this.#renderSkeletons();
-        } 
-        // No else block needed as data rendering will overwrite skeletons
+        } else {
+            // Hide full page loader if it exists
+            if (this.#elements.loader && !this.#elements.loader.classList.contains('fade-out')) {
+                this.#elements.loader.classList.add('fade-out');
+                setTimeout(() => {
+                    this.#elements.loader.classList.add('hidden');
+                }, 500); // Match CSS transition duration
+            }
+        }
     }
 
     #renderSkeletons() {
@@ -281,7 +297,7 @@ export class UIManager {
             container.innerHTML = `
                 <div class="room-results-header">
                     <div class="no-rooms-state">
-                        <i class="fa-solid fa-ghost"></i>
+                        ${Icons.ghost}
                         <h3>No Rooms Available</h3>
                         <p>Every room is booked for <span>${day}</span> at <span>${time}</span>.</p>
                     </div>
@@ -292,7 +308,7 @@ export class UIManager {
 
         container.innerHTML = `
             <div class="room-results-header">
-                <h3><i class="fa-solid fa-door-open"></i> Available Rooms <span class="count-badge">${rooms.length}</span></h3>
+                <h3>${Icons.doorOpen} Available Rooms <span class="count-badge">${rooms.length}</span></h3>
                 <p class="results-meta">for <span class="highlight">${day}</span> at <span class="highlight">${time}</span></p>
             </div>
             <div class="room-grid-rich">
@@ -303,14 +319,14 @@ export class UIManager {
 
     #getRoomCardTemplate(room, index) {
         const isLab = room.toLowerCase().includes('lab');
-        const icon = isLab ? 'fa-solid fa-computer' : 'fa-solid fa-chalkboard-user';
+        const iconSvg = isLab ? Icons.computer : Icons.chalkboardUser;
         const type = isLab ? 'Lab' : 'Hall';
         const num = room.replace(/(Hall|Lab)\s*/i, '');
 
         return `
             <div class="room-card" style="animation-delay: ${index * 50}ms">
                 <div class="room-card-icon ${isLab ? 'is-lab' : ''}">
-                    <i class="${icon}"></i>
+                    ${iconSvg}
                 </div>
                 <div class="room-card-content">
                     <span class="room-type">${type}</span>

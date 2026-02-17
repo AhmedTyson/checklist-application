@@ -22,11 +22,9 @@ export class Utils {
         
         let normalized = String(text).toLowerCase().trim();
         
-        // 1. External Arabic Services (Tashkeel/Tatweel)
-        if (window.ArabicServices) {
-            normalized = window.ArabicServices.removeTashkeel(normalized);
-            normalized = window.ArabicServices.removeTatweel(normalized);
-        }
+        // 1. Remove Tashkeel and Tatweel (Inlined for performance/CORB fix)
+        // Tashkeel: \u064B-\u065F, Tatweel: \u0640
+        normalized = normalized.replace(/[\u064B-\u065F\u0640]/g, '');
         
         // 2. Remove Titles
         normalized = normalized.replace(this.#RE_ARABIC_TITLES, '');

@@ -39,7 +39,7 @@
 .view-tab {
     background: transparent !important;
     border: none !important;
-    color: var(--text-muted);
+    color: var(--text-main); /* Improved contrast from muted */
     padding: 6px 18px; /* Slightly wider */
     border-radius: 999px; /* Pill shape */
     font-family: var(--font-ui);

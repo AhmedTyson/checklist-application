@@ -13,13 +13,17 @@
     align-items: center;
     gap: 6px;
     white-space: nowrap;
-    outline: none; /* Remove default focus ring */
+    outline: none; /* Remove default focus ring ONLY if replaced */
 }
 
-.clear-btn-styled:focus,
+.clear-btn-styled:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    background: rgba(168, 85, 247, 0.1);
+}
+
 .clear-btn-styled:active {
-    outline: none;
-    box-shadow: none;
+    transform: scale(0.96);
 }
 
 .clear-btn-styled:hover {

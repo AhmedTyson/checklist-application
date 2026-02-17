@@ -14,9 +14,28 @@ export const Config = {
      * Dynamically calculates how many rows fit on the screen.
      * Logic optimized for the 1200px viewport scaling used on mobile.
      */
-    get ROWS_PER_PAGE() {
+    // Cache for the calculated rows
+    _rowsPerPage: 24,
+
+    init() {
+        this.updateRowsPerPage();
+        
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            if (resizeTimeout) clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                this.updateRowsPerPage();
+            }, 200);
+        });
+    },
+
+    updateRowsPerPage() {
         const { innerWidth: width, innerHeight: height } = window;
-        if (width >= this.DESKTOP_WIDTH) return 24;
+        
+        if (width >= this.DESKTOP_WIDTH) {
+            this._rowsPerPage = 24;
+            return;
+        }
 
         // Effective height calculation for the scaled-out mobile viewport
         const effectiveHeight = (height / width) * this.DESKTOP_WIDTH;
@@ -29,6 +48,13 @@ export const Config = {
         const calculatedRows = Math.floor(availableHeight / ROW_HEIGHT);
         
         // Clamp between 24 and 100, adding a 5-row buffer for overflow
-        return Math.min(Math.max(calculatedRows + 5, 24), 100);
+        this._rowsPerPage = Math.min(Math.max(calculatedRows + 5, 24), 100);
+    },
+    
+    /**
+     * Returns the cached number of rows that fit on the screen.
+     */
+    get ROWS_PER_PAGE() {
+        return this._rowsPerPage;
     }
 };

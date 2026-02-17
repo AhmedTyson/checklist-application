@@ -1,0 +1,20 @@
+/*
+  Cache-Control: public, max-age=0, must-revalidate
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+
+# Service Worker - Never Cache
+/sw.js
+  Cache-Control: no-cache, no-store, must-revalidate
+
+# Immutable Assets (Hashed/Versioned in theory, but here max-age is high for static resources)
+/css/*
+  Cache-Control: public, max-age=31536000, immutable
+/modules/*
+  Cache-Control: public, max-age=31536000, immutable
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+/webfonts/*
+  Cache-Control: public, max-age=31536000, immutable
