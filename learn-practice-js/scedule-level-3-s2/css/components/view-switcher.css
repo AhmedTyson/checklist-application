@@ -98,6 +98,10 @@
     font-size: 1rem;
 }
 
+.view-controls {
+    overflow: visible !important;
+}
+
 /* Animations */
 .view-controls:not(.hidden), 
 .view-content:not(.hidden) {

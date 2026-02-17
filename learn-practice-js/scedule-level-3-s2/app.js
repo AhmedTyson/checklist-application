@@ -21,22 +21,7 @@ class App {
     async init() {
         this.#initGlobalListeners();
         this.#initViewSwitcher();
-        this.#injectCriticalStyles();
         
-        // Debug Helper
-        window.debugDropdowns = () => {
-            const s = document.getElementById('subject-dropdown');
-            const opts = document.getElementById('subject-options');
-            console.log('--- Dropdown Debug ---');
-            console.log('Subject Dropdown Element:', s);
-            console.log('Options Container:', opts);
-            console.log('Options Count:', opts?.children.length);
-            console.log('Is Active:', s?.classList.contains('active'));
-            console.log('Computed Visibility:', window.getComputedStyle(opts).visibility);
-            console.log('Computed Z-Index:', window.getComputedStyle(opts).zIndex);
-            console.log('----------------------');
-        };
-
         try {
             this.#ui.setLoading(true);
             const data = await this.#dataService.fetchData();
@@ -73,11 +58,12 @@ class App {
     #initGlobalListeners() {
         window.addEventListener('click', () => CustomSelect.closeAll());
 
-        // Search Input
-        this.#ui.elements.searchInput.addEventListener('input', (e) => {
+        // Search Input with Debounce
+        this.#ui.elements.searchInput.addEventListener('input', Utils.debounce((e) => {
             this.#state.filters.search = e.target.value;
             this.handleFilterChange();
-        });
+        }, 300));
+
 
         // Clear Button
         this.#ui.elements.clearFilters.onclick = () => {
@@ -113,9 +99,7 @@ class App {
     }
 
     #populateSubjectFilters(data) {
-        console.log('App: Populating Subjects, count:', data.length); // Debug
         const subjects = [...new Set(data.map(item => item.subject).filter(Boolean))].sort();
-        console.log('App: Unique Subjects:', subjects); // Debug
         if (!subjects.length) {
             console.warn('App: No subjects found!');
             return;
@@ -249,16 +233,7 @@ class App {
         document.getElementById('find-rooms-btn').onclick = () => this.#performRoomSearch();
     }
 
-    #injectCriticalStyles() {
-        const style = document.createElement('style');
-        style.textContent = `
-            .custom-select, .filters-grid, .controls, .view-controls { overflow: visible !important; }
-            .select-options { z-index: 9999 !important; }
-            .custom-select.active .select-options { visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; }
-        `;
-        document.head.appendChild(style);
-        console.log('App: Critical styles injected.');
-    }
+    // ...
 
     #performRoomSearch() {
         // ... (existing code)

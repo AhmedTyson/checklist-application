@@ -12,6 +12,7 @@
     box-shadow: var(--shadow);
     position: relative;
     z-index: 200;
+    overflow: visible !important;
 }
 
 @media (max-width: 768px) {

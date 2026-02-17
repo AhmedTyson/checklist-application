@@ -8,7 +8,6 @@ export class CustomSelect {
     #activeIndex = -1;
 
     constructor(id, onSelect) {
-        console.log(`CustomSelect init: ${id}`);
         this.#container = document.getElementById(id);
         if (!this.#container) {
             console.error(`CustomSelect: Container ${id} not found!`);
@@ -30,7 +29,8 @@ export class CustomSelect {
         this.#container.setAttribute('aria-expanded', 'false');
         this.#container.setAttribute('aria-haspopup', 'listbox');
         
-        // Preserve existing ID if present, otherwise generate one
+        // Critical: Preserve existing ID if present to ensure app.js can find it for population.
+        // Only generate a new ID if one isn't already set.
         if (!this.#optionsContainer.id) {
             this.#optionsContainer.id = `${this.#id}-list`;
         }
@@ -56,7 +56,6 @@ export class CustomSelect {
 
     #init() {
         this.#trigger.addEventListener('click', (e) => {
-            console.log(`CustomSelect click: ${this.#id}`);
             e.stopPropagation();
             this.#toggle();
         });
