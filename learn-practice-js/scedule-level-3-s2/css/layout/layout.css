@@ -1,0 +1,103 @@
+/* Main Container */
+.container {
+    padding: var(--padding-container);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    min-height: 100vh;
+    background-color: var(--bg-app);
+    background-image:
+        linear-gradient(rgba(168, 85, 247, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(168, 85, 247, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 0 100px rgba(0,0,0,0.5);
+    width: var(--container-width);
+    margin: 0 auto;
+    flex: 1;
+}
+
+main {
+    padding-bottom: 20px;
+}
+
+/* Header & Branding */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(10, 10, 10, 0.8);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 0;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.brand-logo {
+    color: var(--accent);
+    font-size: 32px;
+    filter: drop-shadow(0 0 10px var(--accent-bg));
+}
+
+.brand-info h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.02em;
+}
+
+.brand-info span {
+    font-size: 12px;
+    color: var(--accent);
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+}
+
+.brand-badge {
+    font-size: 10px;
+    background: var(--accent-bg);
+    color: var(--accent);
+    padding: 2px 8px;
+    border-radius: 6px;
+    vertical-align: middle;
+    margin-left: 10px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    border: 1px solid rgba(168, 85, 247, 0.2);
+}
+
+.stats {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+#result-count {
+    color: var(--accent);
+    font-weight: 700;
+}
+
+/* WIDGET MODE */
+body.widget-mode .container {
+    max-width: 100%;
+    width: 100%;
+    padding: 10px;
+    border-radius: 0;
+    margin: 0;
+}
+
+body.widget-mode header { display: none; }
+body.widget-mode main { padding: 0; }
+body.widget-mode .controls { margin-bottom: 15px; }
+body.widget-mode .brand-badge { display: none; }

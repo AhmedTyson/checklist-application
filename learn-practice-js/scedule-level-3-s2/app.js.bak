@@ -1,0 +1,240 @@
+/**
+ * BIS Schedule Search - Modern Refactor
+ * Standards: ES6+, Classes, Semantic structure
+ */
+
+import { Config } from './modules/Config.js';
+import { Utils } from './modules/Utils.js';
+import { CustomSelect } from './modules/CustomSelect.js';
+import { DataService } from './modules/DataService.js';
+import { UIManager } from './modules/UIManager.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+    // --- 0. Widget Mode ---
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('view') === 'widget') {
+        document.body.classList.add('widget-mode');
+    }
+
+    // --- 6. Main Application Logic ---
+    class App {
+        constructor() {
+            this.state = {
+                activeMode: 'schedule', // 'schedule' or 'rooms'
+                filters: { search: '', subject: 'all', group: 'all', day: 'all' },
+                roomFinder: { day: 'all', time: 'all' },
+                currentPage: 1,
+                filteredData: []
+            };
+            this.dataService = new DataService();
+            this.ui = new UIManager();
+            this.dropdowns = {};
+        }
+
+        async init() {
+            try {
+                window.addEventListener('click', () => CustomSelect.closeAll());
+                this.initEventListeners();
+                
+                const data = await this.dataService.fetchData();
+                this.state.filteredData = data;
+                
+                this.initFilters(data);
+                this.initRoomFinder(data);
+                this.handleFilterChange();
+                
+            } catch (error) {
+                this.ui.elements.noResults.innerHTML = `<div style="color: var(--danger);">Error: ${error.message}</div>`;
+                this.ui.elements.noResults.classList.remove('hidden');
+            } finally {
+                this.ui.toggleLoader(false);
+            }
+        }
+
+        initFilters(data) {
+            // Dropdowns
+            ['subject-dropdown', 'group-dropdown', 'day-dropdown'].forEach(id => {
+                this.dropdowns[id] = new CustomSelect(id, (dropdownId, value) => {
+                    const key = dropdownId.split('-')[0];
+                    this.state.filters[key] = value;
+                    this.activateScheduleMode();
+                    this.handleFilterChange();
+                });
+            });
+
+            // Populate Subject Options
+            const subjects = this.dataService.getUniqueValues('subject');
+            const subjectOptions = document.getElementById('subject-options');
+            if (subjects.length > 0) this.ui.elements.subjectListContainer.classList.remove('hidden');
+
+            subjects.forEach(subject => {
+                this.createOption(subject, subjectOptions);
+                // Tags
+                const tag = document.createElement('span');
+                tag.className = 'subject-tag';
+                tag.textContent = subject;
+                tag.onclick = () => {
+                    this.activateScheduleMode();
+                    this.dropdowns['subject-dropdown'].select(subject, subject);
+                };
+                this.ui.elements.subjectTags.appendChild(tag);
+            });
+
+            // Populate Group Options
+            const groups = this.dataService.getUniqueValues('group').sort((a, b) => {
+                const numA = parseInt(a.replace(/\D/g, '')) || 0;
+                const numB = parseInt(b.replace(/\D/g, '')) || 0;
+                return numA - numB || a.localeCompare(b);
+            });
+            const groupOptions = document.getElementById('group-options');
+            groups.forEach(group => this.createOption(group, groupOptions));
+        }
+
+        initRoomFinder(data) {
+            const dayOptions = document.getElementById('room-day-options');
+            const timeOptions = document.getElementById('room-time-options');
+            const days = ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+            const times = this.dataService.getUniqueValues('time');
+
+            days.forEach(day => this.createOption(day, dayOptions));
+            times.forEach(time => this.createOption(time, timeOptions));
+
+            this.dropdowns['room-day-dropdown'] = new CustomSelect('room-day-dropdown', (id, value) => this.state.roomFinder.day = value);
+            this.dropdowns['room-time-dropdown'] = new CustomSelect('room-time-dropdown', (id, value) => this.state.roomFinder.time = value);
+        }
+
+        createOption(text, container) {
+            const opt = document.createElement('div');
+            opt.className = 'option';
+            opt.dataset.value = text;
+            opt.textContent = text;
+            container.appendChild(opt);
+        }
+
+        initEventListeners() {
+            // Search Input
+            // Search Input with Debounce
+            const debouncedSearch = Utils.debounce((e) => {
+                this.state.filters.search = e.target.value;
+                this.activateScheduleMode();
+                this.handleFilterChange();
+            }, 300);
+
+            this.ui.elements.searchInput.addEventListener('input', debouncedSearch);
+
+            // Keyboard Shortcut for Search (/)
+            document.addEventListener('keydown', (e) => {
+                if (e.key === '/' && document.activeElement !== this.ui.elements.searchInput) {
+                    e.preventDefault();
+                    this.ui.elements.searchInput.focus();
+                }
+            });
+
+            // Clear Button
+            this.ui.elements.clearBtn.onclick = () => {
+                this.ui.elements.searchInput.value = '';
+                this.state.filters = { search: '', subject: 'all', group: 'all', day: 'all' };
+                Object.values(this.dropdowns).forEach(d => d.reset());
+                this.ui.elements.roomFinderPanel.classList.add('hidden');
+                this.activateScheduleMode();
+                this.handleFilterChange();
+            };
+
+            // Room Finder Toggles
+            this.ui.elements.toggleRoomFinderBtn.onclick = () => {
+                this.ui.elements.roomFinderPanel.classList.toggle('hidden');
+            };
+
+            this.ui.elements.findRoomsBtn.onclick = () => {
+                const { day, time } = this.state.roomFinder;
+                if (!day || day === 'all' || !time || time === 'all') {
+                    alert('Please select both a Day and Time.');
+                    return;
+                }
+                this.state.activeMode = 'rooms';
+                const emptyRooms = this.dataService.getEmptyRooms(day, time);
+                this.render(emptyRooms);
+            };
+
+            // Pagination Controls
+            this.ui.elements.prevBtn.onclick = () => this.changePage(this.state.currentPage - 1);
+            this.ui.elements.nextBtn.onclick = () => this.changePage(this.state.currentPage + 1);
+
+            // Copy Code Delegation
+            this.ui.elements.tableBody.addEventListener('click', async (e) => {
+                const btn = e.target.closest('.copy-btn');
+                if (!btn) return;
+                
+                try {
+                    await navigator.clipboard.writeText(btn.dataset.code);
+                    const icon = btn.querySelector('i');
+                    icon.className = 'fa-solid fa-check';
+                    btn.classList.add('copied');
+                    setTimeout(() => {
+                        icon.className = 'fa-regular fa-copy';
+                        btn.classList.remove('copied');
+                    }, 2000);
+                } catch (err) {
+                    console.error('Copy failed', err);
+                }
+            });
+        }
+
+        activateScheduleMode() {
+            if (this.state.activeMode !== 'schedule') {
+                this.state.activeMode = 'schedule';
+                // Reset Room Finder visually
+                // Note: We don't reset the dropdown values of room finder because the user might want to go back.
+            }
+        }
+
+        handleFilterChange() {
+            this.state.filteredData = this.dataService.filterData(this.state.filters);
+            this.state.currentPage = 1;
+            this.render();
+            
+            // Scroll reset if deep in page
+            const tableRect = document.querySelector('thead').getBoundingClientRect();
+            if (tableRect && tableRect.top < 0) {
+                window.scrollTo({ top: window.scrollY + tableRect.top - 100, behavior: 'smooth' });
+            }
+        }
+
+        changePage(newPage) {
+            const maxPage = Math.ceil(this.state.filteredData.length / Config.ROWS_PER_PAGE);
+            if (newPage >= 1 && newPage <= maxPage) {
+                this.state.currentPage = newPage;
+                this.render();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        render(roomData = null) {
+            this.ui.setMode(this.state.activeMode);
+
+            if (this.state.activeMode === 'schedule') {
+                this.ui.renderTable(this.state.filteredData, this.state.currentPage, this.state.filters.search);
+                this.ui.renderPagination(this.state.filteredData.length, this.state.currentPage, (page) => this.changePage(page));
+                
+                // Suggestions
+                let suggestion = null;
+                if (this.state.filteredData.length === 0) {
+                   suggestion = this.dataService.getSuggestion(this.state.filters.search);
+                   this.ui.renderNoResults(this.state.filters.day === 'Friday');
+                }
+                
+                this.ui.renderSuggestion(suggestion, (correctedTerm) => {
+                    this.ui.elements.searchInput.value = correctedTerm;
+                    this.state.filters.search = correctedTerm;
+                    this.handleFilterChange();
+                });
+
+            } else if (this.state.activeMode === 'rooms' && roomData) {
+                this.ui.showRoomResults(roomData, this.state.roomFinder.day, this.state.roomFinder.time);
+            }
+        }
+    }
+
+    // --- 7. Bootstrap ---
+    new App().init();
+});

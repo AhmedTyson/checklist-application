@@ -47,6 +47,17 @@
                     <span>Level 3 • semester 2</span>
                 </div>
             </div>
+            <div class="view-switcher-container header-switcher">
+                <div class="view-switcher">
+                    <div class="view-tab-pill"></div>
+                    <button class="view-tab active" data-view="schedule">
+                        <i class="fa-solid fa-calendar-days"></i> Schedule
+                    </button>
+                    <button class="view-tab" data-view="rooms">
+                        <i class="fa-solid fa-door-open"></i> Rooms
+                    </button>
+                </div>
+            </div>
             <div class="stats">
                 <span id="result-count">0</span> Results Found
             </div>
@@ -54,122 +65,171 @@
 
         <main>
             <section class="controls">
-                <div class="search-header">
-                    <div class="search-box">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" id="search-input" placeholder="Search by subject, doctor, group, day, time or code...">
+
+
+                <div id="schedule-controls" class="view-controls">
+                    <div class="search-header">
+                        <div class="search-box">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="search-input" placeholder="Search by subject, doctor, group, day, time or code...">
+                        </div>
+                        
+                        <button id="clear-filters" class="btn-secondary clear-btn-styled" aria-label="Clear All Filters">
+                            <i class="fa-solid fa-filter-circle-xmark"></i> Clear All
+                        </button>
                     </div>
-                    <button id="clear-filters" class="btn-secondary clear-btn-styled">
-                        <i class="fa-solid fa-filter-circle-xmark"></i> Clear All
-                    </button>
+
+                    <div class="filters-grid">
+                        <div class="filter-group">
+                            <label><i class="fa-solid fa-book"></i> Subject</label>
+                            <div class="custom-select" id="subject-dropdown">
+                                <div class="select-trigger">
+                                    <span>All Subjects</span>
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </div>
+                                <div class="select-options" id="subject-options">
+                                    <div class="option selected" data-value="all">All Subjects</div>
+                                </div>
+                            </div>
+                            <select id="subject-filter" class="hidden">
+                                <option value="all">All Subjects</option>
+                            </select>
+                        </div>
+    
+                        <div class="filter-group">
+                            <label><i class="fa-solid fa-users"></i> Group</label>
+                            <div class="custom-select" id="group-dropdown">
+                                <div class="select-trigger">
+                                    <span>All Groups</span>
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </div>
+                                <div class="select-options" id="group-options">
+                                    <div class="option selected" data-value="all">All Groups</div>
+                                </div>
+                            </div>
+                            <select id="group-filter" class="hidden">
+                                <option value="all">All Groups</option>
+                            </select>
+                        </div>
+    
+                        <div class="filter-group">
+                            <label><i class="fa-solid fa-clock"></i> Day</label>
+                            <div class="custom-select" id="day-dropdown">
+                                <div class="select-trigger">
+                                    <span>All Days</span>
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </div>
+                                <div class="select-options" id="day-options">
+                                    <div class="option selected" data-value="all">All Days</div>
+                                    <div class="option" data-value="Saturday">Saturday</div>
+                                    <div class="option" data-value="Sunday">Sunday</div>
+                                    <div class="option" data-value="Monday">Monday</div>
+                                    <div class="option" data-value="Tuesday">Tuesday</div>
+                                    <div class="option" data-value="Wednesday">Wednesday</div>
+                                    <div class="option" data-value="Thursday">Thursday</div>
+                                    <div class="option" data-value="Friday">Friday</div>
+                                </div>
+                            </div>
+                            <select id="day-filter" class="hidden">
+                                <option value="all">All Days</option>
+                                <option value="Saturday">Saturday</option>
+                                <option value="Sunday">Sunday</option>
+                                <option value="Monday">Monday</option>
+                                <option value="Tuesday">Tuesday</option>
+                                <option value="Wednesday">Wednesday</option>
+                                <option value="Thursday">Thursday</option>
+                                <option value="Friday">Friday</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="filters-grid">
-                    <div class="filter-group">
-                        <label><i class="fa-solid fa-book"></i> Subject</label>
-                        <div class="custom-select" id="subject-dropdown">
-                            <div class="select-trigger">
-                                <span>All Subjects</span>
-                                <i class="fa-solid fa-chevron-down"></i>
-                            </div>
-                            <div class="select-options" id="subject-options">
-                                <div class="option selected" data-value="all">All Subjects</div>
-                            </div>
-                        </div>
-                        <select id="subject-filter" class="hidden">
-                            <option value="all">All Subjects</option>
-                        </select>
-                    </div>
 
-                    <div class="filter-group">
-                        <label><i class="fa-solid fa-users"></i> Group</label>
-                        <div class="custom-select" id="group-dropdown">
-                            <div class="select-trigger">
-                                <span>All Groups</span>
-                                <i class="fa-solid fa-chevron-down"></i>
+                <div id="room-controls" class="view-controls hidden">
+                    <div class="room-controls-wrapper">
+                        <div class="room-finder-layout">
+                            <div class="filter-group">
+                                <label for="room-day-input"><i class="fa-solid fa-calendar-day"></i> Select Day</label>
+                                <div class="custom-select" id="room-day-dropdown">
+                                    <div class="select-trigger" aria-label="Select Day">
+                                        <span>Select Day</span>
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </div>
+                                    <div class="select-options" id="room-day-options">
+                                        <!-- Days injected via JS -->
+                                    </div>
+                                </div>
+                                <input type="hidden" id="room-day-input" aria-hidden="true">
                             </div>
-                            <div class="select-options" id="group-options">
-                                <div class="option selected" data-value="all">All Groups</div>
-                            </div>
-                        </div>
-                        <select id="group-filter" class="hidden">
-                            <option value="all">All Groups</option>
-                        </select>
-                    </div>
 
-                    <div class="filter-group">
-                        <label><i class="fa-solid fa-clock"></i> Day</label>
-                        <div class="custom-select" id="day-dropdown">
-                            <div class="select-trigger">
-                                <span>All Days</span>
-                                <i class="fa-solid fa-chevron-down"></i>
-                            </div>
-                            <div class="select-options" id="day-options">
-                                <div class="option selected" data-value="all">All Days</div>
-                                <div class="option" data-value="Saturday">Saturday</div>
-                                <div class="option" data-value="Sunday">Sunday</div>
-                                <div class="option" data-value="Monday">Monday</div>
-                                <div class="option" data-value="Tuesday">Tuesday</div>
-                                <div class="option" data-value="Wednesday">Wednesday</div>
-                                <div class="option" data-value="Thursday">Thursday</div>
-                                <div class="option" data-value="Friday">Friday</div>
+                            <div class="filter-group">
+                                <label for="room-time-input"><i class="fa-solid fa-clock"></i> Select Time</label>
+                                <div class="custom-select" id="room-time-dropdown">
+                                    <div class="select-trigger" aria-label="Select Time">
+                                        <span>Select Time</span>
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </div>
+                                    <div class="select-options" id="room-time-options">
+                                        <!-- Times injected via JS -->
+                                    </div>
+                                </div>
+                                <input type="hidden" id="room-time-input" aria-hidden="true">
                             </div>
                         </div>
-                        <select id="day-filter" class="hidden">
-                            <option value="all">All Days</option>
-                            <option value="Saturday">Saturday</option>
-                            <option value="Sunday">Sunday</option>
-                            <option value="Monday">Monday</option>
-                            <option value="Tuesday">Tuesday</option>
-                            <option value="Wednesday">Wednesday</option>
-                            <option value="Thursday">Thursday</option>
-                            <option value="Friday">Friday</option>
-                        </select>
+                        
+                        <button id="find-rooms-btn" class="clear-btn-styled btn-primary-action full-width-btn" aria-label="Find Empty Rooms">
+                            Find Empty Rooms
+                        </button>
                     </div>
                 </div>
             </section>
 
-            <div id="subject-list-container" class="subject-highlight-box hidden">
-                <h4>Available Subjects:</h4>
-                <div id="subject-tags" class="subject-tags"></div>
-            </div>
-
-            <div class="table-container">
-                <table id="schedule-table">
-                    <thead>
-                        <tr>
-                            <th>Subject</th>
-                            <th>Group</th>
-                            <th>Doctor (Arabic)</th>
-                            <th>Doctor (English)</th>
-                            <th>Day</th>
-                            <th>Time</th>
-                            <th>Room</th>
-                            <th>Teams Code</th>
-                        </tr>
-                    </thead>
-                    <tbody id="table-body">
-                        <!-- Data will be injected here -->
-                    </tbody>
-                </table>
-                <div id="no-results" class="hidden">
-                    <div id="meme-container"></div>
-                    <i class="fa-solid fa-ghost"></i>
-                    <p id="no-results-text">No matching schedules found.</p>
+            <div id="schedule-view" class="view-content">
+                <div id="subject-list-container" class="subject-highlight-box hidden">
+                    <h4>Available Subjects</h4>
+                    <div id="subject-tags" class="subject-tags"></div>
                 </div>
+
+                <div class="table-container">
+                    <table id="schedule-table">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Group</th>
+                                <th>Doctor</th>
+                                <th>Day</th>
+                                <th>Time</th>
+                                <th>Room</th>
+                                <th>Teams Code</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body">
+                            <!-- Data will be injected here -->
+                        </tbody>
+                    </table>
+
+                    <div id="no-results" class="hidden">
+                        <div id="meme-container"></div>
+                        <i class="fa-solid fa-ghost"></i>
+                        <p id="no-results-text">No matching schedules found.</p>
+                    </div>
+                </div>
+
+                <nav class="pagination" id="pagination">
+                    <button id="prev-page" disabled><i class="fa-solid fa-chevron-left"></i> Previous</button>
+                    <div id="page-numbers"></div>
+                    <button id="next-page">Next <i class="fa-solid fa-chevron-right"></i></button>
+                </nav>
             </div>
 
-            <nav class="pagination" id="pagination">
-                <button id="prev-page" disabled><i class="fa-solid fa-chevron-left"></i> Previous</button>
-                <div id="page-numbers"></div>
-                <button id="next-page">Next <i class="fa-solid fa-chevron-right"></i></button>
-            </nav>
+            <div id="room-view" class="view-content hidden">
+                <div id="room-results-container"></div>
+            </div>
         </main>
 
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/arabic-services/dist/arabic-services.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
-    <script src="app.js"></script>
+    <script type="module" src="app.js"></script>
 </body>
 </html>
