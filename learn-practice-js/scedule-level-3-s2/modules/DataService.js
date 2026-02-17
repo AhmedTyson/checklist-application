@@ -2,137 +2,130 @@ import { Config } from './Config.js';
 import { Utils } from './Utils.js';
 
 export class DataService {
-    constructor() {
-        this.data = [];
-        this.fuse = null;
-    }
+    #data = [];
+    #fuse = null;
+    #suggestionsFuse = null;
+    #suggestionItems = [];
 
+    /**
+     * Core data loading and index initialization
+     */
     async fetchData() {
         try {
             const response = await fetch(Config.DATA_URL);
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            this.data = await response.json();
-            this.initFuse();
-            this.initSuggestions();
-            return this.data;
+            
+            this.#data = await response.json();
+            this.#initSearchIndices();
+            
+            return this.#data;
         } catch (error) {
             console.error('DataService Error:', error);
             throw error;
         }
     }
 
-    initFuse() {
-        // Initialize Fuse.js for fuzzy search
-        this.fuse = new window.Fuse(this.data, {
+    #initSearchIndices() {
+        // 0. Pre-compute searchable text for rapid T1/T2 filtering
+        this.#data.forEach(item => {
+            item._searchIndex = Utils.normalizeText(`
+                ${item.subject} ${Utils.getSubjectDisplay(item.subject)} 
+                ${item.group} ${item.doctorAr} ${item.doctorEn} 
+                ${item.day} ${item.time} ${item.code}
+            `);
+        });
+
+        // 1. Primary Fuzzy Engine (Fuse.js)
+        this.#fuse = new window.Fuse(this.#data, {
             keys: ['subject', 'subjectAcronym', 'group', 'doctorAr', 'doctorEn', 'day', 'time', 'room', 'code'],
-            threshold: 0.2, // Stricter threshold to avoid irrelevant matches
+            threshold: 0.2,
             ignoreLocation: true,
-            minMatchCharLength: 3, // Increased to avoid matching short common sequences
+            minMatchCharLength: 3,
             findAllMatches: true,
             getFn: (obj, key) => {
-                // Handle subjectAcronym as a virtual field
-                if (key === 'subjectAcronym') {
-                    return Utils.normalizeText(Utils.getSubjectDisplay(obj.subject));
-                }
-                return Utils.normalizeText(obj[key]);
+                const val = (key === 'subjectAcronym') 
+                    ? Utils.getSubjectDisplay(obj.subject) 
+                    : obj[key];
+                return Utils.normalizeText(val);
             }
         });
-    }
 
-    initSuggestions() {
-        // Create a unique list of potential search terms for suggestions
-        const subjects = [...new Set(this.data.map(d => d.subject))];
-        const doctorsEn = [...new Set(this.data.map(d => d.doctorEn))];
-        const doctorsAr = [...new Set(this.data.map(d => d.doctorAr))];
+        // 2. Suggestion Engine
+        const uniqueValues = (key) => [...new Set(this.#data.map(d => d[key]))].filter(v => v && v !== '-');
+        
+        this.#suggestionItems = [
+            ...uniqueValues('subject').map(s => ({ type: 'subject', text: s, display: s })),
+            ...uniqueValues('doctorEn').map(d => ({ type: 'doctor', text: d, display: d })),
+            ...uniqueValues('doctorAr').map(d => ({ type: 'doctor', text: d, display: d }))
+        ];
 
-        this.suggestionItems = [
-            ...subjects.map(s => ({ type: 'subject', text: s, display: s })),
-            ...doctorsEn.map(d => ({ type: 'doctor', text: d, display: d })),
-            ...doctorsAr.map(d => ({ type: 'doctor', text: d, display: d }))
-        ].filter(item => item.text && item.text !== '-');
-
-        this.suggestionsFuse = new window.Fuse(this.suggestionItems, {
+        this.#suggestionsFuse = new window.Fuse(this.#suggestionItems, {
             keys: ['text'],
-            threshold: 0.4, // Slightly looser for suggestions to catch typos
+            threshold: 0.4,
             minMatchCharLength: 2
         });
     }
 
     getSuggestions(query) {
-        if (!this.suggestionsFuse) return [];
-        if (!query || query.length < 2) return [];
-        return this.suggestionsFuse.search(query).map(r => r.item).slice(0, 5); // Limit to 5 suggestions
+        if (!this.#suggestionsFuse || !query || query.length < 2) return [];
+        return this.#suggestionsFuse.search(query).map(r => r.item).slice(0, 5);
     }
 
+    /**
+     * Performs a three-tier smart filter:
+     * Tier 1: Exact Substring match
+     * Tier 2: Token match (all words present)
+     * Tier 3: Fuzzy Typos (Fuse.js)
+     */
     filterData(filters) {
         const { search, subject, group, day } = filters;
         
-        // 1. Initial filter by exact dropdowns
-        let pool = this.data.filter(item => {
-            const matchesSubject = subject === 'all' || item.subject === subject;
-            const matchesGroup = group === 'all' || item.group === group;
-            const matchesDay = day === 'all' || item.day === day;
-            return matchesSubject && matchesGroup && matchesDay;
+        // filter by exact dropdowns
+        let results = this.#data.filter(item => {
+            return (subject === 'all' || item.subject === subject) &&
+                   (group === 'all' || item.group === group) &&
+                   (day === 'all' || item.day === day);
         });
 
-        // 2. Tiered Search Logic
-        if (search && search.trim().length >= 1) {
-            const query = Utils.normalizeText(search);
-            const queryTokens = query.split(/\s+/);
+        if (!search?.trim()) return results;
 
-            // Tier 1: Exact Substring Match (High Priority)
-            const tier1 = pool.filter(item => {
-                const subjectShort = Utils.getSubjectDisplay(item.subject);
-                const searchable = Utils.normalizeText(`${item.subject} ${subjectShort} ${item.group} ${item.doctorAr} ${item.doctorEn} ${item.day} ${item.time} ${item.code}`);
-                return searchable.includes(query);
-            });
+        const query = Utils.normalizeText(search);
+        const tokens = query.split(/\s+/);
 
-            // Tier 2: Token Matching (AND logic)
-            const tier2 = pool.filter(item => {
-                if (tier1.includes(item)) return false; // Already in Tier 1
-                const subjectShort = Utils.getSubjectDisplay(item.subject);
-                const searchable = Utils.normalizeText(`${item.subject} ${subjectShort} ${item.group} ${item.doctorAr} ${item.doctorEn} ${item.day} ${item.time} ${item.code}`);
-                return queryTokens.every(token => searchable.includes(token));
-            });
+        // Tier 1: Exact Substring
+        const tier1 = results.filter(item => item._searchIndex.includes(query));
+        
+        // Tier 2: All Tokens (AND)
+        const tier2 = results.filter(item => {
+            if (tier1.includes(item)) return false;
+            return tokens.every(token => item._searchIndex.includes(token));
+        });
 
-            // Tier 3: Fuzzy Match (Fuse.js) for typos
-            let tier3 = [];
-            if (this.fuse) {
-                const fuzzyResults = this.fuse.search(query);
-                tier3 = fuzzyResults
-                    .map(r => r.item)
-                    .filter(item => pool.includes(item) && !tier1.includes(item) && !tier2.includes(item));
-            }
-
-            return [...tier1, ...tier2, ...tier3];
-        } else {
-            return pool;
+        // Tier 3: Fuzzy
+        let tier3 = [];
+        if (this.#fuse) {
+            const fuzzy = this.#fuse.search(query).map(r => r.item);
+            tier3 = fuzzy.filter(item => 
+                results.includes(item) && !tier1.includes(item) && !tier2.includes(item)
+            );
         }
+
+        return [...tier1, ...tier2, ...tier3];
     }
 
     getUniqueValues(key) {
-        return [...new Set(this.data.map(item => item[key]).filter(Boolean))].sort((a, b) => {
-             // Natural sort for strings containing numbers (e.g. Hall 2 < Hall 10)
-             return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
-        });
-    }
-
-    getAllRooms() {
-        return this.getUniqueValues('room');
+        return [...new Set(this.#data.map(item => item[key]).filter(Boolean))]
+            .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
     }
 
     findEmptyRooms(day, time) {
         if (!day || !time) return [];
 
-        const allRooms = this.getAllRooms();
-        
-        // Find occupied rooms for this slot
-        const occupiedRooms = this.data
+        const allRooms = this.getUniqueValues('room');
+        const occupiedRooms = this.#data
             .filter(item => item.day === day && item.time === time)
             .map(item => item.room);
 
-        // Filter out occupied rooms
-        // We also filter out "undefined" or empty rooms if any
         return allRooms.filter(room => !occupiedRooms.includes(room));
     }
 }

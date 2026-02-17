@@ -1,97 +1,106 @@
 import { Config } from './Config.js';
 
 export class Utils {
+    // Cache regex patterns for performance
+    static #RE_ARABIC_TITLES = /\b(dr|dr\.|d\.|د|د\.|د\/|دكتور|دكتوره)\b/g;
+    static #RE_SPECIAL_CHARS = /[()\-–—.,/]/g;
+    static #RE_WHITESPACE = /\s+/g;
+    
+    // Arabic normalization maps for performant replacement
+    static #ARABIC_NORM_MAPS = [
+        { pattern: /[أإآء]/g, replacement: 'ا' },
+        { pattern: /ة/g, replacement: 'ه' },
+        { pattern: /[ىئ]/g, replacement: 'ي' },
+        { pattern: /ؤ/g, replacement: 'ا' }
+    ];
+
     /**
-     * Normalizes text for searching:
-     * - Lowercases
-     * - Removes common titles
-     * - Normalizes Arabic characters (Alif variants)
+     * Normalizes text for searching by cleaning titles, Arabic characters, and spacing.
      */
     static normalizeText(text) {
         if (!text) return '';
+        
         let normalized = String(text).toLowerCase().trim();
         
-        // 1. Professional Arabic Normalization
-        if (typeof window.ArabicServices !== 'undefined') {
+        // 1. External Arabic Services (Tashkeel/Tatweel)
+        if (window.ArabicServices) {
             normalized = window.ArabicServices.removeTashkeel(normalized);
             normalized = window.ArabicServices.removeTatweel(normalized);
         }
         
-        // 2. Remove common titles (English & Arabic)
-        normalized = normalized.replace(/\b(dr|dr\.|d\.|د|د\.|د\/|دكتور|دكتوره)\b/g, '');
+        // 2. Remove Titles
+        normalized = normalized.replace(this.#RE_ARABIC_TITLES, '');
         
-        // 3. Manual Arabic Normalization for robust matching
-        normalized = normalized.replace(/[أإآء]/g, 'ا'); // Normalize Alif & Hamza on line
-        normalized = normalized.replace(/ة/g, 'ه');      // Ta Marbuta -> Ha
-        normalized = normalized.replace(/ى/g, 'ي');      // Alif Maqsura -> Ya
-        normalized = normalized.replace(/ئ/g, 'ي');      // Hamza on Ya -> Ya
-        normalized = normalized.replace(/ؤ/g, 'ا');      // Hamza on Waw -> Waw (often typed as Alif in search)
+        // 3. Sequential Arabic Normalization
+        this.#ARABIC_NORM_MAPS.forEach(({ pattern, replacement }) => {
+            normalized = normalized.replace(pattern, replacement);
+        });
         
-        // 4. Remove extra characters that might confuse matching
-        normalized = normalized.replace(/[()\-–—.,/]/g, ' '); 
-        
-        // 5. Final cleanup of whitespace
-        return normalized.replace(/\s+/g, ' ').trim();
+        // 4. Cleanup special chars and whitespace
+        return normalized
+            .replace(this.#RE_SPECIAL_CHARS, ' ')
+            .replace(this.#RE_WHITESPACE, ' ')
+            .trim();
     }
 
     /**
-     * Highlights matching search terms using regex.
-     * Handles multiple tokens and avoids breaking HTML tags.
+     * Highlights matching search terms using regex while preserving HTML structure.
      */
     static highlightText(text, term) {
         if (!term) return text;
         
         const normalizedTerm = this.normalizeText(term);
         const tokens = normalizedTerm.split(/\s+/).filter(t => t.length > 0);
-        if (tokens.length === 0) return text;
+        if (!tokens.length) return text;
 
-        let highlighted = text;
-        tokens.sort((a, b) => b.length - a.length);
+        const START_MARKER = '{{HL_S}}';
+        const END_MARKER = '{{HL_E}}';
 
-        const START_TAG = '{{HL_START}}';
-        const END_TAG = '{{HL_END}}';
+        // Sort by length descending to match longest phrases first
+        const sortedTokens = [...tokens].sort((a, b) => b.length - a.length);
 
-        tokens.forEach(token => {
+        let result = text;
+        sortedTokens.forEach(token => {
             const escaped = token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
             let pattern = escaped;
             
+            // Expand Arabic characters to match all visual variants
             if (/[\u0600-\u06FF]/.test(token)) {
-                pattern = pattern.replace(/ا/g, '[اأإآءؤ]')
-                                 .replace(/ه/g, '[ههة]')
-                                 .replace(/ي/g, '[يىئ]');
+                pattern = pattern
+                    .replace(/ا/g, '[اأإآءؤ]')
+                    .replace(/ه/g, '[ههة]')
+                    .replace(/ي/g, '[يىئ]');
             }
 
             try {
                 const regex = new RegExp(`(${pattern})`, 'gi');
-                highlighted = highlighted.replace(regex, (match) => {
-                    return `${START_TAG}${match}${END_TAG}`;
-                });
+                result = result.replace(regex, `${START_MARKER}$1${END_MARKER}`);
             } catch (e) {
-                console.error("Regex highlight error:", e);
+                console.error("Highlight regex error:", e);
             }
         });
         
-        return highlighted
-            .split(START_TAG).join('<span class="highlight">')
-            .split(END_TAG).join('</span>');
+        // Final swap to real HTML tags
+        return result
+            .split(START_MARKER).join('<span class="highlight">')
+            .split(END_MARKER).join('</span>');
     }
 
     /**
-     * Returns the short form (acronym) of a subject if it exists.
+     * Helper for display-friendly subject names (MIS vs Management Information Systems)
      */
     static getSubjectDisplay(subject) {
         return Config.SUBJECT_ACRONYMS[subject] || subject;
     }
 
+    /**
+     * Standard debounce utility for performance-heavy inputs
+     */
     static debounce(func, wait) {
         let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
+        return (...args) => {
             clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
+            timeout = setTimeout(() => func(...args), wait);
         };
     }
 }

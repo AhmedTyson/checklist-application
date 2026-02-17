@@ -104,6 +104,11 @@
     animation: viewEntrance 0.4s cubic-bezier(0.23, 1, 0.32, 1) both;
 }
 
+.view-exit {
+    animation: viewExit 0.3s cubic-bezier(0.4, 0, 1, 1) both;
+    pointer-events: none;
+}
+
 .hidden {
     display: none !important;
 }
@@ -116,6 +121,17 @@
     100% {
         opacity: 1;
         transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes viewExit {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.98);
     }
 }
 
