@@ -13,6 +13,13 @@
     align-items: center;
     gap: 6px;
     white-space: nowrap;
+    outline: none; /* Remove default focus ring */
+}
+
+.clear-btn-styled:focus,
+.clear-btn-styled:active {
+    outline: none;
+    box-shadow: none;
 }
 
 .clear-btn-styled:hover {
@@ -20,9 +27,7 @@
     background: rgba(239, 68, 68, 0.1);
 }
 
-.btn-primary-action {
-    /* Base class for primary actions if needed, or specific overrides */
-}
+/* Base class for primary actions if needed, or specific overrides */
 
 .full-width-btn {
     width: 100%;

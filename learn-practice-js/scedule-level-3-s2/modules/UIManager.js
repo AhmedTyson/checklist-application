@@ -18,9 +18,12 @@ export class UIManager {
             memeContainer: document.getElementById('meme-container'),
             noResultsText: document.getElementById('no-results-text'),
             pagination: document.getElementById('pagination')
-            // Elements for room finder if needed, though not in the GitHub app.js yet?
-            // Keeping them if they exist in HTML.
         };
+        this.currentMode = 'search'; 
+    }
+
+    setMode(mode) {
+        this.currentMode = mode;
     }
 
     renderTable(data, currentPage, searchTerm) {
@@ -49,18 +52,18 @@ export class UIManager {
             const tr = document.createElement('tr');
             const subjectDisplay = Utils.getSubjectDisplay(item.subject);
             tr.innerHTML = `
-                <td class="subject-cell">${Utils.highlightText(subjectDisplay, searchTerm)}</td>
-                <td class="group-cell">${Utils.highlightText(item.group, searchTerm)}</td>
-                <td class="doctor-cell">
+                <td class="subject-cell" data-label="Subject">${Utils.highlightText(subjectDisplay, searchTerm)}</td>
+                <td class="group-cell" data-label="Group">${Utils.highlightText(item.group, searchTerm)}</td>
+                <td class="doctor-cell" data-label="Doctor">
                     <div class="doctor-stack">
                         <span class="doctor-ar">${Utils.highlightText(item.doctorAr, searchTerm)}</span>
                         <span class="doctor-en">${Utils.highlightText(item.doctorEn, searchTerm)}</span>
                     </div>
                 </td>
-                <td>${Utils.highlightText(item.day, searchTerm)}</td>
-                <td>${Utils.highlightText(item.time, searchTerm)}</td>
-                <td>${Utils.highlightText(item.room, searchTerm)}</td>
-                <td>
+                <td data-label="Day">${Utils.highlightText(item.day, searchTerm)}</td>
+                <td data-label="Time">${Utils.highlightText(item.time, searchTerm)}</td>
+                <td data-label="Room">${Utils.highlightText(item.room, searchTerm)}</td>
+                <td data-label="Code">
                     <div class="code-wrapper">
                         <span class="code-cell">${Utils.highlightText(item.code, searchTerm)}</span>
                         <button class="copy-btn" title="Copy Code" data-code="${item.code}">
@@ -93,8 +96,16 @@ export class UIManager {
             if (ghostIcon) ghostIcon.classList.add('hidden');
         } else {
             this.elements.memeContainer.innerHTML = '';
-            this.elements.noResultsText.textContent = "No matching schedules found.";
-            if (ghostIcon) ghostIcon.classList.remove('hidden');
+            if (ghostIcon) ghostIcon.classList.add('hidden');
+            
+            this.elements.noResultsText.innerHTML = `
+                <div class="empty-state-container">
+                    <i class="fa-solid fa-ghost empty-state-icon"></i>
+                    <h3>No matching schedules found</h3>
+                    <p>We couldn't find any sessions for your current filters.<br>Try adjusting your search or clearing filters.</p>
+                    <div class="suggestion" onclick="document.querySelector('.clear-btn-styled').click()">Clear all filters</div>
+                </div>
+            `;
 
             // Render "Did you mean?" if suggestions exist
             if (suggestions && suggestions.length > 0 && onSelect) {
@@ -175,9 +186,29 @@ export class UIManager {
         });
     }
     
-    toggleLoader(show) {
-         if (show) this.elements.loader.classList.remove('fade-out');
-         else this.elements.loader.classList.add('fade-out');
+    setLoading(isLoading) {
+        if (!this.elements.loader) return;
+        
+        if (isLoading) {
+            this.elements.loader.classList.remove('fade-out');
+            
+            // Show Skeleton Rows if we are in Search Mode
+            if (this.currentMode === 'search') {
+                if (this.elements.tableBody) {
+                    this.elements.tableBody.innerHTML = Array(5).fill(0).map(() => `
+                        <tr class="skeleton-row">
+                            <td><div class="skeleton-box subject"></div></td>
+                            <td><div class="skeleton-box time"></div></td>
+                            <td><div class="skeleton-box doctor"></div></td>
+                            <td><div class="skeleton-box group"></div></td>
+                            <td><div class="skeleton-box"></div></td>
+                        </tr>
+                    `).join('');
+                }
+            }
+        } else {
+            this.elements.loader.classList.add('fade-out');
+        }
     }
 
 

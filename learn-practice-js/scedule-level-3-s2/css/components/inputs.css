@@ -4,6 +4,38 @@
     justify-content: center;
 }
 
+@media (max-width: 768px) {
+    .filters-grid {
+        flex-direction: column;
+        gap: 16px;
+        align-items: center; /* Center groups */
+    }
+    
+    .filter-group {
+        width: 100%;
+        max-width: 320px; /* Cap width for better centering look */
+        align-items: center; /* Center label and select */
+    }
+
+    .filter-group label {
+        padding-left: 0;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .select-trigger {
+        height: 44px;
+        font-size: 14px;
+        text-align: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .select-trigger span:first-child {
+        flex: 0 1 auto; /* Don't force left align */
+    }
+}
+
 .filter-group {
     flex: 0 0 auto;
     width: 250px;

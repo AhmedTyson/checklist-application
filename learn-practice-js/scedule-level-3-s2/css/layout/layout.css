@@ -13,9 +13,16 @@
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
     box-shadow: 0 0 100px rgba(0,0,0,0.5);
-    width: var(--container-width);
+    width: 100%;
+    max-width: var(--app-max-width);
     margin: 0 auto;
     flex: 1;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: var(--padding-mobile);
+    }
 }
 
 main {
@@ -36,6 +43,33 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 16px;
+        align-items: center;
+        text-align: center;
+        padding: 16px 0;
+        margin-bottom: 20px;
+    }
+    
+    .brand {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .brand-info h1 {
+        font-size: 20px;
+        line-height: 1.2;
+    }
+
+    .brand-badge {
+        margin-left: 0;
+        margin-top: 4px;
+        display: inline-block;
+    }
 }
 
 .brand {
@@ -101,3 +135,52 @@ body.widget-mode header { display: none; }
 body.widget-mode main { padding: 0; }
 body.widget-mode .controls { margin-bottom: 15px; }
 body.widget-mode .brand-badge { display: none; }
+
+/* FAB - Floating Action Button */
+.fab {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(168, 85, 247, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2000;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px) scale(0.8);
+}
+
+.fab.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+    box-shadow: 0 10px 30px rgba(168, 85, 247, 0.2);
+}
+
+.fab:hover {
+    background: var(--accent);
+    color: white;
+    transform: translateY(-5px) scale(1.1);
+}
+
+.fab:active {
+    transform: scale(0.95);
+}
+
+@media (max-width: 768px) {
+    .fab {
+        bottom: 20px;
+        right: 20px;
+        width: 44px;
+        height: 44px;
+    }
+}

@@ -122,7 +122,8 @@
 @media (max-width: 768px) {
     .room-finder-layout {
         grid-template-columns: 1fr;
-        gap: 1rem;
+        gap: 1.25rem;
+        justify-items: center; /* Center the filter-groups */
     }
     
     .view-switcher {

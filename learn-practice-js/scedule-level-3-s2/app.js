@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
             this.initViewSwitcher();
             
             try {
-                this.ui.toggleLoader(true);
+                this.ui.setLoading(true);
                 const data = await this.dataService.fetchData();
                 this.state.filteredData = data; // Initial state
                 
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
                  this.ui.elements.noResults.innerHTML = `<div style="color: var(--danger);">Error loading data: ${error.message}</div>`;
                  this.ui.elements.noResults.classList.remove('hidden');
             } finally {
-                this.ui.toggleLoader(false);
+                this.ui.setLoading(false);
             }
         }
 
@@ -171,6 +171,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
                 
+                this.ui.setMode(mode);
+
                 // Update URL (pushState) only if not in widget mode or distinct
                 if (window.history.pushState) {
                     const newUrl = new URL(window.location);
@@ -251,11 +253,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         return;
                     }
                     
-                    this.ui.toggleLoader(true);
+                    this.ui.setLoading(true);
                     setTimeout(() => {
                         const emptyRooms = this.dataService.findEmptyRooms(day, time);
                         this.ui.renderRoomFinderResults(emptyRooms, day, time);
-                        this.ui.toggleLoader(false);
+                        this.ui.setLoading(false);
                     }, 300);
                 };
             }
@@ -366,4 +368,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     new App().init();
+
+    // Scroll-to-Top FAB Logic
+    const fabScrollTop = document.getElementById('fab-scroll-top');
+    if (fabScrollTop) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 400) {
+                fabScrollTop.classList.add('visible');
+            } else {
+                fabScrollTop.classList.remove('visible');
+            }
+        });
+
+        fabScrollTop.onclick = () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        };
+    }
 });
