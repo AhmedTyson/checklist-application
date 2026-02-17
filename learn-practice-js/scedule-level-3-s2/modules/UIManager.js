@@ -287,7 +287,7 @@ export class UIManager {
                     <div class="no-rooms-state">
                         <i class="fa-solid fa-ghost"></i>
                         <h3>No Rooms Available</h3>
-                        <p>Every room is booked for <span>\${day}</span> at <span>\${time}</span>.</p>
+                        <p>Every room is booked for <span>${day}</span> at <span>${time}</span>.</p>
                     </div>
                 </div>
             `;
@@ -296,11 +296,11 @@ export class UIManager {
 
         container.innerHTML = `
             <div class="room-results-header">
-                <h3><i class="fa-solid fa-door-open"></i> Available Rooms <span class="count-badge">\${rooms.length}</span></h3>
-                <p class="results-meta">for <span class="highlight">\${day}</span> at <span class="highlight">\${time}</span></p>
+                <h3><i class="fa-solid fa-door-open"></i> Available Rooms <span class="count-badge">${rooms.length}</span></h3>
+                <p class="results-meta">for <span class="highlight">${day}</span> at <span class="highlight">${time}</span></p>
             </div>
             <div class="room-grid-rich">
-                \${rooms.map((room, i) => this.#getRoomCardTemplate(room, i)).join('')}
+                ${rooms.map((room, i) => this.#getRoomCardTemplate(room, i)).join('')}
             </div>
         `;
     }
@@ -312,13 +312,13 @@ export class UIManager {
         const num = room.replace(/(Hall|Lab)\s*/i, '');
 
         return `
-            <div class="room-card" style="animation-delay: \${index * 50}ms">
-                <div class="room-card-icon \${isLab ? 'is-lab' : ''}">
-                    <i class="\${icon}"></i>
+            <div class="room-card" style="animation-delay: ${index * 50}ms">
+                <div class="room-card-icon ${isLab ? 'is-lab' : ''}">
+                    <i class="${icon}"></i>
                 </div>
                 <div class="room-card-content">
-                    <span class="room-type">\${type}</span>
-                    <span class="room-number">\${num}</span>
+                    <span class="room-type">${type}</span>
+                    <span class="room-number">${num}</span>
                 </div>
                 <div class="room-status" title="Available"></div>
             </div>

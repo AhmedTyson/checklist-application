@@ -44,46 +44,40 @@ export class Utils {
     }
 
     /**
-     * Highlights matching search terms using regex while preserving HTML structure.
+     * Highlights matching search terms using regex in a single pass to prevent nested markers.
      */
     static highlightText(text, term) {
-        if (!term) return text;
+        if (!term || !text) return text;
         
         const normalizedTerm = this.normalizeText(term);
         const tokens = normalizedTerm.split(/\s+/).filter(t => t.length > 0);
         if (!tokens.length) return text;
 
-        const START_MARKER = '{{HL_S}}';
-        const END_MARKER = '{{HL_E}}';
-
-        // Sort by length descending to match longest phrases first
-        const sortedTokens = [...tokens].sort((a, b) => b.length - a.length);
-
-        let result = text;
-        sortedTokens.forEach(token => {
+        // Sort by length descending to match longest phrases first and prevent fragmentation
+        const sortedTokens = [...new Set(tokens)].sort((a, b) => b.length - a.length);
+        
+        const patterns = sortedTokens.map(token => {
             const escaped = token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
             let pattern = escaped;
             
-            // Expand Arabic characters to match all visual variants
+            // Expand Arabic characters to match variants
             if (/[\u0600-\u06FF]/.test(token)) {
                 pattern = pattern
                     .replace(/ا/g, '[اأإآءؤ]')
                     .replace(/ه/g, '[ههة]')
                     .replace(/ي/g, '[يىئ]');
             }
-
-            try {
-                const regex = new RegExp(`(${pattern})`, 'gi');
-                result = result.replace(regex, `${START_MARKER}$1${END_MARKER}`);
-            } catch (e) {
-                console.error("Highlight regex error:", e);
-            }
+            return pattern;
         });
-        
-        // Final swap to real HTML tags
-        return result
-            .split(START_MARKER).join('<span class="highlight">')
-            .split(END_MARKER).join('</span>');
+
+        // Use a single regex with alternation to replace all matches in one pass
+        try {
+            const regex = new RegExp(`(${patterns.join('|')})`, 'gi');
+            return String(text).replace(regex, '<span class="highlight">$1</span>');
+        } catch (e) {
+            console.error("Highlighting error:", e);
+            return text;
+        }
     }
 
     /**
