@@ -206,7 +206,7 @@
     align-items: center;
     gap: 12px;
     position: relative;
-    cursor: pointer;
+    position: relative;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: hidden;
     backdrop-filter: blur(10px);
@@ -284,17 +284,6 @@
     background: #10b981; /* Emerald green */
     border-radius: 50%;
     box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
-}
-
-/* Click Feedback */
-.room-card.copied {
-    border-color: #10b981;
-    background: rgba(16, 185, 129, 0.05);
-}
-.room-card.copied .room-card-icon {
-    color: #10b981 !important;
-    background: rgba(16, 185, 129, 0.1) !important;
-    border-color: rgba(16, 185, 129, 0.2) !important;
 }
 
 /* Empty State */

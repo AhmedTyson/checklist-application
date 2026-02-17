@@ -234,18 +234,7 @@ export class UIManager {
                 <div class="room-status" title="Available"></div>
             `;
             
-            // Interaction: Click to highlight/copy
-            card.onclick = () => {
-                navigator.clipboard.writeText(room).then(() => {
-                    const originalIcon = card.querySelector('.room-card-icon i').className;
-                    card.querySelector('.room-card-icon i').className = 'fa-solid fa-check';
-                    card.classList.add('copied');
-                    setTimeout(() => {
-                        card.querySelector('.room-card-icon i').className = originalIcon;
-                        card.classList.remove('copied');
-                    }, 1500);
-                });
-            };
+
             
             grid.appendChild(card);
         });
