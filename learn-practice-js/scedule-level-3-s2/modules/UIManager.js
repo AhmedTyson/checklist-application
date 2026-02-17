@@ -315,7 +315,7 @@ export class UIManager {
 
         container.innerHTML = `
             <div class="room-results-header">
-                <h3>${Icons.doorOpen} Available Rooms <span class="count-badge">${rooms.length}</span></h3>
+                <h4>${Icons.doorOpen} Available Rooms <span class="count-badge">${rooms.length}</span></h4>
                 <p class="results-meta">for <span class="highlight">${day}</span> at <span class="highlight">${time}</span></p>
             </div>
             <div class="room-grid-rich">
@@ -326,15 +326,11 @@ export class UIManager {
 
     #getRoomCardTemplate(room, index) {
         const isLab = room.toLowerCase().includes('lab');
-        const iconSvg = isLab ? Icons.computer : Icons.chalkboardUser;
         const type = isLab ? 'Lab' : 'Hall';
         const num = room.replace(/(Hall|Lab)\s*/i, '');
 
         return `
-            <div class="room-card" style="--delay: ${index * 50}ms">
-                <div class="room-card-icon ${isLab ? 'is-lab' : ''}">
-                    ${iconSvg}
-                </div>
+            <div class="room-card ${isLab ? 'is-lab' : ''}" style="--delay: ${index * 50}ms">
                 <div class="room-card-content">
                     <span class="room-type">${type}</span>
                     <span class="room-number">${num}</span>

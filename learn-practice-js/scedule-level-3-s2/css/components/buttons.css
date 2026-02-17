@@ -63,6 +63,10 @@
     background: var(--accent-bg);
 }
 
+.copy-btn.copied {
+    color: var(--success);
+}
+
 button:disabled {
     opacity: 0.5;
     cursor: not-allowed;

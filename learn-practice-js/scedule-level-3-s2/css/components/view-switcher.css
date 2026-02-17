@@ -151,24 +151,30 @@
 }
 
 /* Header & Meta */
+/* Header & Meta */
 .room-results-header {
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
     text-align: center;
     position: relative;
     padding-bottom: 1rem;
 }
 
-.room-results-header h3 {
-    font-size: 1.8rem;
+.room-results-header h4 {
+    font-size: 1rem;
+    font-weight: 700;
     color: var(--text-main);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 10px;
     margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
-.room-results-header h3 i {
+.room-results-header h4 .icon-svg {
+    width: 1.2em;
+    height: 1.2em;
     color: var(--accent);
 }
 
@@ -192,10 +198,11 @@
 }
 
 /* Premium Grid */
+/* Premium Grid */
 .room-grid-rich {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 1rem;
     justify-content: center;
     perspective: 1000px;
 }
@@ -204,13 +211,13 @@
 .room-card {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 1.25rem;
+    border-radius: 12px;
+    padding: 1rem 0.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
-    position: relative;
+    justify-content: center;
+    gap: 4px;
     position: relative;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: hidden;
@@ -222,39 +229,19 @@
 }
 
 .room-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-3px);
     background: rgba(255, 255, 255, 0.07);
     border-color: var(--accent);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(168, 85, 247, 0.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Icons */
-.room-card-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.4rem;
-    color: var(--text-muted);
-    border: 1px solid rgba(255,255,255,0.05);
-    transition: color 0.3s;
+.room-card.is-lab {
+    border-color: rgba(56, 189, 248, 0.3);
 }
 
-.room-card:hover .room-card-icon {
-    color: var(--accent);
-    background: rgba(168, 85, 247, 0.1);
-    border-color: rgba(168, 85, 247, 0.2);
-}
-
-.room-card-icon.is-lab {
-    color: #38bdf8; /* Sky blue for Labs */
-}
-.room-card:hover .room-card-icon.is-lab {
+.room-card.is-lab:hover {
     background: rgba(56, 189, 248, 0.1);
-    border-color: rgba(56, 189, 248, 0.2);
+    border-color: #38bdf8;
 }
 
 /* Text Content */

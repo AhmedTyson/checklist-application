@@ -12,6 +12,7 @@
     --accent: #a855f7;
     --accent-bg: rgba(168, 85, 247, 0.1);
     --danger: #ef4444;
+    --success: #22c55e;
 
     /* Typography */
     --font-ui: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
