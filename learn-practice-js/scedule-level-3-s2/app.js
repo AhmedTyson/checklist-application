@@ -256,6 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td class="doctor-en-cell">${Utils.highlightText(item.doctorEn, State.filters.search)}</td>
                     <td>${Utils.highlightText(item.day, State.filters.search)}</td>
                     <td>${Utils.highlightText(item.time, State.filters.search)}</td>
+                    <td>${Utils.highlightText(item.room, State.filters.search)}</td>
                     <td>
                         <div class="code-wrapper">
                             <span class="code-cell">${Utils.highlightText(item.code, State.filters.search)}</span>
@@ -363,7 +364,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Initialize Fuse.js for fuzzy search
                 State.fuse = new Fuse(State.allData, {
-                    keys: ['subject', 'subjectAcronym', 'group', 'doctorAr', 'doctorEn', 'day', 'time', 'code'],
+                    keys: ['subject', 'subjectAcronym', 'group', 'doctorAr', 'doctorEn', 'day', 'time', 'room', 'code'],
                     threshold: 0.2, // Stricter threshold to avoid irrelevant matches
                     ignoreLocation: true,
                     minMatchCharLength: 3, // Increased to avoid matching short common sequences
