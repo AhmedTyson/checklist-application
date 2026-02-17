@@ -8,8 +8,12 @@ export class CustomSelect {
     #activeIndex = -1;
 
     constructor(id, onSelect) {
+        console.log(`CustomSelect init: ${id}`);
         this.#container = document.getElementById(id);
-        if (!this.#container) return;
+        if (!this.#container) {
+            console.error(`CustomSelect: Container ${id} not found!`);
+            return;
+        }
         
         this.#trigger = this.#container.querySelector('.select-trigger');
         this.#optionsContainer = this.#container.querySelector('.select-options');
@@ -20,15 +24,19 @@ export class CustomSelect {
         this.#initAccessibility();
         this.#init();
     }
-
+    
     #initAccessibility() {
         this.#container.setAttribute('role', 'combobox');
         this.#container.setAttribute('aria-expanded', 'false');
         this.#container.setAttribute('aria-haspopup', 'listbox');
-        this.#container.setAttribute('aria-controls', `${this.#id}-list`);
         
+        // Preserve existing ID if present, otherwise generate one
+        if (!this.#optionsContainer.id) {
+            this.#optionsContainer.id = `${this.#id}-list`;
+        }
+        
+        this.#container.setAttribute('aria-controls', this.#optionsContainer.id);
         this.#optionsContainer.setAttribute('role', 'listbox');
-        this.#optionsContainer.id = `${this.#id}-list`;
         
         this.#trigger.setAttribute('tabindex', '0');
         
@@ -48,6 +56,7 @@ export class CustomSelect {
 
     #init() {
         this.#trigger.addEventListener('click', (e) => {
+            console.log(`CustomSelect click: ${this.#id}`);
             e.stopPropagation();
             this.#toggle();
         });
@@ -136,6 +145,14 @@ export class CustomSelect {
         if (defaultOption) {
             this.select('all', defaultOption.textContent);
         }
+    }
+
+    rebind() {
+        this.#optionsContainer = this.#container.querySelector('.select-options');
+        // Re-observe
+        const observer = new MutationObserver(() => this.#updateOptionAccessibility());
+        observer.observe(this.#optionsContainer, { childList: true });
+        this.#updateOptionAccessibility();
     }
 
     static closeAll(exceptContainer) {

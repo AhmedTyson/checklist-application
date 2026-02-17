@@ -10,6 +10,10 @@ export class DataService {
     /**
      * Core data loading and index initialization
      */
+    getAllData() {
+        return this.#data;
+    }
+
     async fetchData() {
         try {
             const response = await fetch(Config.DATA_URL);
@@ -31,7 +35,7 @@ export class DataService {
             item._searchIndex = Utils.normalizeText(`
                 ${item.subject} ${Utils.getSubjectDisplay(item.subject)} 
                 ${item.group} ${item.doctorAr} ${item.doctorEn} 
-                ${item.day} ${item.time} ${item.code}
+                ${item.day} ${item.time} ${item.code} ${item.room}
             `);
         });
 
@@ -90,27 +94,26 @@ export class DataService {
         if (!search?.trim()) return results;
 
         const query = Utils.normalizeText(search);
-        const tokens = query.split(/\s+/);
+        const tokens = query.split(/\s+/).filter(t => t.length > 0);
 
-        // Tier 1: Exact Substring
-        const tier1 = results.filter(item => item._searchIndex.includes(query));
-        
-        // Tier 2: All Tokens (AND)
-        const tier2 = results.filter(item => {
-            if (tier1.includes(item)) return false;
+        // Tier 1 & 2: Substring & Tokenized
+        const exactMatches = results.filter(item => {
+            // Check full query first
+            if (item._searchIndex.includes(query)) return true;
+            // Check tokens
             return tokens.every(token => item._searchIndex.includes(token));
         });
 
         // Tier 3: Fuzzy
-        let tier3 = [];
+        let fuzzyMatches = [];
         if (this.#fuse) {
             const fuzzy = this.#fuse.search(query).map(r => r.item);
-            tier3 = fuzzy.filter(item => 
-                results.includes(item) && !tier1.includes(item) && !tier2.includes(item)
+            fuzzyMatches = fuzzy.filter(item => 
+                results.includes(item) && !exactMatches.includes(item)
             );
         }
 
-        return [...tier1, ...tier2, ...tier3];
+        return [...exactMatches, ...fuzzyMatches];
     }
 
     getUniqueValues(key) {

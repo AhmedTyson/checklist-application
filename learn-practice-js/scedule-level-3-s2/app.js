@@ -21,7 +21,22 @@ class App {
     async init() {
         this.#initGlobalListeners();
         this.#initViewSwitcher();
+        this.#injectCriticalStyles();
         
+        // Debug Helper
+        window.debugDropdowns = () => {
+            const s = document.getElementById('subject-dropdown');
+            const opts = document.getElementById('subject-options');
+            console.log('--- Dropdown Debug ---');
+            console.log('Subject Dropdown Element:', s);
+            console.log('Options Container:', opts);
+            console.log('Options Count:', opts?.children.length);
+            console.log('Is Active:', s?.classList.contains('active'));
+            console.log('Computed Visibility:', window.getComputedStyle(opts).visibility);
+            console.log('Computed Z-Index:', window.getComputedStyle(opts).zIndex);
+            console.log('----------------------');
+        };
+
         try {
             this.#ui.setLoading(true);
             const data = await this.#dataService.fetchData();
@@ -30,6 +45,15 @@ class App {
             this.#initFilters(data);
             this.#initRoomFinder(); // Room finder depends on data
             this.handleFilterChange();
+
+            // Self-Healing: Check if dropdowns are empty after a short delay and retry
+            setTimeout(() => {
+                const subjectOptions = document.getElementById('subject-options');
+                if (subjectOptions && subjectOptions.children.length <= 1) {
+                    console.warn('Dropdowns appear empty, retrying population...');
+                    this.#initFilters(data);
+                }
+            }, 500);
             
         } catch (error) {
             this.#ui.elements.noResults.innerHTML = `<div style="color: var(--danger); padding: 20px;">Error loading data: ${error.message}</div>`;
@@ -70,6 +94,16 @@ class App {
             this.#dropdowns[id] = new CustomSelect(id, (dropdownId, value) => {
                 const key = dropdownId.split('-')[0];
                 this.#state.filters[key] = value;
+                
+                // If subject changes, re-populate groups for that subject
+                if (key === 'subject') {
+                    this.#populateGroupFilters(this.#dataService.getAllData().filter(item => 
+                        value === 'all' || item.subject === value
+                    ));
+                    this.#state.filters.group = 'all';
+                    this.#dropdowns['group-dropdown'].reset();
+                }
+
                 this.handleFilterChange();
             });
         });
@@ -79,30 +113,45 @@ class App {
     }
 
     #populateSubjectFilters(data) {
+        console.log('App: Populating Subjects, count:', data.length); // Debug
         const subjects = [...new Set(data.map(item => item.subject).filter(Boolean))].sort();
-        if (!subjects.length) return;
+        console.log('App: Unique Subjects:', subjects); // Debug
+        if (!subjects.length) {
+            console.warn('App: No subjects found!');
+            return;
+        }
 
         this.#ui.elements.subjectListContainer?.classList.remove('hidden');
         const options = document.getElementById('subject-options');
         const hiddenSelect = document.getElementById('subject-filter');
 
-        subjects.forEach(subject => {
-            // Option for custom select
-            if (options) {
+        if (options) {
+            options.innerHTML = '';
+            
+            const allOpt = document.createElement('div');
+            allOpt.className = 'option selected';
+            allOpt.dataset.value = 'all';
+            allOpt.textContent = 'All Subjects';
+            options.appendChild(allOpt);
+
+            subjects.forEach(subject => {
                 const opt = document.createElement('div');
                 opt.className = 'option';
                 opt.dataset.value = subject;
                 opt.textContent = subject;
                 options.appendChild(opt);
-            }
+            });
+        }
 
-            // Option for hidden native select (compat)
-            if (hiddenSelect) {
-                const nativeOpt = new Option(subject, subject);
-                hiddenSelect.add(nativeOpt);
-            }
-
-            // Quick Tag
+        if (hiddenSelect) {
+            hiddenSelect.innerHTML = '<option value="all">All Subjects</option>';
+            subjects.forEach(subject => {
+                hiddenSelect.add(new Option(subject, subject));
+            });
+        }
+        
+        if (this.#ui.elements.subjectTags) this.#ui.elements.subjectTags.innerHTML = '';
+        subjects.forEach(subject => {
             const tag = document.createElement('span');
             tag.className = 'subject-tag';
             tag.textContent = subject;
@@ -119,18 +168,31 @@ class App {
 
         const options = document.getElementById('group-options');
         const hiddenSelect = document.getElementById('group-filter');
+        
+        if (options) {
+            options.innerHTML = '';
+            
+            const allOpt = document.createElement('div');
+            allOpt.className = 'option selected';
+            allOpt.dataset.value = 'all';
+            allOpt.textContent = 'All Groups';
+            options.appendChild(allOpt);
 
-        groups.forEach(group => {
-            if (options) {
+            groups.forEach(group => {
                 const opt = document.createElement('div');
                 opt.className = 'option';
                 opt.dataset.value = group;
                 opt.textContent = group;
                 options.appendChild(opt);
-            }
+            });
+        }
 
-            if (hiddenSelect) hiddenSelect.add(new Option(group, group));
-        });
+        if (hiddenSelect) {
+            hiddenSelect.innerHTML = '<option value="all">All Groups</option>';
+            groups.forEach(group => {
+                hiddenSelect.add(new Option(group, group));
+            });
+        }
     }
 
     #initViewSwitcher() {
@@ -187,7 +249,19 @@ class App {
         document.getElementById('find-rooms-btn').onclick = () => this.#performRoomSearch();
     }
 
+    #injectCriticalStyles() {
+        const style = document.createElement('style');
+        style.textContent = `
+            .custom-select, .filters-grid, .controls, .view-controls { overflow: visible !important; }
+            .select-options { z-index: 9999 !important; }
+            .custom-select.active .select-options { visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; }
+        `;
+        document.head.appendChild(style);
+        console.log('App: Critical styles injected.');
+    }
+
     #performRoomSearch() {
+        // ... (existing code)
         const day = document.getElementById('room-day-input')?.value;
         const time = document.getElementById('room-time-input')?.value;
         const container = document.getElementById('room-results-container');
@@ -204,6 +278,8 @@ class App {
             this.#ui.setLoading(false);
         }, 300);
     }
+    
+    // ...
 
     handleFilterChange() {
         this.#state.filteredData = this.#dataService.filterData(this.#state.filters);

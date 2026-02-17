@@ -164,7 +164,7 @@ export class UIManager {
             <td data-label="Code">
                 <div class="code-wrapper">
                     <span class="code-cell">${highlight(item.code)}</span>
-                    <button class="copy-btn" title="Copy Code" data-code="${item.code}">
+                    <button class="copy-btn" title="Copy Code" aria-label="Copy Code" data-code="${item.code}">
                         <i class="fa-regular fa-copy"></i>
                     </button>
                 </div>
@@ -175,6 +175,7 @@ export class UIManager {
     renderNoResults(isFriday, suggestions = [], onSelect = null) {
         const el = this.#elements;
         el.noResults?.classList.remove('hidden');
+        el.pagination?.classList.add('hidden');
         if (el.resultCount) el.resultCount.textContent = '0';
         if (el.paginationNumbers) el.paginationNumbers.innerHTML = '';
         if (el.prevBtn) el.prevBtn.disabled = true;
@@ -253,13 +254,16 @@ export class UIManager {
     
     setLoading(isLoading) {
         const loader = this.#elements.loader;
+        const container = document.querySelector('.container');
         if (!loader) return;
         
         if (isLoading) {
             loader.classList.remove('fade-out');
+            container?.classList.remove('loaded');
             if (this.#currentMode === 'search') this.#renderSkeletons();
         } else {
             loader.classList.add('fade-out');
+            container?.classList.add('loaded');
         }
     }
 

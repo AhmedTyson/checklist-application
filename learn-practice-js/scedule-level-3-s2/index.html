@@ -21,13 +21,42 @@
     <meta name="twitter:image" content="https://bis-schedule.netlify.app/preview.png">
     <meta name="twitter:image:width" content="1200">
     <meta name="twitter:image:height" content="630">
-<link rel="icon" type="image/svg+xml" href="https://api.iconify.design/fa-solid:calendar-check.svg?color=%23a855f7">
+    <link rel="icon" type="image/svg+xml" href="https://api.iconify.design/fa-solid:calendar-check.svg?color=%23a855f7">
+    <meta name="theme-color" content="#0a0a0a">
+    
+    <!-- Preload critical data -->
+    <link rel="preload" href="scedule-data.json" as="fetch" crossorigin="anonymous">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --bg-app: #0a0a0a;
+            --accent: #a855f7;
+            --text-main: #ededed;
+        }
+        #loader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-app);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 9999;
+        }
+        .loader-icon {
+            font-size: 48px;
+            color: var(--accent);
+            animation: spin 2s infinite linear;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .container { opacity: 0; transition: opacity 0.3s ease; }
+        .container.loaded { opacity: 1; }
+    </style>
 </head>
 <body>
     <div id="loader">
@@ -231,7 +260,7 @@
     <script src="https://cdn.jsdelivr.net/npm/arabic-services/dist/arabic-services.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
     <script type="module" src="app.js"></script>
-    <button id="fab-scroll-top" class="fab" title="Scroll to top">
+    <button id="fab-scroll-top" class="fab" title="Scroll to top" aria-label="Scroll to top">
         <i class="fa-solid fa-arrow-up"></i>
     </button>
 </body>
