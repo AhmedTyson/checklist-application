@@ -12,7 +12,7 @@
     box-shadow: var(--shadow);
     position: relative;
     z-index: 200;
-    overflow: visible !important;
+    min-height: 210px; /* Prevent layout shift during filtering */
 }
 
 @media (max-width: 768px) {

@@ -21,29 +21,49 @@
 /* Loader - Snow Effect */
 #loader {
     position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
     background: var(--bg-app);
+    background: radial-gradient(circle at center, var(--bg-panel) 0%, var(--bg-app) 100%);
     display: flex; flex-direction: column; justify-content: center; align-items: center;
     z-index: 9999;
 }
 
-.loader-spinner {
-    width: 48px;
-    height: 48px;
-    border: 5px solid rgba(168, 85, 247, 0.2);
-    border-top: 5px solid var(--accent);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
+#loader::after {
+    content: "LOADING";
+    margin-top: 24px;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.3em;
+    color: var(--text-muted);
+    animation: pulse 1.5s ease-in-out infinite;
 }
 
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+.snowflake-spinner {
+    color: var(--accent);
+    filter: drop-shadow(0 0 25px rgba(168, 85, 247, 0.6));
+    animation: snow-spin 3s linear infinite;
+    display: inline-block;
+    transform-origin: center center;
+    font-size: 80px;
+}
+
+@keyframes snow-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 @keyframes pulse {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
+    0%, 100% { opacity: 0.5; transform: scale(0.95); }
+    50% { opacity: 1; transform: scale(1); }
+}
+
+.error-message {
+    color: var(--danger);
+    padding: 20px;
+    text-align: center;
+    font-weight: 500;
 }
 
 /* Utilities */
@@ -55,7 +75,7 @@
     transition: opacity 0.5s ease;
 }
 
-.icon-svg, .fa-solid {
+.fa-solid {
     width: 1em;
     height: 1em;
     display: inline-block;
@@ -66,11 +86,7 @@
     min-height: 1em;
 }
 
-/* Specific stabilization for large icons to prevent CLS */
-.brand-logo .icon-svg {
-    width: 48px;
-    height: 48px;
-}
+/* Ensure all font-awesome icons have reserved space */
 
 /* Ensure all font-awesome icons have reserved space */
 .fa-solid, .fa-brands, .fa-regular {
@@ -95,4 +111,6 @@
     height: auto;
     border-radius: 8px;
     box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    aspect-ratio: 4/3;
+    object-fit: cover;
 }

@@ -64,38 +64,31 @@
     <link rel="preload" href="css/layout/layout.css" as="style">
     
     <!-- Modular CSS (Flattened for Performance) -->
-    <link rel="stylesheet" href="css/base/variables.css">
-    <link rel="stylesheet" href="css/base/reset.css">
-    <link rel="stylesheet" href="css/layout/layout.css">
-    <link rel="stylesheet" href="css/components/utilities.css">
-    <link rel="stylesheet" href="css/components/buttons.css">
-    <link rel="stylesheet" href="css/components/inputs.css">
-    <link rel="stylesheet" href="css/components/search.css">
-    <link rel="stylesheet" href="css/components/tags.css">
-    <link rel="stylesheet" href="css/components/table.css">
-    <link rel="stylesheet" href="css/components/pagination.css">
-    <link rel="stylesheet" href="css/components/view-switcher.css">
+    <link rel="stylesheet" href="css/base/variables.css?v=2">
+    <link rel="stylesheet" href="css/base/reset.css?v=2">
+    <link rel="stylesheet" href="css/layout/layout.css?v=2">
+    <link rel="stylesheet" href="css/components/utilities.css?v=2">
+    <link rel="stylesheet" href="css/components/buttons.css?v=2">
+    <link rel="stylesheet" href="css/components/inputs.css?v=2">
+    <link rel="stylesheet" href="css/components/search.css?v=2">
+    <link rel="stylesheet" href="css/components/tags.css?v=2">
+    <link rel="stylesheet" href="css/components/table.css?v=2">
+    <link rel="stylesheet" href="css/components/pagination.css?v=2">
+    <link rel="stylesheet" href="css/components/view-switcher.css?v=2">
 
     <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0" defer></script>
-    <style>
-        :root {
-            --bg-app: #0a0a0a;
-            --accent: #a855f7;
-            --text-main: #ededed;
-        }
-    </style>
 </head>
 <body>
 
     <div id="loader">
-        <div class="loader-spinner"></div>
+        <i class="fa-solid fa-snowflake snowflake-spinner"></i>
     </div>
 
-    <div class="container" style="min-height: 100vh">
+    <div class="container">
         <header>
-            <div class="brand" style="min-width: 300px;">
+            <div class="brand">
                 <div class="brand-logo">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon-svg"><path fill="currentColor" d="M128 0c17.7 0 32 14.3 32 32V64H288V32c0-17.7 14.3-32 32-32s32 14.3 32 32V64h48c26.5 0 48 21.5 48 48v48H0V112C0 85.5 21.5 64 48 64H96V32c0-17.7 14.3-32 32-32zM0 192H448V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V192zm333.3 134.6l-80-80c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6L299.3 338 217.4 419.9c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0l93.3-93.3c6.2-6.2 6.2-16.4 0-22.6z"/></svg>
+                    <i class="fa-solid fa-calendar-check"></i>
                 </div>
                 <div class="brand-info">
                     <h1>BIS Schedule Search<span class="brand-badge">Made by Tyson</span></h1>
@@ -106,14 +99,14 @@
                 <div class="view-switcher">
                     <div class="view-tab-pill"></div>
                     <button class="view-tab active" data-view="schedule" aria-label="Switch to Schedule View">
-                        <i class="fa-solid fa-calendar-days"></i> Schedule
+                        <i class="fa-solid fa-calendar-check"></i> Schedule
                     </button>
                     <button class="view-tab" data-view="rooms" aria-label="Switch to Room Finder View">
                         <i class="fa-solid fa-door-open"></i> Rooms
                     </button>
                 </div>
             </div>
-            <div class="stats" style="min-width: 150px; text-align: right;">
+            <div class="stats">
                 <span id="result-count">0</span> Results Found
             </div>
         </header>
@@ -240,7 +233,7 @@
 
             <div id="schedule-view" class="view-content">
                 <div id="subject-list-container" class="subject-highlight-box hidden">
-                    <h2>Available Subjects</h2>
+                    <h4><i class="fa-solid fa-layer-group"></i> Available Subjects</h4>
                     <div id="subject-tags" class="subject-tags"></div>
                 </div>
 

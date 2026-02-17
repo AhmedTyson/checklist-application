@@ -7,6 +7,8 @@ export class CustomSelect {
     #id;
     #activeIndex = -1;
 
+    #observer;
+
     constructor(id, onSelect) {
         this.#container = document.getElementById(id);
         if (!this.#container) {
@@ -43,8 +45,9 @@ export class CustomSelect {
         this.#updateOptionAccessibility();
 
         // Watch for dynamic options
-        const observer = new MutationObserver(() => this.#updateOptionAccessibility());
-        observer.observe(this.#optionsContainer, { childList: true });
+        if (this.#observer) this.#observer.disconnect();
+        this.#observer = new MutationObserver(() => this.#updateOptionAccessibility());
+        this.#observer.observe(this.#optionsContainer, { childList: true });
     }
 
     #updateOptionAccessibility() {
@@ -152,6 +155,15 @@ export class CustomSelect {
         const observer = new MutationObserver(() => this.#updateOptionAccessibility());
         observer.observe(this.#optionsContainer, { childList: true });
         this.#updateOptionAccessibility();
+    }
+
+    destroy() {
+        if (this.#observer) {
+            this.#observer.disconnect();
+            this.#observer = null;
+        }
+        // Remove event listeners logic would go here if we weren't relying on GC, 
+        // but disconnecting observer is the critical memory leak fix.
     }
 
     static closeAll(exceptContainer) {

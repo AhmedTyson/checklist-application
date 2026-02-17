@@ -42,10 +42,15 @@ class App {
             }, 500);
             
         } catch (error) {
-            this.#ui.elements.noResults.innerHTML = `<div style="color: var(--danger); padding: 20px;">Error loading data: ${error.message}</div>`;
+            this.#ui.elements.noResults.innerHTML = `<div class="error-message">Error loading data: ${error.message}</div>`;
             this.#ui.elements.noResults.classList.remove('hidden');
         } finally {
-            this.#ui.setLoading(false);
+            const isRoomView = new URLSearchParams(window.location.search).get('view') === 'rooms';
+            if (isRoomView) {
+                setTimeout(() => this.#ui.setLoading(false), 800);
+            } else {
+                this.#ui.setLoading(false);
+            }
         }
     }
 
@@ -78,6 +83,9 @@ class App {
     #initFilters(data) {
         // Initialize Dropdowns
         ['subject-dropdown', 'group-dropdown', 'day-dropdown'].forEach(id => {
+            if (this.#dropdowns[id]) {
+                this.#dropdowns[id].destroy();
+            }
             this.#dropdowns[id] = new CustomSelect(id, (dropdownId, value) => {
                 const key = dropdownId.split('-')[0];
                 this.#state.filters[key] = value;

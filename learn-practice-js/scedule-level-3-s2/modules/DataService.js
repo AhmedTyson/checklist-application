@@ -117,8 +117,27 @@ export class DataService {
     }
 
     getUniqueValues(key) {
-        return [...new Set(this.#data.map(item => item[key]).filter(Boolean))]
-            .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
+        const values = [...new Set(this.#data.map(item => item[key]).filter(Boolean))];
+
+        if (key === 'day') {
+            const dayOrder = { 'Saturday': 1, 'Sunday': 2, 'Monday': 3, 'Tuesday': 4, 'Wednesday': 5, 'Thursday': 6, 'Friday': 7 };
+            return values.sort((a, b) => (dayOrder[a] || 99) - (dayOrder[b] || 99));
+        }
+
+        if (key === 'time') {
+            return values.sort((a, b) => {
+                const parseTime = (t) => {
+                    const [time, modifier] = t.split(' ');
+                    let [hours, minutes] = time.split(':').map(Number);
+                    if (hours === 12) hours = 0;
+                    if (modifier === 'PM') hours += 12;
+                    return hours * 60 + minutes;
+                };
+                return parseTime(a) - parseTime(b);
+            });
+        }
+
+        return values.sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
     }
 
     findEmptyRooms(day, time) {

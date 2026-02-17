@@ -22,6 +22,12 @@
     border-color: var(--accent);
 }
 
+.pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-color: var(--border);
+}
+
 #page-numbers { display: flex; gap: 8px; }
 .page-btn {
     width: 32px;

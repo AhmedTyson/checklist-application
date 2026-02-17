@@ -200,7 +200,7 @@ export class UIManager {
     #renderFridayState() {
         if (!this.#elements.memeContainer) return;
         const randomMeme = Math.floor(Math.random() * Config.FRIDAY_MEME_COUNT) + 1;
-        this.#elements.memeContainer.innerHTML = `<img src="assets/meme-friday-${randomMeme}.webp" alt="Friday Meme" class="meme-img" width="400" height="300" style="aspect-ratio: 4/3; object-fit: cover;">`;
+        this.#elements.memeContainer.innerHTML = `<img src="assets/meme-friday-${randomMeme}.webp" alt="Friday Meme" class="meme-img" width="400" height="300">`;
         if (this.#elements.noResultsText) this.#elements.noResultsText.textContent = "Enjoy your Friday! No schedules, just vibes. 😎";
     }
 
@@ -247,8 +247,15 @@ export class UIManager {
         
         if (maxPage <= 1) return;
 
-        if (el.prevBtn) el.prevBtn.disabled = currentPage === 1;
-        if (el.nextBtn) el.nextBtn.disabled = currentPage === maxPage;
+        if (el.prevBtn) {
+            el.prevBtn.disabled = currentPage === 1;
+            el.prevBtn.onclick = () => onPageChange?.(currentPage - 1);
+        }
+        
+        if (el.nextBtn) {
+            el.nextBtn.disabled = currentPage === maxPage;
+            el.nextBtn.onclick = () => onPageChange?.(currentPage + 1);
+        }
 
         const fragment = document.createDocumentFragment();
         for (let i = 1; i <= maxPage; i++) {
@@ -324,7 +331,7 @@ export class UIManager {
         const num = room.replace(/(Hall|Lab)\s*/i, '');
 
         return `
-            <div class="room-card" style="animation-delay: ${index * 50}ms">
+            <div class="room-card" style="--delay: ${index * 50}ms">
                 <div class="room-card-icon ${isLab ? 'is-lab' : ''}">
                     ${iconSvg}
                 </div>
