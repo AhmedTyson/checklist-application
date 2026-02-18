@@ -356,7 +356,6 @@ export class UIManager {
                     <span class="room-type">${type}</span>
                     <span class="room-number">${num}</span>
                 </div>
-                <div class="room-status" title="Available"></div>
             </div>
         `;
     }

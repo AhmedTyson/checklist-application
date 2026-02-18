@@ -1,5 +1,5 @@
-const CACHE_NAME = 'bis-schedule-v4';
-const DATA_CACHE_NAME = 'bis-schedule-data-v4';
+const CACHE_NAME = 'bis-schedule-v5';
+const DATA_CACHE_NAME = 'bis-schedule-data-v5';
 
 const ASSETS_TO_CACHE = [
     './',

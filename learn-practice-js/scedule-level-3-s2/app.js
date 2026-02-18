@@ -21,6 +21,7 @@ class App {
     }
 
     async init() {
+        console.log('%c BIS Schedule App v1.2.0 - Loaded', 'background: #a855f7; color: white; padding: 4px; border-radius: 4px;');
         this.#initGlobalListeners();
         this.#initViewSwitcher();
         
