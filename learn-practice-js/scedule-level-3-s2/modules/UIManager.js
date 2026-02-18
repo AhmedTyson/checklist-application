@@ -5,6 +5,8 @@ import { Icons } from './Icons.js';
 export class UIManager {
     #elements = {};
     #currentMode = 'search';
+    #paginationCallback = null;
+    #currentPage = 1;
 
     constructor() {
         this.#initElements();
@@ -62,6 +64,7 @@ export class UIManager {
                 isScrolling = true;
             }
         }, { passive: true });
+
     }
 
     #handleCopySuccess(btn) {
@@ -239,8 +242,16 @@ export class UIManager {
     }
 
     renderPagination(totalItems, currentPage, onPageChange) {
-        const maxPage = Math.ceil(totalItems / Config.ROWS_PER_PAGE);
+        // Store callback and state
+        this.#paginationCallback = onPageChange;
+        this.#currentPage = currentPage; // Sync internal state
+        
         const el = this.#elements;
+        if (el.pagination) {
+            el.pagination.dataset.currentPage = currentPage;
+        }
+
+        const maxPage = Math.ceil(totalItems / Config.ROWS_PER_PAGE);
         
         if (el.paginationNumbers) el.paginationNumbers.innerHTML = '';
         el.pagination?.classList.toggle('hidden', maxPage <= 1);
@@ -249,12 +260,19 @@ export class UIManager {
 
         if (el.prevBtn) {
             el.prevBtn.disabled = currentPage === 1;
-            el.prevBtn.onclick = () => onPageChange?.(currentPage - 1);
+            // Direct binding - Simple and robust
+            el.prevBtn.onclick = () => {
+                if (currentPage > 1) onPageChange(currentPage - 1);
+            };
         }
         
         if (el.nextBtn) {
-            el.nextBtn.disabled = currentPage === maxPage;
-            el.nextBtn.onclick = () => onPageChange?.(currentPage + 1);
+            // Ensure strict comparison and type safety
+            el.nextBtn.disabled = currentPage >= maxPage;
+            // Direct binding - Simple and robust
+            el.nextBtn.onclick = () => {
+                 if (currentPage < maxPage) onPageChange(currentPage + 1);
+            };
         }
 
         const fragment = document.createDocumentFragment();
@@ -262,7 +280,10 @@ export class UIManager {
             const btn = document.createElement('button');
             btn.textContent = i;
             btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
-            btn.onclick = () => onPageChange?.(i);
+            // Direct binding for numbers
+            btn.onclick = () => {
+                if (i !== currentPage) onPageChange(i);
+            };
             fragment.appendChild(btn);
         }
         el.paginationNumbers?.appendChild(fragment);
@@ -315,7 +336,7 @@ export class UIManager {
 
         container.innerHTML = `
             <div class="room-results-header">
-                <h4>${Icons.doorOpen} Available Rooms <span class="count-badge">${rooms.length}</span></h4>
+                <h4>Available Rooms <span class="count-badge">${rooms.length}</span></h4>
                 <p class="results-meta">for <span class="highlight">${day}</span> at <span class="highlight">${time}</span></p>
             </div>
             <div class="room-grid-rich">

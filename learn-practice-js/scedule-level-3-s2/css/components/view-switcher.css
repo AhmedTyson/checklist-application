@@ -199,6 +199,7 @@
 
 /* Premium Grid */
 /* Premium Grid */
+/* Premium Grid */
 .room-grid-rich {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
@@ -219,29 +220,40 @@
     justify-content: center;
     gap: 4px;
     position: relative;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.2s ease, background 0.2s ease;
     overflow: hidden;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    /* backdrop-filter: blur(10px);  Removed for mobile performance */
+    /* -webkit-backdrop-filter: blur(10px); */
     opacity: 0;
+    will-change: transform, opacity;
     animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     animation-delay: var(--delay);
 }
 
-.room-card:hover {
-    transform: translateY(-3px);
-    background: rgba(255, 255, 255, 0.07);
-    border-color: var(--accent);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+@media (max-width: 768px) {
+    .room-grid-rich {
+        perspective: none; /* Remove 3D effect on mobile */
+    }
+}
+
+/* ... (Card styles) ... */
+
+@media (hover: hover) {
+    .room-card:hover {
+        transform: translateY(-3px);
+        background: rgba(255, 255, 255, 0.07);
+        border-color: var(--accent);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .room-card.is-lab:hover {
+        background: rgba(56, 189, 248, 0.1);
+        border-color: #38bdf8;
+    }
 }
 
 .room-card.is-lab {
     border-color: rgba(56, 189, 248, 0.3);
-}
-
-.room-card.is-lab:hover {
-    background: rgba(56, 189, 248, 0.1);
-    border-color: #38bdf8;
 }
 
 /* Text Content */

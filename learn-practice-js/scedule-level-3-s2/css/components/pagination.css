@@ -5,6 +5,14 @@
     justify-content: center;
     align-items: center;
     gap: 16px;
+    position: relative;
+    z-index: 10;
+}
+
+@media (max-width: 768px) {
+    .pagination {
+        margin-bottom: 120px; /* Space for FAB */
+    }
 }
 
 .pagination button {

@@ -13,6 +13,7 @@ class App {
     #dataService = new DataService();
     #ui = new UIManager();
     #dropdowns = {};
+    #currentMode = 'schedule';
 
     constructor() {
         Config.init();
@@ -74,11 +75,18 @@ class App {
         // Clear Button
         this.#ui.elements.clearFilters.onclick = () => {
             this.#ui.elements.searchInput.value = '';
+            this.#ui.elements.searchInput.dispatchEvent(new Event('input')); // Trigger debounce
             this.#state.filters = { search: '', subject: 'all', group: 'all', day: 'all' };
             Object.values(this.#dropdowns).forEach(d => d.reset());
             this.handleFilterChange();
         };
+
+
     }
+
+
+
+
 
     #initFilters(data) {
         // Initialize Dropdowns
@@ -186,6 +194,7 @@ class App {
                 hiddenSelect.add(new Option(group, group));
             });
         }
+
     }
 
     #initViewSwitcher() {
@@ -196,6 +205,7 @@ class App {
         };
 
         const switchView = (mode, isInitial = false) => {
+            this.#currentMode = mode; // Sync state
             this.#ui.switchView(mode, views);
             this.#updateUrl(mode, isInitial);
         };
@@ -271,14 +281,27 @@ class App {
     // ...
 
     handleFilterChange() {
-        // Optimization: Read layout (scrollY) BEFORE any DOM changes to avoid forced reflow
         const currentScroll = window.scrollY;
-        
-        this.#state.filteredData = this.#dataService.filterData(this.#state.filters);
-        this.#state.currentPage = 1;
-        this.#updateTagHighlights();
-        this.render();
-        this.#ui.scrollToResults(currentScroll);
+        const currentMode = new URLSearchParams(window.location.search).get('view') || 'schedule';
+
+        if (currentMode === 'rooms') {
+            const day = this.#state.filters.day === 'all' ? 'Select Day' : this.#state.filters.day;
+            const time = this.#state.filters.time === 'all' ? 'Select Time' : this.#state.filters.time;
+
+            if (day !== 'Select Day' && time !== 'Select Time') {
+                const filteredRooms = this.#dataService.findEmptyRooms(day, time);
+                this.#state.currentFilteredRooms = filteredRooms;
+
+                this.#ui.renderRoomFinderResults(filteredRooms, day, time);
+            }
+        } else {
+            // Schedule View Logic
+            this.#state.filteredData = this.#dataService.filterData(this.#state.filters);
+            this.#state.currentPage = 1;
+            this.#updateTagHighlights();
+            this.render();
+            this.#ui.scrollToResults(currentScroll);
+        }
     }
 
     #updateTagHighlights() {
