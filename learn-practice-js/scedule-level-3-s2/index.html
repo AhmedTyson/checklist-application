@@ -29,16 +29,23 @@
     <link rel="apple-touch-icon" href="https://api.iconify.design/fa-solid:calendar-check.svg?color=%23a855f7">
     
     <!-- Preload critical data & assets -->
-    <link rel="preload" href="scedule-data.json" as="fetch" crossorigin="anonymous">
+    <link rel="preload" href="schedule-data.json" as="fetch" crossorigin="anonymous">
     
     <!-- Module Preloads (Flattening JS chains) -->
-    <link rel="modulepreload" href="app.js">
-    <link rel="modulepreload" href="modules/Config.js">
-    <link rel="modulepreload" href="modules/Utils.js">
-    <link rel="modulepreload" href="modules/CustomSelect.js">
-    <link rel="modulepreload" href="modules/DataService.js">
-    <link rel="modulepreload" href="modules/UIManager.js">
-    <link rel="modulepreload" href="modules/Icons.js">
+    <link rel="modulepreload" href="app.js?v=7">
+    <link rel="modulepreload" href="modules/Config.js?v=7">
+    <link rel="modulepreload" href="modules/Utils.js?v=7">
+    <link rel="modulepreload" href="modules/CustomSelect.js?v=7">
+    <link rel="modulepreload" href="modules/DataService.js?v=7">
+    <link rel="modulepreload" href="modules/UIManager.js?v=7">
+    <link rel="modulepreload" href="modules/Icons.js?v=7">
+    <link rel="modulepreload" href="modules/DOMUtils.js?v=7">
+    <link rel="modulepreload" href="modules/FilterManager.js?v=7">
+    <link rel="modulepreload" href="modules/Constants.js?v=7">
+    <link rel="modulepreload" href="modules/Router.js?v=7">
+    <link rel="modulepreload" href="modules/EventBus.js?v=7">
+    <link rel="modulepreload" href="modules/components/ScheduleTable.js?v=7">
+    <link rel="modulepreload" href="modules/components/RoomGrid.js?v=7">
 
     <!-- CSS Preloads (All components to prevent blocking) -->
     <!-- CSS Sheets -->
@@ -260,7 +267,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0" defer></script>
-    <script type="module" src="app.js"></script>
+    <script type="module" src="app.js?v=7"></script>
     
     <!-- PWA Registration -->
     <script>
@@ -276,5 +283,14 @@
     <button id="fab-scroll-top" class="fab" title="Scroll to top" aria-label="Scroll to top">
         <i class="fa-solid fa-arrow-up"></i>
     </button>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('SW registered:', reg.scope))
+                    .catch(err => console.error('SW registration failed:', err));
+            });
+        }
+    </script>
 </body>
 </html>

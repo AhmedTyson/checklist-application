@@ -1,5 +1,5 @@
 export const Config = {
-    DATA_URL: 'scedule-data.json',
+    DATA_URL: 'schedule-data.json',
     DESKTOP_WIDTH: 1200,
     FRIDAY_MEME_COUNT: 5,
     SUBJECT_ACRONYMS: {

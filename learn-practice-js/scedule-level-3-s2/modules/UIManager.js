@@ -1,16 +1,22 @@
-import { Config } from './Config.js';
-import { Utils } from './Utils.js';
-import { Icons } from './Icons.js';
+import { Config } from './Config.js?v=7';
+import { Constants } from './Constants.js?v=7';
+import { Utils } from './Utils.js?v=7';
+import { Icons } from './Icons.js?v=7';
+import { ScheduleTable } from './components/ScheduleTable.js?v=7';
+import { RoomGrid } from './components/RoomGrid.js?v=7';
 
 export class UIManager {
     #elements = {};
-    #currentMode = 'search';
     #paginationCallback = null;
     #currentPage = 1;
+    #scheduleTable;
+    #roomGrid;
 
     constructor() {
         this.#initElements();
         this.#initGlobalListeners();
+        this.#scheduleTable = new ScheduleTable();
+        this.#roomGrid = new RoomGrid('room-results-container');
     }
 
     #initElements() {
@@ -82,19 +88,17 @@ export class UIManager {
 
     get elements() { return this.#elements; }
     
-    setMode(mode) { this.#currentMode = mode; }
+    // setMode removed as it is now stateless or controlled by Router/App
+    // setMode(mode) { this.#currentMode = mode; }
 
     async switchView(mode, views) {
         const tabs = document.querySelectorAll('.view-tab');
         const tabPill = document.querySelector('.view-tab-pill');
 
-        // 1. Update State immediately
-        this.#currentMode = mode;
-
-        // 2. toggle active class on tabs (Visual only, cheap)
+        // 1. Update active class on tabs (Visual only)
         tabs.forEach(t => t.classList.toggle('active', t.dataset.view === mode));
 
-        // 3. Move Pill (Optimized: Read Layout BEFORE style changes)
+        // 2. Move Pill (Optimized: Read Layout BEFORE style changes)
         const nextActiveTab = Array.from(tabs).find(t => t.dataset.view === mode);
         const container = document.querySelector('.view-switcher');
         
@@ -139,49 +143,17 @@ export class UIManager {
         const start = (currentPage - 1) * Config.ROWS_PER_PAGE;
         const pageData = data.slice(start, start + Config.ROWS_PER_PAGE);
 
-        if (!this.#elements.tableBody) return;
-        this.#elements.tableBody.innerHTML = '';
-        
-        if (!pageData.length) return;
-        
+        if (!pageData.length) {
+            if (this.#elements.tableBody) this.#elements.tableBody.innerHTML = '';
+            // Table clearing is handled by component, but we also handle empty state outside
+            return;
+        }
+
         this.#elements.noResults?.classList.add('hidden');
         if (this.#elements.memeContainer) this.#elements.memeContainer.innerHTML = '';
         if (this.#elements.resultCount) this.#elements.resultCount.textContent = data.length;
 
-        const fragment = document.createDocumentFragment();
-        pageData.forEach(item => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = this.#getRowTemplate(item, searchTerm);
-            fragment.appendChild(tr);
-        });
-        this.#elements.tableBody.appendChild(fragment);
-    }
-
-    #getRowTemplate(item, searchTerm) {
-        const subjectDisplay = Utils.getSubjectDisplay(item.subject);
-        const highlight = (text) => Utils.highlightText(text, searchTerm);
-
-        return `
-            <td class="subject-cell" data-label="Subject">${highlight(subjectDisplay)}</td>
-            <td class="group-cell" data-label="Group">${highlight(item.group)}</td>
-            <td class="doctor-cell" data-label="Doctor">
-                <div class="doctor-stack">
-                    <span class="doctor-ar">${highlight(item.doctorAr)}</span>
-                    <span class="doctor-en">${highlight(item.doctorEn)}</span>
-                </div>
-            </td>
-            <td data-label="Day">${highlight(item.day)}</td>
-            <td data-label="Time">${highlight(item.time)}</td>
-            <td data-label="Room">${highlight(item.room)}</td>
-            <td data-label="Code">
-                <div class="code-wrapper">
-                    <span class="code-cell">${highlight(item.code)}</span>
-                    <button class="copy-btn" title="Copy Code" aria-label="Copy Code" data-code="${item.code}">
-                        <span class="icon-wrapper">${Icons.copy}</span>
-                    </button>
-                </div>
-            </td>
-        `;
+        this.#scheduleTable.render(pageData, searchTerm);
     }
 
     renderNoResults(isFriday, suggestions = [], onSelect = null) {
@@ -289,9 +261,9 @@ export class UIManager {
         el.paginationNumbers?.appendChild(fragment);
     }
     
-    setLoading(isLoading) {
+    setLoading(isLoading, currentMode) {
         if (isLoading) {
-            if (this.#currentMode === 'search') this.#renderSkeletons();
+            if (currentMode === 'schedule') this.#renderSkeletons();
         } else {
             // Hide full page loader if it exists
             if (this.#elements.loader && !this.#elements.loader.classList.contains('fade-out')) {
@@ -316,47 +288,6 @@ export class UIManager {
     }
 
     renderRoomFinderResults(rooms, day, time) {
-        const container = document.getElementById('room-results-container');
-        if (!container) return;
-
-        container.innerHTML = '';
-        
-        if (!rooms.length) {
-            container.innerHTML = `
-                <div class="room-results-header">
-                    <div class="no-rooms-state">
-                        ${Icons.ghost}
-                        <h3>No Rooms Available</h3>
-                        <p>Every room is booked for <span>${day}</span> at <span>${time}</span>.</p>
-                    </div>
-                </div>
-            `;
-            return;
-        }
-
-        container.innerHTML = `
-            <div class="room-results-header">
-                <h4>Available Rooms <span class="count-badge">${rooms.length}</span></h4>
-                <p class="results-meta">for <span class="highlight">${day}</span> at <span class="highlight">${time}</span></p>
-            </div>
-            <div class="room-grid-rich">
-                ${rooms.map((room, i) => this.#getRoomCardTemplate(room, i)).join('')}
-            </div>
-        `;
-    }
-
-    #getRoomCardTemplate(room, index) {
-        const isLab = room.toLowerCase().includes('lab');
-        const type = isLab ? 'Lab' : 'Hall';
-        const num = room.replace(/(Hall|Lab)\s*/i, '');
-
-        return `
-            <div class="room-card ${isLab ? 'is-lab' : ''}" style="--delay: ${index * 50}ms">
-                <div class="room-card-content">
-                    <span class="room-type">${type}</span>
-                    <span class="room-number">${num}</span>
-                </div>
-            </div>
-        `;
+        this.#roomGrid.render(rooms, day, time);
     }
 }

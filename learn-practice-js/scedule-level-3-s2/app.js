@@ -1,19 +1,23 @@
-import { Config } from './modules/Config.js';
-import { Utils } from './modules/Utils.js';
-import { CustomSelect } from './modules/CustomSelect.js';
-import { DataService } from './modules/DataService.js';
-import { UIManager } from './modules/UIManager.js';
+import { Config } from './modules/Config.js?v=7';
+import { Constants } from './modules/Constants.js?v=7';
+import { Router } from './modules/Router.js?v=7';
+import { Utils } from './modules/Utils.js?v=7';
+import { CustomSelect } from './modules/CustomSelect.js?v=7';
+import { DataService } from './modules/DataService.js?v=7';
+import { UIManager } from './modules/UIManager.js?v=7';
+import { FilterManager } from './modules/FilterManager.js?v=7';
+import { DOMUtils } from './modules/DOMUtils.js?v=7';
 
 class App {
     #state = {
-        filters: { search: '', subject: 'all', group: 'all', day: 'all' },
         currentPage: 1,
         filteredData: []
     };
+    #filters = new FilterManager();
     #dataService = new DataService();
     #ui = new UIManager();
+    #router = new Router();
     #dropdowns = {};
-    #currentMode = 'schedule';
 
     constructor() {
         Config.init();
@@ -21,9 +25,9 @@ class App {
     }
 
     async init() {
-        console.log('%c BIS Schedule App v1.2.0 - Loaded', 'background: #a855f7; color: white; padding: 4px; border-radius: 4px;');
+        console.log('%c BIS Schedule App v1.4.0 - Refactored (v8)', 'background: #a855f7; color: white; padding: 4px; border-radius: 4px;');
         this.#initGlobalListeners();
-        this.#initViewSwitcher();
+        this.#setupRouter();
         
         try {
             this.#ui.setLoading(true);
@@ -47,11 +51,11 @@ class App {
             this.#ui.elements.noResults.innerHTML = `<div class="error-message">Error loading data: ${error.message}</div>`;
             this.#ui.elements.noResults.classList.remove('hidden');
         } finally {
-            const isRoomView = new URLSearchParams(window.location.search).get('view') === 'rooms';
+            const isRoomView = this.#router.currentView === Constants.VIEWS.ROOMS;
             if (isRoomView) {
-                setTimeout(() => this.#ui.setLoading(false), 800);
+                setTimeout(() => this.#ui.setLoading(false, this.#router.currentView), 800);
             } else {
-                this.#ui.setLoading(false);
+                this.#ui.setLoading(false, this.#router.currentView);
             }
         }
     }
@@ -68,7 +72,7 @@ class App {
 
         // Search Input with Debounce
         this.#ui.elements.searchInput.addEventListener('input', Utils.debounce((e) => {
-            this.#state.filters.search = e.target.value;
+            this.#filters.update('search', e.target.value);
             this.handleFilterChange();
         }, 300));
 
@@ -77,7 +81,7 @@ class App {
         this.#ui.elements.clearFilters.onclick = () => {
             this.#ui.elements.searchInput.value = '';
             this.#ui.elements.searchInput.dispatchEvent(new Event('input')); // Trigger debounce
-            this.#state.filters = { search: '', subject: 'all', group: 'all', day: 'all' };
+            this.#filters.reset();
             Object.values(this.#dropdowns).forEach(d => d.reset());
             this.handleFilterChange();
         };
@@ -90,21 +94,21 @@ class App {
 
 
     #initFilters(data) {
-        // Initialize Dropdowns
-        ['subject-dropdown', 'group-dropdown', 'day-dropdown'].forEach(id => {
-            if (this.#dropdowns[id]) {
-                this.#dropdowns[id].destroy();
-            }
+        // Initialize Dropdowns using generic handler
+        ['subject', 'group', 'day'].forEach(key => {
+            const id = `${key}-dropdown`;
+            if (this.#dropdowns[id]) this.#dropdowns[id].destroy();
+            
             this.#dropdowns[id] = new CustomSelect(id, (dropdownId, value) => {
-                const key = dropdownId.split('-')[0];
-                this.#state.filters[key] = value;
+                const filterKey = dropdownId.split('-')[0];
+                this.#filters.update(filterKey, value);
                 
-                // If subject changes, re-populate groups for that subject
-                if (key === 'subject') {
+                // Special case: Subject change affects Group options
+                if (filterKey === 'subject') {
                     this.#populateGroupFilters(this.#dataService.getAllData().filter(item => 
                         value === 'all' || item.subject === value
                     ));
-                    this.#state.filters.group = 'all';
+                    this.#filters.update('group', 'all');
                     this.#dropdowns['group-dropdown'].reset();
                 }
 
@@ -124,42 +128,32 @@ class App {
         }
 
         this.#ui.elements.subjectListContainer?.classList.remove('hidden');
+        
+        // 1. Populate Dropdown Options
         const options = document.getElementById('subject-options');
-        const hiddenSelect = document.getElementById('subject-filter');
-
         if (options) {
-            options.innerHTML = '';
-            
-            const allOpt = document.createElement('div');
-            allOpt.className = 'option selected';
-            allOpt.dataset.value = 'all';
-            allOpt.textContent = 'All Subjects';
-            options.appendChild(allOpt);
-
-            subjects.forEach(subject => {
-                const opt = document.createElement('div');
-                opt.className = 'option';
-                opt.dataset.value = subject;
-                opt.textContent = subject;
-                options.appendChild(opt);
-            });
+             DOMUtils.populateContainer(options, subjects, (subject) => DOMUtils.createOption(subject));
+             options.insertAdjacentElement('afterbegin', DOMUtils.createOption('all', 'All Subjects', true));
         }
 
+        // 2. Populate Native Select (Hidden)
+        const hiddenSelect = document.getElementById('subject-filter');
         if (hiddenSelect) {
+            // Native selects need option elements, not divs
             hiddenSelect.innerHTML = '<option value="all">All Subjects</option>';
-            subjects.forEach(subject => {
-                hiddenSelect.add(new Option(subject, subject));
-            });
+            subjects.forEach(subject => hiddenSelect.add(new Option(subject, subject)));
         }
         
-        if (this.#ui.elements.subjectTags) this.#ui.elements.subjectTags.innerHTML = '';
-        subjects.forEach(subject => {
-            const tag = document.createElement('span');
-            tag.className = 'subject-tag';
-            tag.textContent = subject;
-            tag.onclick = () => this.#dropdowns['subject-dropdown'].select(subject, subject);
-            this.#ui.elements.subjectTags?.appendChild(tag);
-        });
+        // 3. Populate Tags
+        if (this.#ui.elements.subjectTags) {
+            DOMUtils.populateContainer(this.#ui.elements.subjectTags, subjects, (subject) => 
+                DOMUtils.createElement('span', {
+                    className: 'subject-tag',
+                    text: subject,
+                    events: { click: () => this.#dropdowns['subject-dropdown'].select(subject, subject) }
+                })
+            );
+        }
     }
 
     #populateGroupFilters(data) {
@@ -169,65 +163,44 @@ class App {
         });
 
         const options = document.getElementById('group-options');
-        const hiddenSelect = document.getElementById('group-filter');
-        
         if (options) {
-            options.innerHTML = '';
-            
-            const allOpt = document.createElement('div');
-            allOpt.className = 'option selected';
-            allOpt.dataset.value = 'all';
-            allOpt.textContent = 'All Groups';
-            options.appendChild(allOpt);
-
-            groups.forEach(group => {
-                const opt = document.createElement('div');
-                opt.className = 'option';
-                opt.dataset.value = group;
-                opt.textContent = group;
-                options.appendChild(opt);
-            });
+             DOMUtils.populateContainer(options, groups, (group) => DOMUtils.createOption(group));
+             options.insertAdjacentElement('afterbegin', DOMUtils.createOption('all', 'All Groups', true));
         }
 
+        const hiddenSelect = document.getElementById('group-filter');
         if (hiddenSelect) {
             hiddenSelect.innerHTML = '<option value="all">All Groups</option>';
-            groups.forEach(group => {
-                hiddenSelect.add(new Option(group, group));
-            });
+            groups.forEach(group => hiddenSelect.add(new Option(group, group)));
         }
-
     }
 
-    #initViewSwitcher() {
-        const tabs = document.querySelectorAll('.view-tab');
+    #setupRouter() {
+        // Define views configuration
         const views = {
-            'schedule': { ctrls: 'schedule-controls', view: 'schedule-view' },
-            'rooms': { ctrls: 'room-controls', view: 'room-view' }
+            [Constants.VIEWS.SCHEDULE]: { ctrls: 'schedule-controls', view: 'schedule-view' },
+            [Constants.VIEWS.ROOMS]: { ctrls: 'room-controls', view: 'room-view' }
         };
 
-        const switchView = (mode, isInitial = false) => {
-            this.#currentMode = mode; // Sync state
-            this.#ui.switchView(mode, views);
-            this.#updateUrl(mode, isInitial);
-        };
+        // Listen for route changes
+        this.#router.onViewChange((view) => {
+            this.#ui.switchView(view, views);
+            
+            // Re-trigger search/filter if returning to schedule to ensure view is up to date
+            if (view === Constants.VIEWS.SCHEDULE) {
+                this.handleFilterChange();
+            } else if (view === Constants.VIEWS.ROOMS) {
+                // Determine if we need to auto-trigger room search
+                this.handleFilterChange(); 
+            }
+        });
 
-        tabs.forEach(tab => tab.onclick = () => switchView(tab.dataset.view));
+        // Initialize UI based on current route
+        this.#ui.switchView(this.#router.currentView, views);
         
-        // Initial View - passing true to prevent pushState on load
-        const initialMode = new URLSearchParams(window.location.search).get('view') === 'rooms' ? 'rooms' : 'schedule';
-        setTimeout(() => switchView(initialMode, true), 100);
-    }
-
-    #updateUrl(mode, isInitial) {
-        if (!window.history.pushState) return;
-        const url = new URL(window.location);
-        url.searchParams.set('view', mode);
-        
-        if (isInitial) {
-            window.history.replaceState({ view: mode }, '', url);
-        } else {
-            window.history.pushState({ view: mode }, '', url);
-        }
+        // Bind UI Tabs to Router
+        const tabs = document.querySelectorAll('.view-tab');
+        tabs.forEach(tab => tab.onclick = () => this.#router.navigate(tab.dataset.view));
     }
 
     #initRoomFinder() {
@@ -237,14 +210,9 @@ class App {
             const input = document.getElementById(inputId);
             
             if (container) {
-                container.innerHTML = '';
-                values.forEach(val => {
-                    const opt = document.createElement('div');
-                    opt.className = 'option';
-                    opt.dataset.value = val;
-                    opt.textContent = val;
-                    container.appendChild(opt);
-                });
+            if (container) {
+                DOMUtils.populateContainer(container, values, (val) => DOMUtils.createOption(val));
+            }
             }
 
             this.#dropdowns[dropId] = new CustomSelect(dropId, (_, val) => {
@@ -271,42 +239,60 @@ class App {
             return;
         }
 
-        this.#ui.setLoading(true);
+        this.#ui.setLoading(true, Constants.VIEWS.ROOMS);
         setTimeout(() => {
             const emptyRooms = this.#dataService.findEmptyRooms(day, time);
             this.#ui.renderRoomFinderResults(emptyRooms, day, time);
-            this.#ui.setLoading(false);
+            this.#ui.setLoading(false, Constants.VIEWS.ROOMS);
         }, 300);
     }
     
     // ...
 
-    handleFilterChange() {
+    async handleFilterChange() {
         const currentScroll = window.scrollY;
-        const currentMode = new URLSearchParams(window.location.search).get('view') || 'schedule';
+        
+        if (this.#router.currentView === Constants.VIEWS.ROOMS) {
+            const day = this.#filters.filters.day === 'all' ? 'Select Day' : this.#filters.filters.day;
+            const time = this.#filters.filters.time === 'all' ? 'Select Time' : this.#filters.filters.time;
 
-        if (currentMode === 'rooms') {
-            const day = this.#state.filters.day === 'all' ? 'Select Day' : this.#state.filters.day;
-            const time = this.#state.filters.time === 'all' ? 'Select Time' : this.#state.filters.time;
-
-            if (day !== 'Select Day' && time !== 'Select Time') {
-                const filteredRooms = this.#dataService.findEmptyRooms(day, time);
-                this.#state.currentFilteredRooms = filteredRooms;
-
+            this.#ui.setLoading(true, Constants.VIEWS.ROOMS); // Show loading feedback
+            const filteredRooms = this.#dataService.findEmptyRooms(day, time);
+            
+            // Small delay to simulate processing/visual feedback
+            setTimeout(() => {
                 this.#ui.renderRoomFinderResults(filteredRooms, day, time);
-            }
+                this.#ui.setLoading(false, Constants.VIEWS.ROOMS);
+            }, 300);
+
+        // Schedule View Logic
         } else {
-            // Schedule View Logic
-            this.#state.filteredData = this.#dataService.filterData(this.#state.filters);
-            this.#state.currentPage = 1;
-            this.#updateTagHighlights();
-            this.render();
-            this.#ui.scrollToResults(currentScroll);
+             const searchQuery = this.#filters.filters.search;
+             
+             // 1. Get Search Results (Async Worker)
+             let searchResults;
+             if (searchQuery && searchQuery.length >= 2) {
+                 // Create a loading state for table if needed, strictly speaking we are debounced
+                 // but for slow devices a spinner might be nice.
+                 // this.#ui.setLoading(true, Constants.VIEWS.SCHEDULE); 
+                 searchResults = await this.#dataService.search(searchQuery);
+                 // this.#ui.setLoading(false, Constants.VIEWS.SCHEDULE);
+             } else {
+                 searchResults = this.#dataService.getAllData();
+             }
+
+             // 2. Apply Structure Filters (Sync)
+             this.#state.filteredData = this.#filters.applyFilters(searchResults);
+             
+             this.#state.currentPage = 1;
+             this.#updateTagHighlights();
+             this.render();
+             this.#ui.scrollToResults(currentScroll);
         }
     }
 
     #updateTagHighlights() {
-        const currentSubject = this.#state.filters.subject;
+        const currentSubject = this.#filters.filters.subject;
         this.#ui.elements.subjectTags.querySelectorAll('.subject-tag').forEach(tag => {
             tag.classList.toggle('active', tag.textContent === currentSubject);
         });
@@ -315,21 +301,27 @@ class App {
 
 
     render() {
-        const { filteredData, currentPage, filters } = this.#state;
+        const { filteredData, currentPage } = this.#state;
+        const filters = this.#filters.filters;
 
         if (filteredData.length === 0) {
             this.#ui.renderTable([], currentPage, filters.search);
             
-            const suggestions = (filters.search?.length >= 2) ? this.#dataService.getSuggestions(filters.search) : [];
-            this.#ui.renderNoResults(
-                filters.day === 'Friday',
-                suggestions,
-                (selected) => {
-                    this.#ui.elements.searchInput.value = selected;
-                    this.#state.filters.search = selected;
-                    this.handleFilterChange();
-                }
-            );
+            if (filters.search?.length >= 2) {
+                this.#dataService.getSuggestions(filters.search).then(suggestions => {
+                    this.#ui.renderNoResults(
+                        filters.day === 'Friday',
+                        suggestions,
+                        (selected) => {
+                            this.#ui.elements.searchInput.value = selected;
+                            this.#filters.update('search', selected);
+                            this.handleFilterChange();
+                        }
+                    );
+                });
+            } else {
+                 this.#ui.renderNoResults(filters.day === 'Friday', [], null);
+            }
         } else {
             this.#ui.renderTable(filteredData, currentPage, filters.search);
             this.#ui.renderPagination(filteredData.length, currentPage, (page) => {

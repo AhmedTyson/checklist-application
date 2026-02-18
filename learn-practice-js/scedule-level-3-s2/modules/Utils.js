@@ -1,4 +1,4 @@
-import { Config } from './Config.js';
+import { Config } from './Config.js?v=7';
 
 export class Utils {
     // Cache regex patterns for performance

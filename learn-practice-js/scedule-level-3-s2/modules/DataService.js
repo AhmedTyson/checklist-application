@@ -1,15 +1,17 @@
-import { Config } from './Config.js';
-import { Utils } from './Utils.js';
+import { Config } from './Config.js?v=7';
+import { Utils } from './Utils.js?v=7';
 
 export class DataService {
     #data = [];
-    #fuse = null;
-    #suggestionsFuse = null;
-    #suggestionItems = [];
+    #worker = null;
+    #pendingRequests = new Map();
+    #requestIdCounter = 0;
 
-    /**
-     * Core data loading and index initialization
-     */
+    constructor() {
+        this.#worker = new Worker('modules/workers/SearchWorker.js', { type: 'module' });
+        this.#worker.onmessage = this.#handleWorkerMessage.bind(this);
+    }
+
     getAllData() {
         return this.#data;
     }
@@ -20,7 +22,9 @@ export class DataService {
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             
             this.#data = await response.json();
-            this.#initSearchIndices();
+            
+            // Initialize Worker
+            await this.#sendToWorker('INIT', { data: this.#data });
             
             return this.#data;
         } catch (error) {
@@ -29,91 +33,14 @@ export class DataService {
         }
     }
 
-    #initSearchIndices() {
-        // 0. Pre-compute searchable text for rapid T1/T2 filtering
-        this.#data.forEach(item => {
-            item._searchIndex = Utils.normalizeText(`
-                ${item.subject} ${Utils.getSubjectDisplay(item.subject)} 
-                ${item.group} ${item.doctorAr} ${item.doctorEn} 
-                ${item.day} ${item.time} ${item.code} ${item.room}
-            `);
-        });
-
-        // 1. Primary Fuzzy Engine (Fuse.js)
-        this.#fuse = new window.Fuse(this.#data, {
-            keys: ['subject', 'subjectAcronym', 'group', 'doctorAr', 'doctorEn', 'day', 'time', 'room', 'code'],
-            threshold: 0.2,
-            ignoreLocation: true,
-            minMatchCharLength: 3,
-            findAllMatches: true,
-            getFn: (obj, key) => {
-                const val = (key === 'subjectAcronym') 
-                    ? Utils.getSubjectDisplay(obj.subject) 
-                    : obj[key];
-                return Utils.normalizeText(val);
-            }
-        });
-
-        // 2. Suggestion Engine
-        const uniqueValues = (key) => [...new Set(this.#data.map(d => d[key]))].filter(v => v && v !== '-');
-        
-        this.#suggestionItems = [
-            ...uniqueValues('subject').map(s => ({ type: 'subject', text: s, display: s })),
-            ...uniqueValues('doctorEn').map(d => ({ type: 'doctor', text: d, display: d })),
-            ...uniqueValues('doctorAr').map(d => ({ type: 'doctor', text: d, display: d }))
-        ];
-
-        this.#suggestionsFuse = new window.Fuse(this.#suggestionItems, {
-            keys: ['text'],
-            threshold: 0.4,
-            minMatchCharLength: 2
-        });
+    async search(query) {
+        if (!query || query.length < 2) return this.#data;
+        return this.#sendToWorker('SEARCH', { query });
     }
 
-    getSuggestions(query) {
-        if (!this.#suggestionsFuse || !query || query.length < 2) return [];
-        return this.#suggestionsFuse.search(query).map(r => r.item).slice(0, 5);
-    }
-
-    /**
-     * Performs a three-tier smart filter:
-     * Tier 1: Exact Substring match
-     * Tier 2: Token match (all words present)
-     * Tier 3: Fuzzy Typos (Fuse.js)
-     */
-    filterData(filters) {
-        const { search, subject, group, day } = filters;
-        
-        // filter by exact dropdowns
-        let results = this.#data.filter(item => {
-            return (subject === 'all' || item.subject === subject) &&
-                   (group === 'all' || item.group === group) &&
-                   (day === 'all' || item.day === day);
-        });
-
-        if (!search?.trim()) return results;
-
-        const query = Utils.normalizeText(search);
-        const tokens = query.split(/\s+/).filter(t => t.length > 0);
-
-        // Tier 1 & 2: Substring & Tokenized
-        const exactMatches = results.filter(item => {
-            // Check full query first
-            if (item._searchIndex.includes(query)) return true;
-            // Check tokens
-            return tokens.every(token => item._searchIndex.includes(token));
-        });
-
-        // Tier 3: Fuzzy
-        let fuzzyMatches = [];
-        if (this.#fuse) {
-            const fuzzy = this.#fuse.search(query).map(r => r.item);
-            fuzzyMatches = fuzzy.filter(item => 
-                results.includes(item) && !exactMatches.includes(item)
-            );
-        }
-
-        return [...exactMatches, ...fuzzyMatches];
+    async getSuggestions(query) {
+        if (!query || query.length < 2) return [];
+        return this.#sendToWorker('SUGGEST', { query });
     }
 
     getUniqueValues(key) {
@@ -149,5 +76,38 @@ export class DataService {
             .map(item => item.room);
 
         return allRooms.filter(room => !occupiedRooms.includes(room));
+    }
+
+    // --- Worker Communication ---
+
+    #sendToWorker(type, payload) {
+        return new Promise((resolve, reject) => {
+            const id = this.#requestIdCounter++;
+            this.#pendingRequests.set(id, { resolve, reject });
+            this.#worker.postMessage({ type, payload, id });
+        });
+    }
+
+    #handleWorkerMessage(e) {
+        const { type, payload, id } = e.data;
+        
+        if (type === 'READY') {
+            const req = this.#pendingRequests.get(id);
+            if (req) {
+                 req.resolve();
+                 this.#pendingRequests.delete(id);
+            }
+            return;
+        }
+
+        if (this.#pendingRequests.has(id)) {
+            const { resolve, reject } = this.#pendingRequests.get(id);
+            if (type === 'ERROR') {
+                reject(payload);
+            } else {
+                resolve(payload);
+            }
+            this.#pendingRequests.delete(id);
+        }
     }
 }

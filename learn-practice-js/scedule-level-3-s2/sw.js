@@ -1,89 +1,90 @@
-const CACHE_NAME = 'bis-schedule-v5';
-const DATA_CACHE_NAME = 'bis-schedule-data-v5';
-
-const ASSETS_TO_CACHE = [
-    './',
-    './index.html',
-    './manifest.json',
-    './css/base/variables.css',
-    './css/base/reset.css',
-    './css/layout/layout.css',
-    './css/components/utilities.css',
-    './css/components/buttons.css',
-    './css/components/inputs.css',
-    './css/components/search.css',
-    './css/components/tags.css',
-    './css/components/table.css',
-    './css/components/pagination.css',
-    './css/components/view-switcher.css',
-    './app.js',
-    './modules/Config.js',
-    './modules/Utils.js',
-    './modules/Icons.js',
-    './modules/UIManager.js',
-    './modules/CustomSelect.js',
-    './modules/DataService.js',
-    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
-    'https://cdn.jsdelivr.net/npm/fuse.js@7.0.0'
+const CACHE_NAME = 'schedule-app-v2';
+const ASSETS = [
+    '/',
+    '/index.html',
+    '/manifest.json',
+    '/schedule-data.json',
+    '/app.js?v=7',
+    '/modules/Config.js?v=7',
+    '/modules/Constants.js?v=7',
+    '/modules/Router.js?v=7',
+    '/modules/EventBus.js?v=7',
+    '/modules/Utils.js?v=7',
+    '/modules/CustomSelect.js?v=7',
+    '/modules/DataService.js?v=7',
+    '/modules/FilterManager.js?v=7',
+    '/modules/UIManager.js?v=7',
+    '/modules/Icons.js?v=7',
+    '/modules/DOMUtils.js?v=7',
+    '/modules/components/ScheduleTable.js?v=7',
+    '/modules/components/RoomGrid.js?v=7',
+    '/css/base/reset.css?v=4',
+    '/css/base/variables.css?v=4',
+    '/css/layout/layout.css?v=4',
+    '/css/components/view-switcher.css?v=4',
+    '/css/components/search.css?v=4',
+    '/css/components/table.css?v=4',
+    '/css/components/inputs.css?v=4',
+    '/css/components/tags.css?v=4',
+    '/css/components/buttons.css?v=4',
+    '/css/components/utilities.css?v=4',
+    '/css/components/toast.css?v=4',
+    '/css/components/pagination.css?v=4',
+    '/assets/meme-friday-1.webp',
+    '/assets/meme-friday-2.webp',
+    '/assets/meme-friday-3.webp',
+    '/assets/meme-friday-4.webp',
+    '/assets/meme-friday-5.webp'
 ];
 
-// Install Event: Pre-cache static assets
-self.addEventListener('install', (evt) => {
-    evt.waitUntil(
-        caches.open(CACHE_NAME).then((cache) => {
-            console.log('Pre-caching offline pages');
-            return cache.addAll(ASSETS_TO_CACHE);
+self.addEventListener('install', (e) => {
+    e.waitUntil(
+        caches.open(CACHE_NAME).then(async (cache) => {
+            for (const asset of ASSETS) {
+                try {
+                    await cache.add(asset);
+                } catch (err) {
+                    console.error('SW: Failed to cache', asset, err);
+                }
+            }
         })
     );
     self.skipWaiting();
 });
 
-// Activate Event: Cleanup old caches
-self.addEventListener('activate', (evt) => {
-    evt.waitUntil(
-        caches.keys().then((keyList) => {
-            return Promise.all(keyList.map((key) => {
-                if (key !== CACHE_NAME && key !== DATA_CACHE_NAME) {
-                    console.log('Removing old cache', key);
-                    return caches.delete(key);
-                }
-            }));
+self.addEventListener('activate', (e) => {
+    e.waitUntil(
+        caches.keys().then((keys) => {
+            return Promise.all(
+                keys.map((key) => {
+                    if (key !== CACHE_NAME) return caches.delete(key);
+                })
+            );
         })
     );
     self.clients.claim();
 });
 
-// Fetch Event: Handle requests
-self.addEventListener('fetch', (evt) => {
-    // 1. Handle JSON Data (Stale-While-Revalidate)
-    if (evt.request.url.includes('scedule-data.json')) {
-        evt.respondWith(
-            caches.open(DATA_CACHE_NAME).then((cache) => {
-                return cache.match(evt.request).then((cachedResponse) => {
-                    const networkFetch = fetch(evt.request).then((networkResponse) => {
-                        if (networkResponse.ok) {
-                            cache.put(evt.request, networkResponse.clone());
-                        }
-                        return networkResponse;
-                    }).catch(err => {
-                        // Fallback? We don't have one for dynamic data unless cached
-                        throw err;
-                    });
-
-                    // Return cached data immediately if available, otherwise wait for network
-                    return cachedResponse || networkFetch;
+self.addEventListener('fetch', (e) => {
+    // Stale-While-Revalidate Strategy for JSON data
+    if (e.request.url.includes('schedule-data.json')) {
+        e.respondWith(
+            caches.open(CACHE_NAME).then(async (cache) => {
+                const cachedResponse = await cache.match(e.request);
+                const fetchPromise = fetch(e.request).then((networkResponse) => {
+                    cache.put(e.request, networkResponse.clone());
+                    return networkResponse;
                 });
+                return cachedResponse || fetchPromise;
             })
         );
         return;
     }
 
-    // 2. Handle Static Assets (Cache-First)
-    evt.respondWith(
-        caches.open(CACHE_NAME).then((cache) => {
-            return cache.match(evt.request).then((response) => {
-                return response || fetch(evt.request);
-            });
+    // Cache-First Strategy for static assets
+    e.respondWith(
+        caches.match(e.request).then((cached) => {
+            return cached || fetch(e.request);
         })
     );
 });
