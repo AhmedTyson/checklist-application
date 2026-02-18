@@ -61,8 +61,13 @@ self.addEventListener('fetch', (evt) => {
             caches.open(DATA_CACHE_NAME).then((cache) => {
                 return cache.match(evt.request).then((cachedResponse) => {
                     const networkFetch = fetch(evt.request).then((networkResponse) => {
-                        cache.put(evt.request, networkResponse.clone());
+                        if (networkResponse.ok) {
+                            cache.put(evt.request, networkResponse.clone());
+                        }
                         return networkResponse;
+                    }).catch(err => {
+                        // Fallback? We don't have one for dynamic data unless cached
+                        throw err;
                     });
 
                     // Return cached data immediately if available, otherwise wait for network
