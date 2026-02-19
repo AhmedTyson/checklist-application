@@ -125,6 +125,12 @@ header {
     margin-top: 2px;
     display: inline-block;
   }
+
+  /* Ensure Ramadan gold remains vibrant on mobile */
+  #ramadan-indicator {
+    color: #fbbf24 !important;
+    text-shadow: 0 0 12px rgba(251, 191, 36, 0.3);
+  }
 }
 
 .brand {

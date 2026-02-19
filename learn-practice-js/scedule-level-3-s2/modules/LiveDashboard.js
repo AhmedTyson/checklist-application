@@ -6,7 +6,7 @@ export class LiveDashboard {
   #intervalId = null;
   #container;
   #emptyState;
-  #currentIds = ""; // To track if list changed
+  #currentIds = null; // Changed to null to ensure first update always triggers check
 
   constructor(dataService) {
     this.#dataService = dataService;
@@ -33,14 +33,15 @@ export class LiveDashboard {
     const allItems = [...active, ...upcoming];
 
     // 1. DATA LOAD GUARD:
-    // If DataService is empty, it means we're still fetching on refresh.
-    // Do not show "No Lectures" yet, as it's misleading.
-    if (allData.length === 0) {
+    // If DataService is empty but we haven't rendered yet (currentIds is null),
+    // wait for data.
+    if (allData.length === 0 && this.#currentIds === null) {
       return;
     }
 
     // Create a signature to check if we need full re-render
-    const newIds = allItems.map((i) => i.code).join(",");
+    const newIds =
+      allItems.length > 0 ? allItems.map((i) => i.code).join(",") : "empty";
 
     if (force || this.#currentIds !== newIds) {
       this.#renderFull(allItems);

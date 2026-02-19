@@ -237,11 +237,19 @@
 
 .meta-row {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column; /* Default to column to prevent mobile flicker */
+  gap: 2px;
   /* Fluid metadata sizing: tighter */
   font-size: clamp(0.7rem, 1.5vw, 0.8rem);
-  padding-top: clamp(3px, 0.8vw, 6px);
+  padding-top: clamp(4px, 1vw, 8px);
   border-top: 1px solid rgba(255, 255, 255, 0.05); /* Softer divider */
+}
+
+@media (min-width: 768px) {
+  .meta-row {
+    flex-direction: row;
+    justify-content: space-between;
+  }
 }
 
 .meta-row:first-child {
@@ -251,12 +259,21 @@
 
 .meta-label {
   color: #a1a1aa;
+  font-size: 0.9em;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .meta-val {
   color: #f3f4f6;
   font-weight: 500;
-  text-align: right;
+  text-align: left; /* Alignment change for stacked view */
+}
+
+@media (min-width: 768px) {
+  .meta-val {
+    text-align: right;
+  }
 }
 
 /* --- FOOTER & PROGRESS --- */
