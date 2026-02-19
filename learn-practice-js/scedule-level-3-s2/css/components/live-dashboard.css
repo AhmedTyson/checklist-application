@@ -353,11 +353,11 @@
 
   .cards-grid {
     /* 
-       Intrinsic Grid Logic: 
-       Allows cards to be 2-column on Pro Max, 
-       but switches to 1-column on very tiny devices (iPhone SE/Mini) 
+       Optimized Grid: 
+       Allows 2-columns on modern large phones (iPhone Pro Max / S24 Ultra),
+       but falls back to 1-column on compact phones (iPhone SE) to prevent crowding.
     */
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 160px), 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 12px;
   }
 
@@ -367,28 +367,46 @@
   }
 
   .summary-text {
-    font-size: 0.95rem; /* Slightly smaller */
+    font-size: 0.95rem;
     font-weight: 500;
   }
 
-  /* Compact Card Styles */
-  /* .live-card is now fluid, no need for hardcoded overrides here */
-
-  .card-subject {
-    /* Slightly more height-balanced for mobile grid */
-    height: 2.8em;
-  }
-
+  /* Adaptive Meta-Rows: Stacking for width breathing room */
   .meta-list {
-    gap: 6px;
+    gap: 8px;
   }
+
   .meta-row {
+    flex-direction: column; /* Stack Label and Value */
+    align-items: flex-start;
+    gap: 2px;
     font-size: 0.75rem;
-    padding-top: 6px; /* Restored padding for divider breathing room */
-    border-top: 1px solid rgba(255, 255, 255, 0.08); /* Restored separator */
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
   }
+
+  .meta-val {
+    text-align: left; /* No more fighting for horizontal space */
+    width: 100%;
+    color: #fff; /* Slightly brighter for readability */
+    overflow-wrap: break-word; /* Ensure long names never overflow */
+  }
+
   .meta-row:first-child {
     border-top: none;
     padding-top: 0;
+  }
+
+  .card-subject {
+    /* Ensure subject doesn't push layout too much */
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+}
+
+/* Extra Small Phone Refinement (< 380px) */
+@media (max-width: 380px) {
+  .cards-grid {
+    grid-template-columns: 1fr; /* Force single column for maximum clarity */
   }
 }
