@@ -1,13 +1,12 @@
-import { Utils } from '../Utils.js?v=7';
-import { Icons } from '../Icons.js?v=7';
-import { Constants } from '../Constants.js?v=7';
+import { Utils } from '../Utils.js';
+import { Icons } from '../Icons.js';
 
 export class ScheduleTable {
     #container;
     #tbody;
     
     constructor() {
-        this.#tbody = document.getElementById(Constants.SELECTORS.TABLE_BODY);
+        this.#tbody = document.getElementById('table-body');
     }
 
     render(data, searchTerm) {

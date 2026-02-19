@@ -1,4 +1,4 @@
-import Fuse from '../../assets/libs/fuse.esm.js';
+import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.mjs';
 import { Utils } from '../Utils.js?v=7';
 
 let fuse = null;

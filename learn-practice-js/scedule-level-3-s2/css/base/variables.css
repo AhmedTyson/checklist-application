@@ -1,7 +1,6 @@
 :root {
     /* Colors */
     --bg-app: #0a0a0a;
-    --bg-void: #050505;
     --bg-panel: #111111;
     --bg-hover: #171717;
     --border: #262626;
@@ -25,7 +24,6 @@
     --radius-md: 12px;
     --radius-sm: 8px;
     --shadow: 0 10px 30px rgba(0,0,0,0.5);
-    --container-width: 1200px;
     --app-max-width: 1200px;
 
     /* Transitions */

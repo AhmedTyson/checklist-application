@@ -1,4 +1,4 @@
-import { Utils } from './Utils.js?v=7';
+import { Utils } from './Utils.js';
 
 export class FilterManager {
     #filters = { search: '', subject: 'all', group: 'all', day: 'all', time: 'all' }; // Added time for completeness logic
@@ -7,6 +7,12 @@ export class FilterManager {
 
     get filters() { return { ...this.#filters }; }
 
+    /**
+     * Updates a single filter value.
+     * @param {string} key - The filter key (e.g., 'search', 'subject').
+     * @param {string} value - The new value.
+     * @returns {boolean} True if the key was valid and updated.
+     */
     update(key, value) {
         if (Object.hasOwn(this.#filters, key)) {
             this.#filters[key] = value;
@@ -15,6 +21,9 @@ export class FilterManager {
         return false;
     }
 
+    /**
+     * Resets all filters to their default 'all' or empty state.
+     */
     reset() {
         this.#filters = { search: '', subject: 'all', group: 'all', day: 'all', time: 'all' };
     }
