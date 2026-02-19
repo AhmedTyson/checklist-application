@@ -1,6 +1,7 @@
 import { Config } from "./modules/Config.js";
 
 import { Utils } from "./modules/Utils.js";
+import { TimeUtils } from "./modules/utils/TimeUtils.js";
 import { CustomSelect } from "./modules/CustomSelect.js";
 import { DataService } from "./modules/DataService.js";
 import { UIManager } from "./modules/UIManager.js";
@@ -26,6 +27,22 @@ class App {
     this.#initGlobalListeners();
     this.#ui.initViewSwitcher((view) => this.#handleViewChange(view));
 
+    // Show Ramadan Indicator if enabled
+    if (Config.RAMADAN_MODE?.ENABLED) {
+      document.getElementById("ramadan-indicator")?.classList.remove("hidden");
+    }
+
+    // Academic Status Integration
+    const status = TimeUtils.getAcademicStatus();
+    if (status) {
+      const indicator = document.getElementById("academic-indicator");
+      const text = document.getElementById("academic-text");
+      if (indicator && text) {
+        text.textContent = `W${status.week} • ${status.location}${status.event ? ` (${status.event})` : ""}`;
+        indicator.classList.remove("hidden");
+      }
+    }
+
     // Handle Initial Hash
     if (window.location.hash === "#live") {
       this.#ui.switchView("live");
@@ -43,6 +60,11 @@ class App {
       this.#ui.setLoading(true);
       const data = await this.#dataService.fetchData();
       this.#state.filteredData = data;
+
+      // Update Live Dashboard immediately if it's active
+      if (window.location.hash === "#live") {
+        this.liveDashboard?.start();
+      }
 
       this.#initFilters(data);
       this.handleFilterChange();

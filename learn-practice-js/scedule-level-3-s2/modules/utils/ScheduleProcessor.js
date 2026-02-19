@@ -17,8 +17,8 @@ export class ScheduleProcessor {
       if (item.day !== today) return;
       if (!item.time) return;
 
-      // Handle "08:00 AM – 10:00 AM" (en dash or hyphen)
-      const parts = item.time.split(/\s[–-]\s/);
+      // Handle "08:00 AM – 10:00 AM" (flexible dash and whitespace)
+      const parts = item.time.split(/\s*[–\-\—]\s*/);
       if (parts.length !== 2) return;
 
       const [startStr, endStr] = parts;

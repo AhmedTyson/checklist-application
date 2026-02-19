@@ -1,4 +1,5 @@
 import { Utils } from "./Utils.js";
+import { Config } from "./Config.js";
 
 export class LiveDashboard {
   #dataService;
@@ -27,8 +28,16 @@ export class LiveDashboard {
   }
 
   #update(force = false) {
+    const allData = this.#dataService.getAllData();
     const { active, upcoming } = this.#dataService.getActiveClasses();
     const allItems = [...active, ...upcoming];
+
+    // 1. DATA LOAD GUARD:
+    // If DataService is empty, it means we're still fetching on refresh.
+    // Do not show "No Lectures" yet, as it's misleading.
+    if (allData.length === 0) {
+      return;
+    }
 
     // Create a signature to check if we need full re-render
     const newIds = allItems.map((i) => i.code).join(",");
@@ -44,6 +53,18 @@ export class LiveDashboard {
     if (allItems.length === 0) {
       this.#container.classList.add("hidden");
       this.#emptyState.classList.remove("hidden");
+
+      // Ramadan Specific Message
+      if (Config.RAMADAN_MODE?.ENABLED) {
+        const h3 = this.#emptyState.querySelector("h3");
+        const p = this.#emptyState.querySelector("p");
+        const icon = this.#emptyState.querySelector("i");
+        if (h3) h3.style.fontFamily = "var(--font-ramadan)";
+        if (h3) h3.textContent = "Ramadan Mubarak!";
+        if (p) p.textContent = "Enjoy your spiritual break! 🌙";
+        if (icon) icon.className = "fa-solid fa-moon fa-bounce";
+        if (icon) icon.style.color = "#fbbf24";
+      }
     } else {
       this.#container.classList.remove("hidden");
       this.#emptyState.classList.add("hidden");

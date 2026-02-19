@@ -36,6 +36,20 @@ export class DataService {
 
       this.#data = await response.json();
 
+      // Apply Ramadan Mode mapping if enabled
+      if (Config.RAMADAN_MODE?.ENABLED) {
+        this.#data = this.#data.map((item) => {
+          if (Config.RAMADAN_MODE.TIME_MAP[item.time]) {
+            return {
+              ...item,
+              originalTime: item.time, // Preserve for reference if needed
+              time: Config.RAMADAN_MODE.TIME_MAP[item.time],
+            };
+          }
+          return item;
+        });
+      }
+
       // Initialize Worker
       await this.#sendToWorker("INIT", { data: this.#data });
 

@@ -1,3 +1,5 @@
+import { Config } from "../Config.js";
+
 /**
  * Utility functions for time manipulation and schedule logic.
  */
@@ -9,8 +11,12 @@ export class TimeUtils {
    */
   static timeToMinutes(timeStr) {
     if (!timeStr) return -1;
-    const [time, modifier] = timeStr.split(" ");
+    // Use regex for split to handle potential double spaces or tabs
+    const [time, modifier] = timeStr.trim().split(/\s+/);
+    if (!time) return -1;
+
     let [hours, minutes] = time.split(":").map(Number);
+    if (isNaN(hours) || isNaN(minutes)) return -1;
 
     if (hours === 12) hours = 0;
     if (modifier === "PM") hours += 12;
@@ -80,5 +86,41 @@ export class TimeUtils {
     if (now < start && start - now <= upcomingWindow) return "UPCOMING";
     if (now >= end) return "FINISHED";
     return "FUTURE";
+  }
+  /**
+   * Determines the current academic week status.
+   * @param {Date} date - Optional date.
+   * @returns {Object|null} { week, location, event }
+   */
+  static getAcademicStatus(date = new Date()) {
+    const calendar = Config.ACADEMIC_CALENDAR;
+    if (!calendar) return null;
+
+    const now = date.getTime();
+
+    for (let i = 0; i < calendar.WEEKS.length; i++) {
+      const week = calendar.WEEKS[i];
+      const start = new Date(week.start).getTime();
+      const end = new Date(week.end).getTime();
+
+      // Add a buffer to end date because new Date("2026-02-12") is midnight
+      // We want to cover the whole day of the end date.
+      const endOfDay = end + 24 * 60 * 60 * 1000 - 1;
+
+      if (now >= start && now <= endOfDay) {
+        const weekNumber = i + 1;
+        const location =
+          week.locationOverride ||
+          (weekNumber % 2 !== 0
+            ? calendar.ROTATION.ODD
+            : calendar.ROTATION.EVEN);
+        return {
+          week: weekNumber,
+          location: location,
+          event: week.event,
+        };
+      }
+    }
+    return null;
   }
 }
