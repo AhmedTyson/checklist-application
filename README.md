@@ -1,14 +1,19 @@
-# Checklist Application
+# <img src="https://api.iconify.design/lucide:check-circle.svg?color=%238A2BE2" width="32" height="32" align="center" /> Checklist Application
 
-> An interactive, browser-based task checklist application — built as a structured JavaScript learning project with a full ES Module architecture and deployment pipeline.
+> **An interactive, browser-based task checklist application.**
+> Structured around modern ES Module patterns, precision-built for scalability and rapid deployment.
 
-![JavaScript](https://img.shields.io/badge/JavaScript-ES6_Modules-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-![Node.js](https://img.shields.io/badge/Node.js-Dev_Tooling-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+<div align="center">
+
+| Project Status | Core Technology                                                                                             | Developer Experience                                                                                          | Deployment                                                                                                      |
+| :------------- | :---------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------ | :-------------------------------------------------------------------------------------------------------------- |
+| `PRODUCTION`   | ![JS](https://img.shields.io/badge/JavaScript-ESM-F7DF1E?style=flat-square&logo=javascript&logoColor=black) | ![Node.js](https://img.shields.io/badge/Node.js-Vite-339933?style=flat-square&logo=nodedotjs&logoColor=white) | ![Netlify](https://img.shields.io/badge/Netlify-Deployed-00C7B7?style=flat-square&logo=netlify&logoColor=white) |
+
+</div>
 
 ---
 
-## 📋 Table of Contents
+## <img src="https://api.iconify.design/lucide:list.svg?color=%238A2BE2" width="20" height="20" align="center" /> Table of Contents
 
 - [Overview](#overview)
 - [Features](#-features)
@@ -27,7 +32,9 @@ The core app (`learn-practice-js/`) is deployed and includes a multi-page admin 
 
 ---
 
-## ✨ Features
+---
+
+## <img src="https://api.iconify.design/lucide:sparkles.svg?color=%238A2BE2" width="20" height="20" align="center" /> Features
 
 | Feature                     | Description                                                                       |
 | --------------------------- | --------------------------------------------------------------------------------- |
@@ -40,7 +47,9 @@ The core app (`learn-practice-js/`) is deployed and includes a multi-page admin 
 
 ---
 
-## 💻 Tech Stack
+---
+
+## <img src="https://api.iconify.design/lucide:cpu.svg?color=%238A2BE2" width="20" height="20" align="center" /> Tech Stack
 
 | Layer               | Technology                                    |
 | ------------------- | --------------------------------------------- |
@@ -52,7 +61,9 @@ The core app (`learn-practice-js/`) is deployed and includes a multi-page admin 
 
 ---
 
-## 🏗️ Architecture
+---
+
+## <img src="https://api.iconify.design/lucide:git-pull-request.svg?color=%238A2BE2" width="20" height="20" align="center" /> Architecture
 
 ```
 learn-practice-js/
@@ -77,7 +88,9 @@ learn-practice-js/
 
 ---
 
-## 📁 Project Structure
+---
+
+## <img src="https://api.iconify.design/lucide:folder-tree.svg?color=%238A2BE2" width="20" height="20" align="center" /> Project Structure
 
 ```
 checklist-application/
@@ -106,7 +119,9 @@ checklist-application/
 
 ---
 
-## 🚀 Getting Started
+---
+
+## <img src="https://api.iconify.design/lucide:rocket.svg?color=%238A2BE2" width="20" height="20" align="center" /> Getting Started
 
 ```bash
 # Clone the repository
