@@ -48,6 +48,17 @@ header {
   box-sizing: border-box;
 }
 
+/* View Switcher Capsule */
+.view-switcher {
+  position: relative;
+  display: flex;
+  background: rgba(255, 255, 255, 0.03); /* Extremely subtle matte base */
+  border-radius: 999px;
+  padding: 2px;
+  border: 1px solid var(--border);
+  min-width: 160px; /* Consistent width */
+}
+
 /* Sliding Glider (The Active 'Border' / Background) */
 .view-switcher::before {
   content: "";
@@ -72,19 +83,21 @@ header {
 .toggle-btn {
   position: relative;
   z-index: 2;
-  background: transparent;
-  border: none;
+  background: transparent !important; /* Force override browser defaults */
+  border: none !important;
+  outline: none !important;
   color: var(--text-dim);
-  padding: 6px 12px; /* Tighter padding */
+  padding: 6px 14px;
   border-radius: 999px;
-  font-size: 0.8rem; /* Corrected for density */
-  font-weight: 600; /* Sturdier weight */
+  font-size: 0.85rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
+  box-shadow: none !important;
 }
 
 .toggle-btn:hover {
@@ -92,8 +105,9 @@ header {
 }
 
 .toggle-btn.active {
-  background: transparent;
-  color: var(--accent); /* Restored purple for active state */
+  background: transparent !important;
+  color: var(--accent); /* Premium Purple */
+  text-shadow: 0 0 10px rgba(168, 85, 247, 0.2);
 }
 
 .toggle-btn i {

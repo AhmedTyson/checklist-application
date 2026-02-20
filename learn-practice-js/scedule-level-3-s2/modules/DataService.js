@@ -9,7 +9,7 @@ export class DataService {
   #requestIdCounter = 0;
 
   constructor() {
-    this.#worker = new Worker("modules/workers/SearchWorker.js", {
+    this.#worker = new Worker("modules/workers/SearchWorker.js?v=2", {
       type: "module",
     });
     this.#worker.onmessage = this.#handleWorkerMessage.bind(this);
@@ -29,8 +29,11 @@ export class DataService {
    */
   async fetchData() {
     try {
-      const response = await fetch(Config.DATA_URL, {
+      // Aggressive Cache Busting: Append unique timestamp to URL
+      const bustCache = `?t=${new Date().getTime()}`;
+      const response = await fetch(Config.DATA_URL + bustCache, {
         credentials: "same-origin",
+        cache: "no-store",
       });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
 

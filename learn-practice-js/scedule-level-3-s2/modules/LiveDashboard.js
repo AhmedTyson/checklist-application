@@ -57,14 +57,17 @@ export class LiveDashboard {
 
       // Ramadan Specific Message
       if (Config.RAMADAN_MODE?.ENABLED) {
+        this.#emptyState.classList.add("ramadan-active");
         const h3 = this.#emptyState.querySelector("h3");
         const p = this.#emptyState.querySelector("p");
         const icon = this.#emptyState.querySelector("i");
         if (h3) h3.style.fontFamily = "var(--font-ramadan)";
         if (h3) h3.textContent = "Ramadan Mubarak!";
         if (p) p.textContent = "Enjoy your spiritual break! 🌙";
-        if (icon) icon.className = "fa-solid fa-moon fa-bounce";
+        if (icon) icon.className = "fa-solid fa-moon"; // Removed fa-bounce to let the whole container float
         if (icon) icon.style.color = "#fbbf24";
+      } else {
+        this.#emptyState.classList.remove("ramadan-active");
       }
     } else {
       this.#container.classList.remove("hidden");

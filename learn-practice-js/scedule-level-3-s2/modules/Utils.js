@@ -108,4 +108,35 @@ export class Utils {
     const h = Math.abs(hash % 360);
     return `hsl(${h}, ${s}%, ${l}%)`;
   }
+
+  /**
+   * Clears all application caches and local storage.
+   * Useful for debugging or resetting the application state.
+   */
+  static async clearCache() {
+    console.log("Clearing application cache and storage...");
+
+    try {
+      // 1. Clear Cache Storage
+      if ("caches" in window) {
+        const keys = await caches.keys();
+        await Promise.all(
+          keys.map((key) =>
+            caches.delete(key).then(() => console.log(`Deleted cache: ${key}`)),
+          ),
+        );
+      }
+
+      // 2. Clear Local & Session Storage
+      localStorage.clear();
+      sessionStorage.clear();
+      console.log("LocalStorage and SessionStorage cleared.");
+
+      // 3. Reload Page
+      console.log("Reloading page in 1s...");
+      setTimeout(() => window.location.reload(), 1000);
+    } catch (e) {
+      console.error("Error clearing cache:", e);
+    }
+  }
 }

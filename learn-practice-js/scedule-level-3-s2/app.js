@@ -21,6 +21,8 @@ class App {
 
   constructor() {
     Config.init();
+    // Expose cache cleaner globally for manual admin use
+    window.clearAppCache = Utils.clearCache;
   }
 
   async init() {

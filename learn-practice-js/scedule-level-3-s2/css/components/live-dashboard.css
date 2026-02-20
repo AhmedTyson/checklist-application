@@ -332,12 +332,45 @@
 
 /* Empty State */
 .live-empty-state {
-  /* No grid column needed if container is hidden, but if it was in grid: grid-column: 1 / -1; */
+  /* Square Layout */
+  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 320px; /* Limit size */
+
   text-align: center;
-  padding: clamp(40px, 10vw, 80px) 20px;
+  padding: 20px; /* Reduced padding as flex handles spacing */
   color: var(--text-muted);
   opacity: 0.6;
-  margin: 0 auto;
+  margin: 20px auto; /* Centered with some vertical breathing room */
+  transition: all 0.5s ease;
+
+  /* Optional: Add a subtle background to define the square shape if desired, 
+     but for now keeping it transparent as per original, just shaping the container.
+     If user wants a "card", we might need background. 
+     Given "make it in square", the shape is key. */
+  border-radius: 20px; /* Soften the square */
+}
+
+.live-empty-state.ramadan-active {
+  animation: float 6s ease-in-out infinite;
+  opacity: 1; /* Brighten up for the occasion */
+}
+
+/* Gentle Float Animation for Ramadan */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
 }
 
 .live-empty-state i {
